@@ -12,10 +12,10 @@ namespace Project1640.Models
         [Key]
         public int Id { get; set; }
         [Required(ErrorMessage = "Need to input content")]
+        public string Title { get; set; }
         public string Content { get; set; }
         public bool Status { get; set; }
-        public string Description { get; set; }
-        [DataType(DataType.Custom)]
+        [DataType(DataType.Date)]
         public string Date { get; set; }
         public List<Category> listCategory { get; set; }
         public Idea()

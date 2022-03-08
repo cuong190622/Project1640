@@ -15,7 +15,7 @@ namespace Project1640.Models
         public int Age { get; set; }
         public string WorkingPlace { get; set; }
 
-        [DataType(DataType.Custom)]
+        [DataType(DataType.Date)]
         public string DoB { get; set; }
         public List<Idea> listIdea { get; set; }
         public List<Comment> listReact { get; set; }

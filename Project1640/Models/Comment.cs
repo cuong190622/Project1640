@@ -13,7 +13,7 @@ namespace Project1640.Models
         public int Id { get; set; }
         public string Content { get; set; }
         public bool Status { get; set; }
-        [DataType(DataType.Custom)]
+        [DataType(DataType.Date)]
         public string Date { get; set; }
 
         [Display(Name = "User")]
