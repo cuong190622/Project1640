@@ -160,9 +160,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="EF\202203070820144_InitialCreate.cs" />
-    <Compile Include="EF\202203070820144_InitialCreate.designer.cs">
-      <DependentUpon>202203070820144_InitialCreate.cs</DependentUpon>
+    <Compile Include="Controllers\ManagerController.cs" />
+    <Compile Include="EF\202203080245347_InitialCreate.cs" />
+    <Compile Include="EF\202203080245347_InitialCreate.Designer.cs">
+      <DependentUpon>202203080245347_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="EF\CMSContext.cs" />
     <Compile Include="EF\Configuration.cs" />
@@ -172,10 +173,13 @@
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\FileUpload.cs" />
     <Compile Include="Models\Idea.cs" />
     <Compile Include="Models\React.cs" />
     <Compile Include="Models\UserInfo.cs" />
+    <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="bin\Project1640.dll" />
@@ -318,10 +322,12 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\Manager\Index.cshtml" />
+    <Content Include="Views\Manager\CreateCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Manager\" />
+    <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -329,8 +335,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EF\202203070820144_InitialCreate.resx">
-      <DependentUpon>202203070820144_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="EF\202203080245347_InitialCreate.resx">
+      <DependentUpon>202203080245347_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
