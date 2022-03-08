@@ -116,6 +116,23 @@
                 .Index(t => t.IdeaId);
             
             CreateTable(
+                "dbo.FileUploads",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false),
+                        Description = c.String(),
+                        Url = c.String(),
+                        UserId = c.String(maxLength: 128),
+                        IdeaId = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserId)
+                .ForeignKey("dbo.Ideas", t => t.IdeaId, cascadeDelete: true)
+                .Index(t => t.UserId)
+                .Index(t => t.IdeaId);
+            
+            CreateTable(
                 "dbo.AspNetUserLogins",
                 c => new
                     {
@@ -173,6 +190,8 @@
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Comments", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Ideas", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.FileUploads", "IdeaId", "dbo.Ideas");
+            DropForeignKey("dbo.FileUploads", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Reacts", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Reacts", "IdeaId", "dbo.Ideas");
             DropForeignKey("dbo.AspNetUsers", "DepartmentId", "dbo.Departments");
@@ -185,6 +204,8 @@
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
+            DropIndex("dbo.FileUploads", new[] { "IdeaId" });
+            DropIndex("dbo.FileUploads", new[] { "UserId" });
             DropIndex("dbo.Reacts", new[] { "IdeaId" });
             DropIndex("dbo.Reacts", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
@@ -197,6 +218,7 @@
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
+            DropTable("dbo.FileUploads");
             DropTable("dbo.Reacts");
             DropTable("dbo.Departments");
             DropTable("dbo.AspNetUserClaims");

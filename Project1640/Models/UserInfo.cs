@@ -21,6 +21,8 @@ namespace Project1640.Models
         public List<Comment> listReact { get; set; }
         public List<React> listComment { get; set; }
 
+        public List<FileUpload> listFile { get; set; }
+
         [Display(Name = "Department")]
         public int DepartmentId { get; set; }
                                                    
