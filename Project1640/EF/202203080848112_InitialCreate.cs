@@ -120,7 +120,7 @@ namespace Project1640.EF
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false),
+                        Name = c.String(),
                         Description = c.String(),
                         Url = c.String(),
                         UserId = c.String(maxLength: 128),
