@@ -27,6 +27,8 @@ namespace Project1640.Models
 
         public List<Comment> listComment { get; set; }
 
+        public List<FileUpload> listFile { get; set; }
+
         [Display(Name = "User")]
         public string UserId { get; set; }
 
