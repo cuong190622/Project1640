@@ -1,4 +1,4 @@
-﻿namespace Project1640.EF
+namespace Project1640.EF
 {
     using System;
     using System.Data.Entity.Migrations;
