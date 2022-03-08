@@ -1,4 +1,4 @@
-﻿namespace Project1640.EF
+namespace Project1640.EF
 {
     using System;
     using System.Data.Entity.Migrations;
@@ -22,9 +22,9 @@
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Content = c.String(nullable: false),
+                        Title = c.String(nullable: false),
+                        Content = c.String(),
                         Status = c.Boolean(nullable: false),
-                        Description = c.String(),
                         Date = c.String(),
                         UserId = c.String(maxLength: 128),
                     })
@@ -120,7 +120,7 @@
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false),
+                        Name = c.String(),
                         Description = c.String(),
                         Url = c.String(),
                         UserId = c.String(maxLength: 128),
