@@ -22,9 +22,9 @@ namespace Project1640.EF
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Content = c.String(nullable: false),
+                        Title = c.String(nullable: false),
+                        Content = c.String(),
                         Status = c.Boolean(nullable: false),
-                        Description = c.String(),
                         Date = c.String(),
                         UserId = c.String(maxLength: 128),
                     })
