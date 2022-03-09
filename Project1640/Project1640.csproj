@@ -158,12 +158,11 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-
     <Compile Include="Controllers\ManagerController.cs" />
-    <Compile Include="EF\202203080245347_InitialCreate.cs" />
-    <Compile Include="EF\202203080245347_InitialCreate.Designer.cs">
-      <DependentUpon>202203080245347_InitialCreate.cs</DependentUpon>
-
+    <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="EF\202203080848112_InitialCreate.cs" />
+    <Compile Include="EF\202203080848112_InitialCreate.Designer.cs">
+      <DependentUpon>202203080848112_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="EF\CMSContext.cs" />
     <Compile Include="EF\Configuration.cs" />
@@ -217,6 +216,7 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="FileUpload\ASM1.docx" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -312,17 +312,12 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Home.cshtml" />
-
     <Content Include="Views\Staff\Index.cshtml" />
     <Content Include="Views\Staff\_LayoutStaff.cshtml" />
     <Content Include="Views\Staff\CreateIdea.cshtml" />
     <Content Include="Views\Staff\TestAddUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-    
-    <Folder Include="Views\Login\" />
-
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper.js.flow" />
@@ -339,7 +334,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="obj\Debug\TempPE\" />
-
+    <Folder Include="Views\Login\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -347,10 +342,8 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-
     <EmbeddedResource Include="EF\202203080848112_InitialCreate.resx">
       <DependentUpon>202203080848112_InitialCreate.cs</DependentUpon>
-
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
