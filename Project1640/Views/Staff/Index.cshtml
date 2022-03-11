@@ -1,4 +1,5 @@
-﻿
+﻿@model IEnumerable<Project1640.Models.Idea>
+
 @{
     Layout = "~/Views/Staff/_LayoutStaff.cshtml";
 }
@@ -11,8 +12,35 @@
     <title>Index</title>
 </head>
 <body>
-    <div> 
-        Staff
-    </div>
+    <p>
+        @Html.ActionLink("Create New Idea", "CreateIdea")
+    </p>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>                
+                <th scope="col">@Html.DisplayNameFor(model => model.Title)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Date)</th>
+                <th scope="col">Idea</th>
+                <th scope="col">&nbsp;</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => c.Title)</td>
+                    <td>@Html.DisplayFor(model => c.Date)</td>
+
+                    <td>
+                        <a type="button" class="btn btn-success btn-sm"
+                           href="@Url.Action("ViewIdea", new {id = c.Id})">View</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </body>
 </html>

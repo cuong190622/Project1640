@@ -26,11 +26,15 @@ namespace Project1640.EF
                         Content = c.String(),
                         Status = c.Boolean(nullable: false),
                         Date = c.String(),
-                        UserId = c.String(maxLength: 128),
+                        UserId = c.String(),
+                        CategoryId = c.Int(nullable: false),
+                        UserInfo_Id = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId)
-                .Index(t => t.UserId);
+                .ForeignKey("dbo.AspNetUsers", t => t.UserInfo_Id)
+                .ForeignKey("dbo.Categories", t => t.CategoryId, cascadeDelete: true)
+                .Index(t => t.CategoryId)
+                .Index(t => t.UserInfo_Id);
             
             CreateTable(
                 "dbo.Comments",
@@ -167,39 +171,23 @@ namespace Project1640.EF
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
             
-            CreateTable(
-                "dbo.IdeaCategories",
-                c => new
-                    {
-                        Idea_Id = c.Int(nullable: false),
-                        Category_Id = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.Idea_Id, t.Category_Id })
-                .ForeignKey("dbo.Ideas", t => t.Idea_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Categories", t => t.Category_Id, cascadeDelete: true)
-                .Index(t => t.Idea_Id)
-                .Index(t => t.Category_Id);
-            
         }
         
         public override void Down()
         {
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.Ideas", "CategoryId", "dbo.Categories");
             DropForeignKey("dbo.Comments", "IdeaId", "dbo.Ideas");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Comments", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Ideas", "UserId", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Ideas", "UserInfo_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.FileUploads", "IdeaId", "dbo.Ideas");
             DropForeignKey("dbo.FileUploads", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Reacts", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.Reacts", "IdeaId", "dbo.Ideas");
             DropForeignKey("dbo.AspNetUsers", "DepartmentId", "dbo.Departments");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.IdeaCategories", "Category_Id", "dbo.Categories");
-            DropForeignKey("dbo.IdeaCategories", "Idea_Id", "dbo.Ideas");
-            DropIndex("dbo.IdeaCategories", new[] { "Category_Id" });
-            DropIndex("dbo.IdeaCategories", new[] { "Idea_Id" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
@@ -213,8 +201,8 @@ namespace Project1640.EF
             DropIndex("dbo.AspNetUsers", new[] { "DepartmentId" });
             DropIndex("dbo.Comments", new[] { "IdeaId" });
             DropIndex("dbo.Comments", new[] { "UserId" });
-            DropIndex("dbo.Ideas", new[] { "UserId" });
-            DropTable("dbo.IdeaCategories");
+            DropIndex("dbo.Ideas", new[] { "UserInfo_Id" });
+            DropIndex("dbo.Ideas", new[] { "CategoryId" });
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
