@@ -16,5 +16,10 @@ namespace Project1640.Controllers
         {
             return View();
         }
+
+        public ActionResult TestViews()
+        {
+            return View();
+        }
     }
 }
