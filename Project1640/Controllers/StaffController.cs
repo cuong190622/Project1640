@@ -16,7 +16,13 @@ namespace Project1640.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            using (var ct = new EF.CMSContext())
+            {
+                var categories = ct.Idea
+                                        .OrderBy(c => c.Id)
+                                        .ToList();
+                return View(categories);
+            }
         }
 
         [HttpGet]
@@ -58,10 +64,25 @@ namespace Project1640.Controllers
             return RedirectToAction("Index");
         }
 
+        private List<SelectListItem> getList()
+        {
+            using (var abc = new EF.CMSContext()) //create a new value abc is an object of CMSContext
+            {
+                var stx = abc.Category.Select(p => new SelectListItem //Select anonymous
+                {
+                    Text = p.Name,
+                    Value = p.Id.ToString()
+                }).ToList();
+
+                return stx;
+            }
+        }
+
+
         [HttpGet]
         public ActionResult CreateIdea()
         {
-            SetViewBag();
+            ViewBag.Class = getList();
             return View();
         }
 
@@ -104,8 +125,8 @@ namespace Project1640.Controllers
                 {
                     a.Status = true;
                     a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-                    a.listCategory = Convert(context, f["formatIds[]"]);
-                    a.UserId = "d354a0e4-55a1-43ce-b20c-82d8211729ea";
+                    
+                    a.UserId = "bdb22222-180f-4f4d-a179-127d681c48b0";
                     Database.Idea.Add(a);
                     Database.SaveChanges();
                     SaveFile(new FileUpload(), postedFile, a.Id);
@@ -128,7 +149,7 @@ namespace Project1640.Controllers
                 {
                     a.Name = postedFile.FileName;
                     a.Url = _path;
-                    a.UserId = "d354a0e4-55a1-43ce-b20c-82d8211729ea";
+                    a.UserId = "bdb22222-180f-4f4d-a179-127d681c48b0";
                     a.IdeaId = IdeaId;
                     Database.File.Add(a);
                     Database.SaveChanges();
@@ -137,11 +158,74 @@ namespace Project1640.Controllers
 
         }
 
-        public ActionResult ViewAllIdea()
+        public ActionResult ViewIdea(int id)
+        {
+            using (var FAPCtx = new EF.CMSContext())
+            {
+                var _idea = FAPCtx.Idea.FirstOrDefault(c => c.Id == id);
+
+                if (_idea != null)
+                {
+                    TempData["IdeaId"] = id;
+                    return View(_idea);
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+
+            }
+        }
+
+        public ActionResult ShowComment(int id)
+        {
+
+                using (var dbCT = new EF.CMSContext())
+                {
+                    var _comment = dbCT.Comment
+                                            .Where(c => c.IdeaId == id)
+                                            .ToList();
+                    if (_comment.Count != 0)
+                    {
+                        return View(_comment);
+                    }
+                    else
+                    {
+                        return Content($"No Comment yet!");
+                    }
+                   
+                }
+        }
+        [HttpGet]
+        public ActionResult CreateComment()
         {
             return View();
         }
 
+        [HttpPost]
+        public ActionResult CreateComment(Comment a, int id)
+        {
+            using (var database = new EF.CMSContext())
+            {
+                a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
+                a.UserId = "bdb22222-180f-4f4d-a179-127d681c48b0";
+                a.IdeaId = id;
+                database.Comment.Add(a);
+                database.SaveChanges();
+                TempData["IdeaId"] = id;
+            }
+            return RedirectToAction("ViewIdea", new { id = id });
+        }
+        public ActionResult ShowCategory(int id)
+        {
 
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _category = dbCT.Category
+                                        .Where(c => c.Id == id)
+                                        .ToList();
+             return View(_category);
+            }
+        }
     }
 }
