@@ -47,7 +47,7 @@ namespace Project1640.Controllers
                     Name = newUser.Name,
                     Role = newUser.Role,
                     PasswordHash = newUser.PasswordHash,
-                    DepartmentId = 1,
+                 
                 };
                 //validate email
                 if (user.Email == null)
@@ -133,6 +133,76 @@ namespace Project1640.Controllers
                 }
 
 
+                return RedirectToAction("Index");
+            }
+        }
+
+        public ActionResult CreateDepartment()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateDepartment(Category a)
+        {
+            using (var cate = new EF.CMSContext())
+            {
+                cate.Category.Add(a);
+                cate.SaveChanges();
+            }
+
+            TempData["message"] = $"Successfully add class {a.Name} to system!";
+
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpGet]
+        public ActionResult EditDepartment(int id)
+        {
+            // lay category qua id tu db
+            using (var dpm = new EF.CMSContext())
+            {
+                var Department = dpm.Department.FirstOrDefault(c => c.Id == id);
+                return View(Department);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditDepartment(int id, Department a)
+        {
+            using (var dpm = new EF.CMSContext())
+            {
+                dpm.Entry<Department>(a).State = System.Data.Entity.EntityState.Modified;
+
+                dpm.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult DeleteDepartment(int id, Department a)
+        {
+            using (var dpm = new EF.CMSContext())
+            {
+                var department = dpm.Department.FirstOrDefault(c => c.Id == id);
+                return View(department);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeleteDepartment(int id)
+        {
+            using (var dpm = new EF.CMSContext())
+            {
+                var Department = dpm.Department.FirstOrDefault(b => b.Id == id);
+                if (dpm != null)
+                {
+                    dpm.Department.Remove(Department);
+                    dpm.SaveChanges();
+                }
+                TempData["message"] = $"Successfully delete book with Id: {Department.Id}";
                 return RedirectToAction("Index");
             }
         }
