@@ -1,41 +1,54 @@
 ﻿
 @model IEnumerable<Project1640.Models.UserInfo>
 
-<table class="table table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">@Html.DisplayNameFor(model => model.Role)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.Age)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.WorkingPlace)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.DoB)</th>
-            <th scope="col">&nbsp;</th>
-            <th scope="col">&nbsp;</th>
-        </tr>
-    </thead>
+@{
+    Layout = "~/Views/Admin/_LayoutAdmin.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New Account", "CreateAccount")
+    </p>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.Role)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Age)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.WorkingPlace)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.DoB)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.PasswordHash)</th>
+            </tr>
+        </thead>
 
 
-    <tbody>
-        @foreach (var c in Model)
-        {
+        <tbody>
+            @foreach (var c in Model)
+            {
             <tr>
                 <td>@Html.DisplayFor(model => c.Role)</td>
                 <td>@Html.DisplayFor(model => c.Name)</td>
                 <td>@Html.DisplayFor(model => c.Age)</td>
                 <td>@Html.DisplayFor(model => c.WorkingPlace)</td>
                 <td>@Html.DisplayFor(model => c.DoB)</td>
+                <td>@Html.DisplayFor(model => c.PasswordHash)</td>
 
                 <td>
                     <a type="button" class="btn btn-success btn-sm"
-                       href="@Url.Action("EditCategory", new {id = c.Id})">Edit</a>
-                </td>
-                <td>
-                    <a type="button" class="btn btn-danger btn-sm"
-                       href="@Url.Action("DeleteCategory", new {id = c.Id })">Delete</a>
+                       href="@Url.Action("ViewIdea", new {id = c.Id})">View</a>
                 </td>
             </tr>
-        }
-    </tbody>
-</table>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
 
 
