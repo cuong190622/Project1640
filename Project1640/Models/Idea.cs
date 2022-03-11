@@ -17,12 +17,7 @@ namespace Project1640.Models
         public bool Status { get; set; }
         [DataType(DataType.Date)]
         public string Date { get; set; }
-        public List<Category> listCategory { get; set; }
-        public Idea()
-        {
-            listCategory = new List<Category>();//Code first Many to Many relationship
 
-        }
         public List<React> listReact { get; set; }
 
         public List<Comment> listComment { get; set; }
@@ -32,8 +27,10 @@ namespace Project1640.Models
         [Display(Name = "User")]
         public string UserId { get; set; }
 
-        [ForeignKey("UserId")]
-        public  UserInfo User { get; set; }
+
+        [Display(Name = "Category")]
+        public int CategoryId { get; set; }
+
 
     }
 }

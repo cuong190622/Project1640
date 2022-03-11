@@ -160,10 +160,10 @@
     <Compile Include="Controllers\HomeController.cs" />
 
     <Compile Include="Controllers\ManagerController.cs" />
-    <Compile Include="EF\202203080245347_InitialCreate.cs" />
-    <Compile Include="EF\202203080245347_InitialCreate.Designer.cs">
-      <DependentUpon>202203080245347_InitialCreate.cs</DependentUpon>
-
+    <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="EF\202203110222089_InitialCreate.cs" />
+    <Compile Include="EF\202203110222089_InitialCreate.Designer.cs">
+      <DependentUpon>202203110222089_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="EF\CMSContext.cs" />
     <Compile Include="EF\Configuration.cs" />
@@ -312,11 +312,14 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Home.cshtml" />
-
-    <Content Include="Views\Staff\Index.cshtml" />
     <Content Include="Views\Staff\_LayoutStaff.cshtml" />
     <Content Include="Views\Staff\CreateIdea.cshtml" />
     <Content Include="Views\Staff\TestAddUser.cshtml" />
+    <Content Include="Views\Staff\Index.cshtml" />
+    <Content Include="Views\Staff\ViewIdea.cshtml" />
+    <Content Include="Views\Staff\ShowComment.cshtml" />
+    <Content Include="Views\Staff\CreateComment.cshtml" />
+    <Content Include="Views\Staff\ShowCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -347,17 +350,15 @@
     <Content Include="Scripts\jquery-3.4.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-
-    <EmbeddedResource Include="EF\202203080848112_InitialCreate.resx">
-      <DependentUpon>202203080848112_InitialCreate.cs</DependentUpon>
-
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EF\202203110222089_InitialCreate.resx">
+      <DependentUpon>202203110222089_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
