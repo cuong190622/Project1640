@@ -45,9 +45,9 @@ namespace Project1640.Controllers
                     Email = newUser.Email,
                     Age = newUser.Age,
                     Name = newUser.Name,
-                    Role = "trainer",
-                    PasswordHash = "123qwe123",
-                    DepartmentId = 1
+                    Role = newUser.Role,
+                    PasswordHash = newUser.PasswordHash,
+                    DepartmentId = 1,
                 };
                 //validate email
                 if (user.Email == null)
