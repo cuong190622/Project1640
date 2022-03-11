@@ -16,122 +16,218 @@
     <link rel="stylesheet" href="/css/blog.css">
 </head>
 <body>
-    <div>
-        <div class="admin">
+    <div class="blog">
 
-            <header class="admin_header">
-                <h2>Admin Page</h2>
-                <ul>
-                    <a href="">
-                    <li>
-                        <i class="fa-solid fa-house-user"></i>
-                        Home
-                    </li>
-                    </a>
-                    <a href="" class="add_btn">
-                    <li>
-                        <i class="fa-solid fa-user-plus"></i>
-                        Add member
-                    </li>
-                    </a>
-                    <a href="">
-                    <li>
-                        <i class="fa-solid fa-clover"></i>
-                        bla bla bla
-                    </li>
-                    </a>
-                    <a href="">
-                    <li>
-                        <i class="fa-solid fa-clover"></i>
-                        bla bla bla
-                    </li>
-                    </a>
-                    <a href="">
-                    <li>
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        Log out
-                    </li>
-                    </a>
-                </ul>
-            </header>
+        <div class="header">
+            <div class="header_item-first">
+                <img src="/image/logo.png" alt="">
+                <a href="">
+                    <i class="fa-solid fa-caret-left"></i>
+                    <span>Back</span>
+                </a>
+            </div>
 
-        </div>
+            <div class="header_search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search blog...">
+            </div>
 
-        <div class="overlay">
-            <div class="add">
-                <div class="comment_close">
-                    <i class="fa-solid fa-x"></i>
+            <div class="header_item-second">
+                <div class="dropdown">
+                    <a class="post_btn" href="/views/postIdea.html">Post idea</a>
+                    <span type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-weight: bold;">
+                        My Blog
+                    </span>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <img src="/image/logo.png" alt="" class="img-blog">
+                                <span>Đề nghị đình công để đòi tăng lương</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <img src="/image/logo.png" alt="" class="img-blog">
+                                <span>Đề nghị đình công để đòi tăng lương</span>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
 
-                <div class="comment_amount">
-                    <span>Add Someone</span>
-                </div>
-
-                <div class="mt-4">
-                    <form method="POST" action="">
-
-                        <div class="form-group">
-                            <label for="name" class="">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="name">
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <label for="description" class="">Description</label>
-                            <input type="text" class="form-control" id="description" name="description" placeholder="description">
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <label for="videoId" class="">Video ID</label>
-                            <input type="text" class="form-control" id="videoId" name="videoId" placeholder="videoId">
-                        </div>
-                        <br>
-                        <button type="submit" class="btn btn-primary">Add</button>
-
-                    </form>
-
+                <div class="dropdown">
+                    <img src="/image/avatar.jpg" class="img-avatar" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">My Account</a></li>
+                        <li><a class="dropdown-item" href="#">Log Out</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
 
-        <script>
+        <div class="container_body">
+            <div class="container_header">
+                <h1>List Blog</h1>
+                <span>Tao muốn viết gì đó ở đây nhưng không biết viết gì</span>
+            </div>
 
-			var overlay = document.querySelector('.overlay');
-			var close = document.querySelector('.comment_close i')
-			var addBtn = document.querySelector('.add_btn')
+            <div class="container_blog">
 
-			console.log(close)
+                <div class="blog_all-item">
 
-			close.addEventListener('click', (e) => {
-				overlay.classList.remove('show')
-			})
+                    <div class="blog_item left-to-right">
+                        <div class="blog_item-header">
+                            <div class="blog_avatar">
+                                <img src="/image/avatar.jpg" alt="">
+                                <span>Hoang Anh</span>
+                            </div>
 
-			// Giai thich
-			overlay.addEventListener('click', (e) => {
-				if(e.target == e.currentTarget){
-					overlay.classList.remove('show')
-				}
-			})
+                            <div class="blog_item-option">
 
-			addBtn.addEventListener('click', (e) => {
-				e.preventDefault()
-				overlay.classList.add('show')
-			})
+                                <div class="dropdown">
+                                    <i class="btn btn-secondary fa-solid fa-ellipsis" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    </i>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="#">Copy Link</a></li>
+                                        <li><a class="dropdown-item" href="#">Report</a></li>
+                                    </ul>
+                                </div>
 
-			function w3_open() {
-				document.getElementById("main").style.marginLeft = "25%";
-				document.getElementById("mySidebar").style.width = "25%";
-				document.getElementById("mySidebar").style.display = "block";
-				document.getElementById("openNav").style.display = 'none';
-			}
-			function w3_close() {
-				document.getElementById("main").style.marginLeft = "0%";
-				document.getElementById("mySidebar").style.display = "none";
-				document.getElementById("openNav").style.display = "inline-block";
-			}
+                            </div>
+                        </div>
 
-        </script>
+                        <div class="blog_content">
+                            <a href="/views/blogDetail.html">
+                                <h1>Đề nghị đình công để đòi tăng lương</h1>
+                            </a>
+                            <span>Mình là một học viên đang sinh sống và làm việc tại Nhật Bản , Vốn là dân trái ngành muốn quay đầu học lại IT để có thể tìm kiếm</span>
+                        </div>
 
-        <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
+                        <div class="blog_time">
+                            <span>26/12/2022</span>
+                        </div>
+                    </div>
+
+                    <div class="blog_item left-to-right">
+                        <div class="blog_item-header">
+                            <div class="blog_avatar">
+                                <img src="/image/avatar.jpg" alt="">
+                                <span>Hoang Anh</span>
+                            </div>
+
+                            <div class="blog_item-option">
+                                <div class="dropdown">
+                                    <i class="btn btn-secondary fa-solid fa-ellipsis" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    </i>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="#">Copy Link</a></li>
+                                        <li><a class="dropdown-item" href="#">Report</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="blog_content">
+                            <a href="/views/blogDetail.html">
+                                <h1>Đề nghị đình công để đòi tăng lương</h1>
+                            </a>
+                            <span>Mình là một học viên đang sinh sống và làm việc tại Nhật Bản , Vốn là dân trái ngành muốn quay đầu học lại IT để có thể tìm kiếm</span>
+                        </div>
+
+                        <div class="blog_time">
+                            <span>26/12/2022</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="blog_all-categories">
+                    <h2>All Topics</h2>
+
+                    <div class="blog_categories">
+                        <ul>
+                            <li>
+                                <a href="">Salary</a>
+                            </li>
+                            <li>
+                                <a href="">Salary</a>
+                            </li>
+                            <li>
+                                <a href="">Jobs</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container" style="margin: 0; max-width: 1520px; padding: 0 110px 0 200px; background-color: #e6e0bb">
+            <footer class="row row-cols-5 py-5 my-5 border-top">
+                <div class="col">
+                    <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
+                        <img src="/image/logo2.png" alt="">
+                    </a>
+                    <p class="text-muted">&copy; 2022</p>
+                </div>
+
+                <div class="col">
+                    <h5>CHAT LTD</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Lê Minh Thiện</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Nguyễn Đình Cương</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Trần Quang Huy</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Lê Hoàng Anh</a></li>
+                    </ul>
+                </div>
+
+                <div class="col">
+                    <h5>Group 7</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Facebook</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Instargram</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Email</a></li>
+                    </ul>
+                </div>
+
+                <div class="col">
+                    <h5>University of Greenwich</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Email</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Facebook</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Instargram</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </div>
+
     </div>
+
+
+    <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
+
+    <script>
+
+        var blogItem = document.querySelectorAll('.blog_item')
+
+        function scrollHandleAnimation(e) {
+            var rect = e.getClientRects()[0]
+            var heightScreen = window.innerHeight
+
+            if (!(rect.bottom < 0 || heightScreen.top > heightScreen)) {
+                e.classList.add('start')
+            } else {
+                e.classList.remove('start')
+            }
+        }
+
+        function checkElement() {
+            blogItem.forEach(e => {
+                scrollHandleAnimation(e)
+            })
+        }
+
+        window.onscroll = checkElement
+
+    </script>
 </body>
 </html>

@@ -1,0 +1,270 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/blog.css">
+</head>
+<body>
+    <div class="blog_detail">
+
+        <div class="header_detail">
+            <div class="header_item-first">
+                <img src="/image/logo.png" alt="">
+                <a href="/views/blog.html">
+                    <i class="fa-solid fa-caret-left"></i>
+                    <span>Back</span>
+                </a>
+            </div>
+
+            <div class="header_name">
+                <h1>Blog Detail</h1>
+            </div>
+
+            <div class="header_item-second">
+                <div class="dropdown">
+                    <span type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        My Blog
+                    </span>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <img src="/image/logo.png" alt="" class="img-blog">
+                                <span>Đề nghị đình công để đòi tăng lương</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#">
+                                <img src="/image/logo.png" alt="" class="img-blog">
+                                <span>Đề nghị đình công để đòi tăng lương</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="dropdown">
+                    <img src="/image/avatar.jpg" class="img-avatar" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">My Account</a></li>
+                        <li><a class="dropdown-item" href="#">Log Out</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container_body">
+
+            <div class="container_blog">
+
+                <div class="blog_react">
+                    <div class="blog_react-name">
+                        <h3>Hoang Anh</h3>
+                    </div>
+
+                    <div class="blog_react-item">
+                        <div class="react_like">
+                            <i class="fa-solid fa-thumbs-up"></i>
+                            <span></span>
+                        </div>
+                        <div class="react_dislike">
+                            <i class="fa-solid fa-thumbs-down"></i>
+                            <span></span>
+                        </div>
+                        <div class="react_commment">
+                            <i class="fa-solid fa-comment"></i>
+                            <span>11</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="blog_post">
+                    <h1>Đề nghị đình công để đòi tăng lương</h1>
+
+                    <div class="blog_item-header">
+                        <div class="blog_avatar">
+                            <img src="/image/avatar.jpg" alt="">
+                            <span>Hoang Anh</span>
+                        </div>
+
+                        <div class="blog_item-option">
+
+                            <div class="dropdown">
+                                <i class="btn btn-secondary fa-solid fa-ellipsis" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                </i>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="#">Copy Link</a></li>
+                                    <li><a class="dropdown-item" href="#">Download</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="blog_time">
+                        <span>26/12/2022</span>
+                    </div>
+
+                    <div class="blog_post-content">
+                        <img src="/image/avatar.jpg" alt="">
+                        <p>
+                            Mình là một học viên đang sinh sống và làm việc tại Nhật Bản ,
+                            Vốn là dân trái ngành muốn quay đầu học lại IT để có thể tìm kiếm
+                            được công việc phù hợp với bản thân hơn nên vài tháng trước mình
+                            đã quyết định bắt đầu học lập trình , và tìm kiếm tới một số khóa
+                            học bên Việt Nam mong muốn trong một thời gian càng ngắn càng tốt
+                            có thể đủ khả năng để xin intern tại một công ty nào đó . Nhưng tất
+                            cả các khóa mình tham gia giường như đem lại sự thất vọng về cách
+                            thức giảng dạy . Có khóa thì cung cấp những video có sẵn trên các
+                            nền tảng như udemy , youtube hay là tài liệu thuần , có những khóa mà
+                            giảng viên chỉ nói một mình không tương tác với học viên không có một
+                            chút hứng thú gì khi tham gia . Bản thân mình thì tiếp thu khá nhanh
+                            nên những nền tảng cơ bản như html css , js , java core mình đã có thể
+                            học trong một thời gian rất ngắn nhưng thứ mình hướng tới là sự chỉnh
+                            chu kỹ lưỡng về mặt kiến thức và cả những kinh nghiệm thực tế từ giảng
+                            viên . Mình đã từng nghĩ rằng một khóa học free thì không thể nào chất
+                            lượng bằng bỏ ra những đồng tiền để mua nhưng thật sự đã sai lầm khi
+                            theo học ở funstack.edu.vn . Có thể nói a sơn là một người truyền đạt
+                            kiến thức mà mình có thể nghe đến đâu hiểu tới đó và không nản trí kh
+                            i gặp những vấn đề khó . Và từ đó hình thành được những tư duy code
+                            cho dự án riêng của mình . Đây là một sản phẩm sơ sài của mình hoàn
+                            thành trong một thời gian khá ngắn sử dụng những components có sẵn trên
+                            các thư viện bstrap https://dannytranvu0307.github.io/react-deploy/
+                        </p>
+                    </div>
+                </div>
+
+                <div class="empty">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="comment_layout">
+        <div class="comment_content">
+
+            <div class="comment_close">
+                <i class="fa-solid fa-x"></i>
+            </div>
+
+            <div class="comment_amount">
+                <span>11 comment</span>
+            </div>
+
+            <div class="comment_write">
+                <div class="blog_avatar">
+                    <img src="/image/avatar.jpg" alt="">
+                    <input type="text" placeholder="Text your comment...">
+                </div>
+            </div>
+
+            <div class="comment_list">
+                <div class="comment_item">
+                    <div class="blog_avatar">
+                        <img src="/image/avatar.jpg" alt="">
+                    </div>
+                    <div class="comment_item-content">
+                        <span>Hoang Anh</span>
+                        <p>HIHI HAHA HOHO HIHI HAHA HOHO HIHI HAHA HOHO HIHI HAHA HOHO HIHI HAHA HOHOHIHI HAHA HOHOHIHI HAHA HOHO HIHI HAHA HOHO HIHI HAHA HOHO HIHI HAHA HOHO HIHI HAHA HOHO HIHI HAHA HOHO HIHI HAHA HOHO HIHI HAHA HOHO HIHI HAHA HOHO HIHI HAHA HOHO </p>
+                        <div class="blog_time-comment">
+                            <span>26/12/2022</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comment_item">
+                    <div class="blog_avatar">
+                        <img src="/image/avatar.jpg" alt="">
+                    </div>
+                    <div class="comment_item-content">
+                        <span>Hoang Anh</span>
+                        <p>HIHI HAHA HOHO</p>
+                        <div class="blog_time-comment">
+                            <span>26/12/2022</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comment_item">
+                    <div class="blog_avatar">
+                        <img src="/image/avatar.jpg" alt="">
+                    </div>
+                    <div class="comment_item-content">
+                        <span>Hoang Anh</span>
+                        <p>HIHI HAHA HOHO</p>
+                        <div class="blog_time-comment">
+                            <span>26/12/2022</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
+
+    <script>
+        var classLike = document.querySelector('.react_like')
+        var classDisLike = document.querySelector('.react_dislike')
+        var reactLike = document.querySelector('.react_like i')
+        var reatcDisLike = document.querySelector('.react_dislike i')
+        var amountLike = document.querySelector('.react_like span')
+        var amountDisLike = document.querySelector('.react_dislike span')
+        var reactCmt = document.querySelector('.react_commment')
+        var cmtLayout = document.querySelector('.comment_layout')
+        var clodeBtn = document.querySelector('.comment_close i')
+
+        reactLike.addEventListener('click', (e) => {
+            var like = document.querySelector('.blog_react-item .like')
+            var dislike = document.querySelector('.blog_react-item .dislike')
+
+            if (like) {
+                classLike.classList.remove('like')
+            } else {
+                classDisLike.classList.remove('dislike')
+                classLike.classList.add('like')
+            }
+        })
+
+        reatcDisLike.addEventListener('click', (e) => {
+            var like = document.querySelector('.blog_react-item .like')
+            var dislike = document.querySelector('.blog_react-item .dislike')
+
+            if (dislike) {
+                classDisLike.classList.remove('dislike')
+            } else {
+                classLike.classList.remove('like')
+                classDisLike.classList.add('dislike')
+            }
+        })
+
+        clodeBtn.addEventListener('click', (e) => {
+            cmtLayout.classList.remove('show')
+        })
+
+        // Giai thich
+        cmtLayout.addEventListener('click', function (e) {
+            if (e.target == e.currentTarget) {
+                cmtLayout.classList.remove('show')
+            }
+        })
+
+        reactCmt.addEventListener('click', (e) => {
+            cmtLayout.classList.add('show')
+        })
+
+    </script>
+
+</body>
+</html>
