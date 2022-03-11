@@ -325,6 +325,7 @@
     <Content Include="Views\Admin\CreateAccount.cshtml" />
     <Content Include="Views\Admin\EditAccount.cshtml" />
     <Content Include="Views\Admin\CreateDepartment.cshtml" />
+    <Content Include="Views\Admin\ShowDepartment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />

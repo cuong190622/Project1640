@@ -143,12 +143,12 @@ namespace Project1640.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateDepartment(Category a)
+        public ActionResult CreateDepartment(Department a)
         {
-            using (var cate = new EF.CMSContext())
+            using (var dpm = new EF.CMSContext())
             {
-                cate.Category.Add(a);
-                cate.SaveChanges();
+                dpm.Department.Add(a);
+                dpm.SaveChanges();
             }
 
             TempData["message"] = $"Successfully add class {a.Name} to system!";
@@ -204,6 +204,18 @@ namespace Project1640.Controllers
                 }
                 TempData["message"] = $"Successfully delete book with Id: {Department.Id}";
                 return RedirectToAction("Index");
+            }
+        }
+
+        public ActionResult ShowDepartment(int id)
+        {
+
+            using (var dpm = new EF.CMSContext())
+            {
+                var _department = dpm.Department
+                                        .Where(c => c.Id == id)
+                                        .ToList();
+                return View(_department);
             }
         }
     }
