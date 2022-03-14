@@ -15,7 +15,9 @@
 <body>
     <div>
         <h4> @Html.DisplayFor(model => model.Title)</h4>
+        @Html.DisplayFor(model => model.Views) Views
         @{Html.RenderAction("ShowCategory", "Staff");}
+
         <hr />
         <dl class="dl-horizontal">
 
