@@ -320,6 +320,7 @@
     <Content Include="Views\Staff\ShowComment.cshtml" />
     <Content Include="Views\Staff\CreateComment.cshtml" />
     <Content Include="Views\Staff\ShowCategory.cshtml" />
+    <Content Include="Views\Staff\Like.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
