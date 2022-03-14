@@ -1,0 +1,56 @@
+﻿
+@model IEnumerable<Project1640.Models.UserInfo>
+
+@{
+    Layout = "~/Views/Admin/_LayoutAdmin.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New Account", "CreateAccount")
+    </p>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.Role)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Age)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.WorkingPlace)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.DoB)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.PasswordHash)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Department)</th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            @foreach (var c in Model)
+            {
+            <tr>
+                <td>@Html.DisplayFor(model => c.Role)</td>
+                <td>@Html.DisplayFor(model => c.Name)</td>
+                <td>@Html.DisplayFor(model => c.Age)</td>
+                <td>@Html.DisplayFor(model => c.WorkingPlace)</td>
+                <td>@Html.DisplayFor(model => c.DoB)</td>
+                <td>@Html.DisplayFor(model => c.PasswordHash)</td>
+                <td>@Html.DisplayFor(model => c.Department)</td>
+
+                <td>
+                    <a type="button" class="btn btn-success btn-sm"
+                       href="@Url.Action("ViewIdea", new {id = c.Id})">View</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
+
+

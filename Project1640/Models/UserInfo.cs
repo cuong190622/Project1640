@@ -10,6 +10,8 @@ namespace Project1640.Models
 {
     public class UserInfo : IdentityUser
     {
+        
+
         public string Role { get; set; }
         public string Name { get; set; }
         public int Age { get; set; }
