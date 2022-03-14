@@ -42,5 +42,58 @@ namespace Project1640.Controllers
 
             return RedirectToAction("Index");
         }
+
+
+        [HttpGet]
+        public ActionResult EditCategory(int id)
+        {
+            // lay category qua id tu db
+            using(var cate = new EF.CMSContext())
+            {
+                var Category = cate.Category.FirstOrDefault(c => c.Id == id);
+                return View(Category);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditCategory(int id, Category a)
+        {
+            using (var cate = new EF.CMSContext())
+            {
+                cate.Entry<Category>(a).State = System.Data.Entity.EntityState.Modified;
+
+                cate.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult DeleteCategory(int id, Category a)
+        {
+            using (var cate = new EF.CMSContext())
+            {
+                var category = cate.Category.FirstOrDefault(c => c.Id == id);
+                return View(category);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeleteCategory(int id)
+        {
+            using (var cate = new EF.CMSContext())
+            {
+                var Category = cate.Category.FirstOrDefault(b => b.Id == id);
+                if (cate != null)
+                {
+                    cate.Category.Remove(Category);
+                    cate.SaveChanges();
+                }
+                TempData["message"] = $"Successfully delete book with Id: {Category.Id}";
+                return RedirectToAction("Index");
+            }
+        }
+        //-----
+
     }
 }
