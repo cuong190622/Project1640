@@ -166,6 +166,8 @@ namespace Project1640.Controllers
 
                 if (_idea != null)
                 {
+                    _idea.Views++;
+                    FAPCtx.SaveChanges();
                     TempData["IdeaId"] = id;
                     return View(_idea);
                 }
@@ -274,8 +276,13 @@ namespace Project1640.Controllers
                 {
                     TempData["LikeStatus"] = "Like";
                 }
+                using (var database = new EF.CMSContext())
+                {
+                    var _idea = database.Idea.FirstOrDefault(c => c.Id == IdeaID);
+                    _idea.Rank = like - dislike;
+                }
             }
-        }
+        }   
 
     }
 }

@@ -320,16 +320,15 @@
     <Content Include="Views\Staff\ShowComment.cshtml" />
     <Content Include="Views\Staff\CreateComment.cshtml" />
     <Content Include="Views\Staff\ShowCategory.cshtml" />
-
     <Content Include="Views\Staff\Like.cshtml" />
-
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Admin\_LayoutAdmin.cshtml" />
     <Content Include="Views\Admin\CreateAccount.cshtml" />
     <Content Include="Views\Admin\EditAccount.cshtml" />
     <Content Include="Views\Admin\CreateDepartment.cshtml" />
     <Content Include="Views\Admin\ShowDepartment.cshtml" />
-
+    <Content Include="Views\Manager\DeleteCategory.cshtml" />
+    <Content Include="Views\Manager\EditCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
