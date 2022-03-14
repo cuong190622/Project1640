@@ -228,5 +228,55 @@ namespace Project1640.Controllers
              return View(_category);
             }
         }
+
+        [HttpGet]
+        public ActionResult Like()
+        {
+            Getlike(Int32.Parse(TempData["IdeaId"].ToString()), "bdb22222-180f-4f4d-a179-127d681c48b0");
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Like(React a, string like)
+        {            
+            using (var database = new EF.CMSContext())
+            {
+                int react = database.React.Where(c => c.IdeaId == a.IdeaId).Count();
+                if(react != 0)
+                {
+                    var listLiked = database.React.Where(c => c.IdeaId == a.IdeaId).Where(c => c.UserId == "bdb22222-180f-4f4d-a179-127d681c48b0").ToList();
+                    database.React.RemoveRange(listLiked);
+                }
+                if(like == "Up")
+                {
+                    a.React_Type = true;
+                }else a.React_Type = false;
+                a.UserId = "bdb22222-180f-4f4d-a179-127d681c48b0";
+                database.React.Add(a);
+                database.SaveChanges();
+                TempData["IdeaId"] = a.IdeaId;
+            }
+            return RedirectToAction("ViewIdea", new { id = a.IdeaId });
+        }
+        
+        public void Getlike(int IdeaID, string UserId)
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                int like = dbCT.React.Where(c => c.IdeaId == IdeaID).Where(c => c.React_Type == true).Count();
+                int dislike = dbCT.React.Where(c => c.IdeaId == IdeaID).Where(c => c.React_Type == false).Count();
+                TempData["LikeCount"] = like - dislike;
+                int Userlike = dbCT.React.Where(c => c.IdeaId == IdeaID).Where(c => c.React_Type == true).Where(c => c.UserId == UserId).Count();
+                int Userdislike = dbCT.React.Where(c => c.IdeaId == IdeaID).Where(c => c.React_Type == false).Where(c => c.UserId == UserId).Count();
+                if(Userdislike != 0)
+                {
+                    TempData["LikeStatus"] = "Dislike";
+                }if(Userlike != 0)
+                {
+                    TempData["LikeStatus"] = "Like";
+                }
+            }
+        }
+
     }
 }

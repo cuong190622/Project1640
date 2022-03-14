@@ -15,6 +15,8 @@ namespace Project1640.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public bool Status { get; set; }
+        public int Rank { get; set; }
+        public int Views { get; set; }
         [DataType(DataType.Date)]
         public string Date { get; set; }
 

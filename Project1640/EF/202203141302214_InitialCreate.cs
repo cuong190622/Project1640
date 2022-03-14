@@ -25,6 +25,8 @@ namespace Project1640.EF
                         Title = c.String(nullable: false),
                         Content = c.String(),
                         Status = c.Boolean(nullable: false),
+                        Rank = c.Int(nullable: false),
+                        Views = c.Int(nullable: false),
                         Date = c.String(),
                         UserId = c.String(),
                         CategoryId = c.Int(nullable: false),
