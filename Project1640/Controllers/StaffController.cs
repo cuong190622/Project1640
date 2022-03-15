@@ -333,28 +333,6 @@ namespace Project1640.Controllers
                 
             }
 
-        }
-
-        public ActionResult Paging(int PageNo)
-        {
-            using (var dbCT = new EF.CMSContext())
-            {
-
-                int Count = dbCT.Idea.Count();
-                if(Count <= 5)
-                {
-                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
-                    return View(ideas);
-                }
-                else
-                {
-                    int first = (PageNo - 1) * 5;
-                    int last = PageNo * 5;
-                    var ideas = dbCT.Idea.Where(c => c.Id >= first && c.Id <= last).ToList();
-                    return View(ideas);
-                }
-                
-            }
-        }
+        }     
     }
 }
