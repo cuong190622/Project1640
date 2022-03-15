@@ -3,6 +3,7 @@
 @{
     Layout = "~/Views/Staff/_LayoutStaff.cshtml";
     TempData["IdeaId"] = @Model.Id;
+    string Anonymously = "Anonymously";
 }
 
 <!DOCTYPE html>
@@ -28,7 +29,16 @@
 
             <dt>
                 @Html.DisplayNameFor(model => model.Date) : @Html.DisplayFor(model => model.Date) <br />
-                By User: @Html.DisplayFor(model => model.UserId)
+                By User: @{
+                    if (Model.Status == true)
+                    {
+                        @Html.DisplayFor(model => model.UserId)
+                    }
+                    else
+                    {
+                        @Html.DisplayName(Anonymously)
+                    }
+                }
             </dt>
         </dl>
     </div>

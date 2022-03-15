@@ -124,7 +124,7 @@ namespace Project1640.Controllers
                 var context = new CMSContext();
                 using (var Database = new EF.CMSContext())
                 {
-                    a.Status = true;
+                    a.Status = !a.Status;
                     a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
                     
                     a.UserId = "8c495b46-2b8b-4e41-a183-aac1b9e250bf";
@@ -213,6 +213,7 @@ namespace Project1640.Controllers
                 a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
                 a.UserId = "8c495b46-2b8b-4e41-a183-aac1b9e250bf";
                 a.IdeaId = id;
+                a.Status = !a.Status;
                 database.Comment.Add(a);
                 database.SaveChanges();
                 TempData["IdeaId"] = id;
