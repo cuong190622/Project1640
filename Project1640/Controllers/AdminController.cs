@@ -25,8 +25,10 @@ namespace Project1640.Controllers
         [HttpGet]
         public ActionResult CreateAccount()
         {
+            ViewBag.Class = getList();
             return View();
         }
+
         [HttpPost]
         public async Task<ActionResult> CreateAccount(UserInfo newUser)
         {
@@ -47,7 +49,7 @@ namespace Project1640.Controllers
                     Name = newUser.Name,
                     Role = newUser.Role,
                     PasswordHash = newUser.PasswordHash,
-                 
+
                 };
                 //validate email
                 if (user.Email == null)
@@ -78,6 +80,20 @@ namespace Project1640.Controllers
                 return RedirectToAction("Index");
             }
         }
+        private dynamic getList()
+        {
+            using (var abc = new EF.CMSContext()) //create a new value abc is an object of CMSContext
+            {
+                var stx = abc.Department.Select(p => new SelectListItem //Select anonymous
+                {
+                    Text = p.Name,
+                    Value = p.Id.ToString()
+                }).ToList();
+
+                return stx;
+            }
+        }
+
         [HttpGet]
         public ActionResult EditAccount(string id)
         {
@@ -139,7 +155,28 @@ namespace Project1640.Controllers
 
         public ActionResult CreateDepartment()
         {
+            ViewBag.Class = getList();
             return View();
+        }
+
+        private List<Department> Convert(EF.CMSContext database, string formatIds)
+        {
+            if (formatIds != null)
+            {
+                var abc = formatIds.Split(',').Select(id => Int32.Parse(id)).ToArray();
+                return database.Department.Where(f => abc.Contains(f.Id)).ToList();
+            }
+            else
+            {
+                return database.Department.Where(c => c.Id == 0).ToList();
+            }
+        }
+        private void SetViewBag()
+        {
+            using (var bwCtx = new EF.CMSContext())// use a variable named bwCtx of CMSContext 
+            {
+                ViewBag.Formats = bwCtx.Department.ToList(); //select all data from Courses in DbSet
+            }
         }
 
         [HttpPost]
