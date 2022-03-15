@@ -15,14 +15,33 @@ namespace Project1640.Controllers
     public class StaffController : Controller
     {
 
-        public ActionResult Index()
+        public ActionResult Index(int id = 1)
         {
-            using (var ct = new EF.CMSContext())
+            using (var dbCT = new EF.CMSContext())
             {
-                var categories = ct.Idea
-                                        .OrderBy(c => c.Id)
-                                        .ToList();
-                return View(categories);
+                int Count = dbCT.Idea.Count();
+                if (Count <= 5)
+                {
+                    TempData["PageNo"] = 1;
+                    TempData["PageMax"] = 1;
+                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                    return View(ideas);
+                }
+                else
+                {
+                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                    if (Count % 5 != 0)
+                    { 
+                        TempData["PageMax"] = (Count / 5) + 1;
+                    }
+                    else
+                    {
+                        TempData["PageMax"] = (Count / 5);
+                    }
+                    TempData["PageNo"] = id;
+                    return View(ideas);
+                }
+
             }
         }
 
@@ -278,20 +297,12 @@ namespace Project1640.Controllers
                 {
                     TempData["LikeStatus"] = "Like";
                 }
-                var _idea = dbCT.Idea.FirstOrDefault(c => c.Id == IdeaID);
-                _idea.Rank = like - dislike;
-                dbCT.SaveChanges();
+                using (var database = new EF.CMSContext())
+                {
+                    var _idea = database.Idea.FirstOrDefault(c => c.Id == IdeaID);
+                    _idea.Rank = like - dislike;
+                }
             }
-        }
-
-        public ActionResult TopView()
-        {
-            using (var dbCT = new EF.CMSContext())
-            {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
-                return RedirectToAction("ViewIdea", new { id = _idea.Id });
-            }
-
         }   
 
         public ActionResult TopLike()
@@ -324,6 +335,6 @@ namespace Project1640.Controllers
                 
             }
 
-        }
+        }     
     }
 }
