@@ -3,6 +3,7 @@
 @{
     Layout = "~/Views/Staff/_LayoutStaff.cshtml";
     TempData["IdeaId"] = @Model.Id;
+    string Anonymously = "Anonymously";
 }
 
 <!DOCTYPE html>
@@ -15,7 +16,9 @@
 <body>
     <div>
         <h4> @Html.DisplayFor(model => model.Title)</h4>
+        @Html.DisplayFor(model => model.Views) Views
         @{Html.RenderAction("ShowCategory", "Staff");}
+
         <hr />
         <dl class="dl-horizontal">
 
@@ -26,7 +29,16 @@
 
             <dt>
                 @Html.DisplayNameFor(model => model.Date) : @Html.DisplayFor(model => model.Date) <br />
-                By User: @Html.DisplayFor(model => model.UserId)
+                By User: @{
+                    if (Model.Status == true)
+                    {
+                        @Html.DisplayFor(model => model.UserId)
+                    }
+                    else
+                    {
+                        @Html.DisplayName(Anonymously)
+                    }
+                }
             </dt>
         </dl>
     </div>

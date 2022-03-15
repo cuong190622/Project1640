@@ -14,6 +14,7 @@ namespace Project1640.Controllers
 {
     public class StaffController : Controller
     {
+
         public ActionResult Index()
         {
             using (var ct = new EF.CMSContext())
@@ -123,10 +124,10 @@ namespace Project1640.Controllers
                 var context = new CMSContext();
                 using (var Database = new EF.CMSContext())
                 {
-                    a.Status = true;
+                    a.Status = !a.Status;
                     a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
                     
-                    a.UserId = "bdb22222-180f-4f4d-a179-127d681c48b0";
+                    a.UserId = "8c495b46-2b8b-4e41-a183-aac1b9e250bf";
                     Database.Idea.Add(a);
                     Database.SaveChanges();
                     SaveFile(new FileUpload(), postedFile, a.Id);
@@ -149,7 +150,7 @@ namespace Project1640.Controllers
                 {
                     a.Name = postedFile.FileName;
                     a.Url = _path;
-                    a.UserId = "bdb22222-180f-4f4d-a179-127d681c48b0";
+                    a.UserId = "8c495b46-2b8b-4e41-a183-aac1b9e250bf";
                     a.IdeaId = IdeaId;
                     Database.File.Add(a);
                     Database.SaveChanges();
@@ -210,8 +211,9 @@ namespace Project1640.Controllers
             using (var database = new EF.CMSContext())
             {
                 a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-                a.UserId = "bdb22222-180f-4f4d-a179-127d681c48b0";
+                a.UserId = "8c495b46-2b8b-4e41-a183-aac1b9e250bf";
                 a.IdeaId = id;
+                a.Status = !a.Status;
                 database.Comment.Add(a);
                 database.SaveChanges();
                 TempData["IdeaId"] = id;
@@ -233,7 +235,7 @@ namespace Project1640.Controllers
         [HttpGet]
         public ActionResult Like()
         {
-            Getlike(Int32.Parse(TempData["IdeaId"].ToString()), "bdb22222-180f-4f4d-a179-127d681c48b0");
+            Getlike(Int32.Parse(TempData["IdeaId"].ToString()), "8c495b46-2b8b-4e41-a183-aac1b9e250bf");
             return View();
         }
 
@@ -245,14 +247,14 @@ namespace Project1640.Controllers
                 int react = database.React.Where(c => c.IdeaId == a.IdeaId).Count();
                 if(react != 0)
                 {
-                    var listLiked = database.React.Where(c => c.IdeaId == a.IdeaId).Where(c => c.UserId == "bdb22222-180f-4f4d-a179-127d681c48b0").ToList();
+                    var listLiked = database.React.Where(c => c.IdeaId == a.IdeaId).Where(c => c.UserId == "8c495b46-2b8b-4e41-a183-aac1b9e250bf").ToList();
                     database.React.RemoveRange(listLiked);
                 }
                 if(like == "Up")
                 {
                     a.React_Type = true;
                 }else a.React_Type = false;
-                a.UserId = "bdb22222-180f-4f4d-a179-127d681c48b0";
+                a.UserId = "8c495b46-2b8b-4e41-a183-aac1b9e250bf";
                 database.React.Add(a);
                 database.SaveChanges();
                 TempData["IdeaId"] = a.IdeaId;
@@ -276,13 +278,52 @@ namespace Project1640.Controllers
                 {
                     TempData["LikeStatus"] = "Like";
                 }
-                using (var database = new EF.CMSContext())
-                {
-                    var _idea = database.Idea.FirstOrDefault(c => c.Id == IdeaID);
-                    _idea.Rank = like - dislike;
-                }
+                var _idea = dbCT.Idea.FirstOrDefault(c => c.Id == IdeaID);
+                _idea.Rank = like - dislike;
+                dbCT.SaveChanges();
             }
+        }
+
+        public ActionResult TopView()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
+                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+            }
+
         }   
 
+        public ActionResult TopLike()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
+                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+            }
+
+        }
+
+        public ActionResult LastIdea()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+            }
+
+        }
+
+        public ActionResult LastComment()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                TempData["LastComment"] = _comment.Id;
+                return RedirectToAction("ViewIdea", new { id = _comment.IdeaId });
+                
+            }
+
+        }
     }
 }
