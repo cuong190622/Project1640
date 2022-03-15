@@ -22,6 +22,8 @@ namespace Project1640.Controllers
                 int Count = dbCT.Idea.Count();
                 if (Count <= 5)
                 {
+                    TempData["PageNo"] = 1;
+                    TempData["PageMax"] = 1;
                     var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
                     return View(ideas);
                 }
