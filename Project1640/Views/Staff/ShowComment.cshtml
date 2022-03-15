@@ -4,14 +4,29 @@
     <h4>Comment</h4>
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)  By User: @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-        </tr>
+        if (TempData["LastComment"] != null && TempData["LastComment"].ToString() ==  item.Id.ToString())
+        {
+            <tr style="background-color: antiquewhite;">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)  By User: @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+            </tr>
+         }
+        else
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)  By User: @Html.DisplayFor(modelItem => item.UserId)
+                </td>
+            </tr>
+        }
+
     }
 
 </table>

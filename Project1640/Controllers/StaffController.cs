@@ -291,7 +291,7 @@ namespace Project1640.Controllers
                 return RedirectToAction("ViewIdea", new { id = _idea.Id });
             }
 
-        }
+        }   
 
         public ActionResult TopLike()
         {
@@ -299,6 +299,28 @@ namespace Project1640.Controllers
             {
                 var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
                 return RedirectToAction("ViewIdea", new { id = _idea.Id });
+            }
+
+        }
+
+        public ActionResult LastIdea()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+            }
+
+        }
+
+        public ActionResult LastComment()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                TempData["LastComment"] = _comment.Id;
+                return RedirectToAction("ViewIdea", new { id = _comment.IdeaId });
+                
             }
 
         }
