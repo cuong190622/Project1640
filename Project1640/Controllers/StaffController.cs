@@ -215,7 +215,7 @@ namespace Project1640.Controllers
                 a.IdeaId = id;
                 a.Status = !a.Status;
                 database.Comment.Add(a);
-                database.SaveChanges();
+                database.SaveChanges(); 
                 TempData["IdeaId"] = id;
             }
             return RedirectToAction("ViewIdea", new { id = id });
