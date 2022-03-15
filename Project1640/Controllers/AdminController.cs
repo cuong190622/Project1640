@@ -153,12 +153,6 @@ namespace Project1640.Controllers
             }
         }
 
-        public ActionResult CreateDepartment()
-        {
-            ViewBag.Class = getList();
-            return View();
-        }
-
         private List<Department> Convert(EF.CMSContext database, string formatIds)
         {
             if (formatIds != null)
@@ -179,6 +173,41 @@ namespace Project1640.Controllers
             }
         }
 
+
+        public ActionResult ShowDepartment(int id)
+        {
+
+            using (var dpm = new EF.CMSContext())
+            {
+                var _department = dpm.Department
+                                        .Where(c => c.Id == id)
+                                        .ToList();
+                return View(_department);
+            }
+        }
+
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public ActionResult IndexDepartment()
+        {
+            using (var dpm = new EF.CMSContext())
+            {
+                var department = dpm.Department
+                                        .OrderBy(c => c.Id)
+                                        .ToList();
+                return View(department);
+            }
+        }
+
+        // create Department and view
+        [HttpGet]
+        public ActionResult CreateDepartment()
+        {
+            ViewBag.Class = getList();
+            return View();
+        }
+
         [HttpPost]
         public ActionResult CreateDepartment(Department a)
         {
@@ -190,7 +219,7 @@ namespace Project1640.Controllers
 
             TempData["message"] = $"Successfully add class {a.Name} to system!";
 
-            return RedirectToAction("Index");
+            return RedirectToAction("IndexDepartment");
         }
 
 
@@ -215,8 +244,9 @@ namespace Project1640.Controllers
                 dpm.SaveChanges();
             }
 
-            return RedirectToAction("Index");
+            return RedirectToAction("IndexDepartment");
         }
+
 
         [HttpGet]
         public ActionResult DeleteDepartment(int id, Department a)
@@ -227,6 +257,7 @@ namespace Project1640.Controllers
                 return View(department);
             }
         }
+
 
         [HttpPost]
         public ActionResult DeleteDepartment(int id)
@@ -240,20 +271,10 @@ namespace Project1640.Controllers
                     dpm.SaveChanges();
                 }
                 TempData["message"] = $"Successfully delete book with Id: {Department.Id}";
-                return RedirectToAction("Index");
+                return RedirectToAction("IndexDepartment");
             }
         }
 
-        public ActionResult ShowDepartment(int id)
-        {
 
-            using (var dpm = new EF.CMSContext())
-            {
-                var _department = dpm.Department
-                                        .Where(c => c.Id == id)
-                                        .ToList();
-                return View(_department);
-            }
-        }
     }
 }
