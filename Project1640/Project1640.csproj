@@ -327,8 +327,10 @@
     <Content Include="Views\Admin\EditAccount.cshtml" />
     <Content Include="Views\Admin\CreateDepartment.cshtml" />
     <Content Include="Views\Admin\ShowDepartment.cshtml" />
-    <Content Include="Views\Manager\DeleteCategory.cshtml" />
     <Content Include="Views\Manager\EditCategory.cshtml" />
+    <Content Include="Views\Admin\IndexDepartment.cshtml" />
+    <Content Include="Views\Admin\EditDepartment.cshtml" />
+    <Content Include="Views\Admin\DeleteDepartment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
