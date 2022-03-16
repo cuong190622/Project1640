@@ -15,14 +15,33 @@ namespace Project1640.Controllers
     public class StaffController : Controller
     {
 
-        public ActionResult Index()
+        public ActionResult Index(int id = 1)
         {
-            using (var ct = new EF.CMSContext())
+            using (var dbCT = new EF.CMSContext())
             {
-                var categories = ct.Idea
-                                        .OrderBy(c => c.Id)
-                                        .ToList();
-                return View(categories);
+                int Count = dbCT.Idea.Count();
+                if (Count <= 5)
+                {
+                    TempData["PageNo"] = 1;
+                    TempData["PageMax"] = 1;
+                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                    return View(ideas);
+                }
+                else
+                {
+                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                    if (Count % 5 != 0)
+                    { 
+                        TempData["PageMax"] = (Count / 5) + 1;
+                    }
+                    else
+                    {
+                        TempData["PageMax"] = (Count / 5);
+                    }
+                    TempData["PageNo"] = id;
+                    return View(ideas);
+                }
+
             }
         }
 
@@ -124,7 +143,7 @@ namespace Project1640.Controllers
                 var context = new CMSContext();
                 using (var Database = new EF.CMSContext())
                 {
-                    a.Status = true;
+                    a.Status = !a.Status;
                     a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
                     
                     a.UserId = "d1f87685-5e5d-4c51-b3e1-58ec1b44c278";
@@ -213,6 +232,7 @@ namespace Project1640.Controllers
                 a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
                 a.UserId = "d1f87685-5e5d-4c51-b3e1-58ec1b44c278";
                 a.IdeaId = id;
+                a.Status = !a.Status;
                 database.Comment.Add(a);
                 database.SaveChanges();
                 TempData["IdeaId"] = id;
@@ -285,5 +305,36 @@ namespace Project1640.Controllers
             }
         }   
 
+        public ActionResult TopLike()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
+                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+            }
+
+        }
+
+        public ActionResult LastIdea()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+            }
+
+        }
+
+        public ActionResult LastComment()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                TempData["LastComment"] = _comment.Id;
+                return RedirectToAction("ViewIdea", new { id = _comment.IdeaId });
+                
+            }
+
+        }     
     }
 }
