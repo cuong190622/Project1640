@@ -49,12 +49,14 @@ namespace Project1640.Controllers
                     Name = newUser.Name,
                     Role = newUser.Role,
                     PasswordHash = newUser.PasswordHash,
+                    DepartmentId = newUser.DepartmentId
 
                 };
                 //validate email
                 if (user.Email == null)
                 {
                     ModelState.AddModelError("Gmail", "Email cannot be null ");
+                    ViewBag.Class = getList();
                     return View(newUser);
                 }
                 else
@@ -65,15 +67,11 @@ namespace Project1640.Controllers
                     if (a == null)
                     {
                         var result = await userManager.CreateAsync(user, "Xyz@12345");
-                        if (result.Succeeded)
-                        {
-                            userManager.AddToRole(user.Id, newUser.Role);
-
-                        }
                     }
                     else
                     {
                         ModelState.AddModelError("Gmail", "This Email already exists  ");
+                        ViewBag.Class = getList();
                         return View(newUser);
                     }
                 }
@@ -183,6 +181,27 @@ namespace Project1640.Controllers
                                         .Where(c => c.Id == id)
                                         .ToList();
                 return View(_department);
+            }
+        }
+
+        public ActionResult ViewDepartment(int id)
+        {
+            using (var FAPCtx = new EF.CMSContext())
+            {
+                var _dpm = FAPCtx.Department.FirstOrDefault(c => c.Id == id);
+
+                if (_dpm != null)
+                {
+                    _dpm.Views++;
+                    FAPCtx.SaveChanges();
+                    TempData["DepartmentId"] = id;
+                    return View(_dpm);
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+
             }
         }
 
