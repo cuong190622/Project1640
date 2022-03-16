@@ -102,17 +102,18 @@ namespace Project1640.Controllers
             var userManager = new Microsoft.AspNet.Identity.UserManager<UserInfo>(new UserStore<UserInfo>(context));
             using (var bwCtx = new CMSContext())
             {
+                ViewBag.Class = getList();
                 var ct = bwCtx.Users.FirstOrDefault(t => t.Id == id);
                 //ef method to select only one or null if not found
 
                 if (ct != null) // if a book is found, show edit view
                 {
-
+                    ViewBag.Class = getList();
                     return View(ct);
                 }
                 else // if no book is found, back to index
                 {
-
+                    ViewBag.Class = getList();
                     return RedirectToAction("Index"); //redirect to action in the same controller
                 }
             }
