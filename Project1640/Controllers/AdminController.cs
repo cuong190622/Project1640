@@ -113,7 +113,7 @@ namespace Project1640.Controllers
                 }
                 else // if no book is found, back to index
                 {
-                    ViewBag.Class = getList();
+                    ViewBag.Class = getList();  
                     return RedirectToAction("Index"); //redirect to action in the same controller
                 }
             }
