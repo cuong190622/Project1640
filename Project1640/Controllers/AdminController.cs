@@ -174,19 +174,6 @@ namespace Project1640.Controllers
             }
         }
 
-
-        public ActionResult ShowDepartment(int id)
-        {
-
-            using (var dpm = new EF.CMSContext())
-            {
-                var _department = dpm.Department
-                                        .Where(c => c.Id == id)
-                                        .ToList();
-                return View(_department);
-            }
-        }
-
        
 
 
@@ -277,7 +264,5 @@ namespace Project1640.Controllers
                 return RedirectToAction("IndexDepartment");
             }
         }
-
-
     }
 }

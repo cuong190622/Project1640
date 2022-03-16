@@ -322,7 +322,6 @@ namespace Project1640.Controllers
                 var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
                 return RedirectToAction("ViewIdea", new { id = _idea.Id });
             }
-
         }
 
         public ActionResult LastComment()
@@ -331,10 +330,8 @@ namespace Project1640.Controllers
             {
                 var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
                 TempData["LastComment"] = _comment.Id;
-                return RedirectToAction("ViewIdea", new { id = _comment.IdeaId });
-                
+                return RedirectToAction("ViewIdea", new { id = _comment.IdeaId });               
             }
-
         }     
     }
 }

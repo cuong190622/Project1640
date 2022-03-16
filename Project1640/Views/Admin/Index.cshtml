@@ -14,10 +14,16 @@
 </head>
 <body>
     <p>
-         @Html.ActionLink("Top View", "TopView")---- @Html.ActionLink("Top Like", "TopLike")---- @Html.ActionLink("Latest Idea", "LastIdea")---- @Html.ActionLink("Latest Comment", "LastComment")
+        @Html.ActionLink("Top View", "TopView")---- @Html.ActionLink("Top Like", "TopLike")---- @Html.ActionLink("Latest Idea", "LastIdea")---- @Html.ActionLink("Latest Comment", "LastComment")
     </p>
     <p>
         @Html.ActionLink("Create New Account", "CreateAccount")
+    </p>
+    <p>
+        @Html.ActionLink("Create Department", "CreateDepartment")
+    </p>
+    <p>
+        @Html.ActionLink("View Department", "IndexDepartment")
     </p>
     <table class="table table-hover">
         <thead class="thead-dark">
@@ -36,21 +42,21 @@
         <tbody>
             @foreach (var c in Model)
             {
-            <tr>
-                <td>@Html.DisplayFor(model => c.Role)</td>
-                <td>@Html.DisplayFor(model => c.Name)</td>
-                <td>@Html.DisplayFor(model => c.Age)</td>
-                <td>@Html.DisplayFor(model => c.WorkingPlace)</td>
-                <td>@Html.DisplayFor(model => c.DepartmentId)</td>
-                <td>
-                    <a type="button" class="btn btn-success btn-sm"
-                       href="@Url.Action("EditAccount", new {id = c.Id})">Edit</a>
-                </td>
-                <td>
-                    <a type="button" class="btn btn-danger btn-sm"
-                       href="@Url.Action("DeleteAccount", new {id = c.Id })">Delete</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>@Html.DisplayFor(model => c.Role)</td>
+                    <td>@Html.DisplayFor(model => c.Name)</td>
+                    <td>@Html.DisplayFor(model => c.Age)</td>
+                    <td>@Html.DisplayFor(model => c.WorkingPlace)</td>
+                    <td>@Html.DisplayFor(model => c.DepartmentId)</td>
+                    <td>
+                        <a type="button" class="btn btn-success btn-sm"
+                           href="@Url.Action("EditAccount", new {id = c.Id})">Edit</a>
+                    </td>
+                    <td>
+                        <a type="button" class="btn btn-danger btn-sm"
+                           href="@Url.Action("DeleteAccount", new {id = c.Id })">Delete</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
