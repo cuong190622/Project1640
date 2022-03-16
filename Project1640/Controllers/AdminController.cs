@@ -46,6 +46,8 @@ namespace Project1640.Controllers
                     UserName = newUser.Email.Split('@')[0],
                     Email = newUser.Email,
                     Age = newUser.Age,
+                    WorkingPlace = newUser.WorkingPlace,
+                    DoB = newUser.DoB,
                     Name = newUser.Name,
                     Role = newUser.Role,
                     PasswordHash = newUser.PasswordHash,
@@ -184,26 +186,7 @@ namespace Project1640.Controllers
             }
         }
 
-        public ActionResult ViewDepartment(int id)
-        {
-            using (var FAPCtx = new EF.CMSContext())
-            {
-                var _dpm = FAPCtx.Department.FirstOrDefault(c => c.Id == id);
-
-                if (_dpm != null)
-                {
-                    _dpm.Views++;
-                    FAPCtx.SaveChanges();
-                    TempData["DepartmentId"] = id;
-                    return View(_dpm);
-                }
-                else
-                {
-                    return RedirectToAction("Index");
-                }
-
-            }
-        }
+       
 
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

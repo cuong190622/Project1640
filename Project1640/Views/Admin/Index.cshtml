@@ -14,6 +14,9 @@
 </head>
 <body>
     <p>
+         @Html.ActionLink("Top View", "TopView")---- @Html.ActionLink("Top Like", "TopLike")---- @Html.ActionLink("Latest Idea", "LastIdea")---- @Html.ActionLink("Latest Comment", "LastComment")
+    </p>
+    <p>
         @Html.ActionLink("Create New Account", "CreateAccount")
     </p>
     <table class="table table-hover">
@@ -33,20 +36,20 @@
         <tbody>
             @foreach (var c in Model)
             {
-            <tr>
-                <td>@Html.DisplayFor(model => c.Role)</td>
-                <td>@Html.DisplayFor(model => c.Name)</td>
-                <td>@Html.DisplayFor(model => c.Age)</td>
-                <td>@Html.DisplayFor(model => c.WorkingPlace)</td>
-                <td>@Html.DisplayFor(model => c.DoB)</td>
-                <td>@Html.DisplayFor(model => c.PasswordHash)</td>
-                <td>@Html.DisplayFor(model => c.Department)</td>
+                <tr>
+                    <td>@Html.DisplayFor(model => c.Role)</td>
+                    <td>@Html.DisplayFor(model => c.Name)</td>
+                    <td>@Html.DisplayFor(model => c.Age)</td>
+                    <td>@Html.DisplayFor(model => c.WorkingPlace)</td>
+                    <td>@Html.DisplayFor(model => c.DoB)</td>
+                    <td>@Html.DisplayFor(model => c.PasswordHash)</td>
+                    <td>@Html.DisplayFor(model => c.Department)</td>
 
-                <td>
-                    <a type="button" class="btn btn-success btn-sm"
-                       href="@Url.Action("ViewDepartment", new {id = c.Id})">View</a>
-                </td>
-            </tr>
+                    <td>
+                        <a type="button" class="btn btn-success btn-sm"
+                           href="@Url.Action("ViewDepartment", new {id = c.Id})">View</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
