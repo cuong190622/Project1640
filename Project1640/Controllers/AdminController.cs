@@ -46,15 +46,19 @@ namespace Project1640.Controllers
                     UserName = newUser.Email.Split('@')[0],
                     Email = newUser.Email,
                     Age = newUser.Age,
+                    WorkingPlace = newUser.WorkingPlace,
+                    DoB = newUser.DoB,
                     Name = newUser.Name,
                     Role = newUser.Role,
                     PasswordHash = newUser.PasswordHash,
+                    DepartmentId = newUser.DepartmentId
 
                 };
                 //validate email
                 if (user.Email == null)
                 {
                     ModelState.AddModelError("Gmail", "Email cannot be null ");
+                    ViewBag.Class = getList();
                     return View(newUser);
                 }
                 else
@@ -65,15 +69,11 @@ namespace Project1640.Controllers
                     if (a == null)
                     {
                         var result = await userManager.CreateAsync(user, "Xyz@12345");
-                        if (result.Succeeded)
-                        {
-                            userManager.AddToRole(user.Id, newUser.Role);
-
-                        }
                     }
                     else
                     {
                         ModelState.AddModelError("Gmail", "This Email already exists  ");
+                        ViewBag.Class = getList();
                         return View(newUser);
                     }
                 }
@@ -102,17 +102,18 @@ namespace Project1640.Controllers
             var userManager = new Microsoft.AspNet.Identity.UserManager<UserInfo>(new UserStore<UserInfo>(context));
             using (var bwCtx = new CMSContext())
             {
+                ViewBag.Class = getList();
                 var ct = bwCtx.Users.FirstOrDefault(t => t.Id == id);
                 //ef method to select only one or null if not found
 
                 if (ct != null) // if a book is found, show edit view
                 {
-
+                    ViewBag.Class = getList();
                     return View(ct);
                 }
                 else // if no book is found, back to index
                 {
-
+                    ViewBag.Class = getList();  
                     return RedirectToAction("Index"); //redirect to action in the same controller
                 }
             }
@@ -173,18 +174,7 @@ namespace Project1640.Controllers
             }
         }
 
-
-        public ActionResult ShowDepartment(int id)
-        {
-
-            using (var dpm = new EF.CMSContext())
-            {
-                var _department = dpm.Department
-                                        .Where(c => c.Id == id)
-                                        .ToList();
-                return View(_department);
-            }
-        }
+       
 
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,7 +264,5 @@ namespace Project1640.Controllers
                 return RedirectToAction("IndexDepartment");
             }
         }
-
-
     }
 }
