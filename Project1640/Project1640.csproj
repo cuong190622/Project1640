@@ -335,6 +335,8 @@
     <Content Include="Views\Admin\EditDepartment.cshtml" />
     <Content Include="Views\Admin\DeleteDepartment.cshtml" />
     <Content Include="Views\Login\LogIn.cshtml" />
+    <Content Include="Views\Admin\Indexx.cshtml" />
+    <Content Include="Views\Admin\ViewIdea.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />

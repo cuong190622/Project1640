@@ -230,7 +230,7 @@ namespace Project1640.Controllers
             using (var database = new EF.CMSContext())
             {
                 a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-                a.UserId = "d1f87685-5e5d-4c51-b3e1-58ec1b44c278";
+                a.UserId = "b879a751-ae7b-4b2b-becf-49fcf0fe92a8";
                 a.IdeaId = id;
                 a.Status = !a.Status;
                 database.Comment.Add(a);

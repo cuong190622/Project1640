@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Project1640.Models.Idea>
+
+@{
+    Layout = "~/Views/Admin/_LayoutAdmin.cshtml";
+    int No = Int16.Parse(TempData["PageNo"].ToString());
+    int first = (No - 1) * 5;
+    int last = No * 5;
+    int a = 0;
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <p>
+        @Html.ActionLink("Create New Idea", "CreateIdea") ---- @Html.ActionLink("Top View", "TopView")---- @Html.ActionLink("Top Like", "TopLike")---- @Html.ActionLink("Latest Idea", "LastIdea")---- @Html.ActionLink("Latest Comment", "LastComment")
+    </p>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.Title)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Date)</th>
+                <th scope="col">Idea</th>
+                <th scope="col">&nbsp;</th>
+                <th scope="col">&nbsp;</th>
+            </tr>
+        </thead>
+
+
+        <tbody>
+            @foreach (var c in Model)
+            {
+                if (a >= first && a < last)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => c.Title)</td>
+                        <td>@Html.DisplayFor(model => c.Date)</td>
+
+                        <td>
+                            <a type="button" class="btn btn-success btn-sm"
+                               href="@Url.Action("ViewIdea", new {id = c.Id})">View</a>
+                        </td>
+                    </tr>
+                }
+                a++;
+            }
+        </tbody>
+    </table>
+    <table class="table">
+        <tbody>
+            <tr>
+                @for (int i = 1; i <= Int16.Parse(TempData["PageMax"].ToString()); i++)
+                {
+                    if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
+                    {
+                        <td>
+                            <a href="@Url.Action("Index", new {id = i})" style="color: red;">@i</a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            <a href="@Url.Action("Index", new {id = i})">@i</a>
+                        </td>
+                    }
+                }
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
