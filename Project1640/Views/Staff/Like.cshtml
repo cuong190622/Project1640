@@ -3,7 +3,7 @@
     bool React = true;
     string LikeCount = TempData["LikeCount"].ToString();
 }
-<h4>React</h4>
+
 @using (Html.BeginForm("Like", "Staff", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
@@ -17,21 +17,40 @@
     {
         if (TempData["LikeStatus"] != null && TempData["LikeStatus"].ToString() == "Like")
         {
-            <input type="submit" value="Up" name="like" onclick="@React = true" disabled style="background-color: darkgray;" />
+            <div class="react_like">
+                <i class="fa-solid fa-thumbs-up"></i>
+                <input type="submit" value="Up" name="like" onclick="@React = true" disabled />
+            </div>
             @LikeCount
-            <input type="submit" value="Down" name="like" onclick="@React = false" />
+            <div class="react_dislike">
+                <i class="fa-solid fa-thumbs-down"></i>
+                <input type="submit" value="Down" name="like" onclick="@React = false" />
+            </div>
         }
         if (TempData["LikeStatus"] != null && TempData["LikeStatus"].ToString() == "Dislike")
         {
-            <input type="submit" value="Up" name="like" onclick="@React = true" />
+            <div class="react_like">
+                <i class="fa-solid fa-thumbs-up"></i>
+                <input type="submit" value="Up" name="like" onclick="@React = true" />
+            </div>
             @LikeCount
-            <input type="submit" value="Down" name="like" onclick="@React = false" disabled style="background-color: darkgray;" />
+            <div class="react_dislike">
+                <i class="fa-solid fa-thumbs-down"></i>
+                <input type="submit" value="Down" name="like" onclick=" = false" disabled />
+            </div>
         }
-        if(TempData["LikeStatus"] == null)
+        if (TempData["LikeStatus"] == null)
         {
-            <input type="submit" value="Up" name="like" onclick="@React = true" />
+
+            <div class="react_like">
+                <i class="fa-solid fa-thumbs-up"></i>
+                <input type="submit" value="Up" name="like" onclick="@React = true" />
+            </div>
             @LikeCount
-            <input type="submit" value="Down" name="like" onclick="@React = false" />
+            <div class="react_dislike">
+                <i class="fa-solid fa-thumbs-down"></i>
+                <input type="submit" value="Down" name="like" onclick="@React = false" />
+            </div>
         }
     }
 
