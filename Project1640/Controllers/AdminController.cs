@@ -336,5 +336,23 @@ namespace Project1640.Controllers
                 return RedirectToAction("ViewIdea", new { id = _comment.IdeaId });
             }
         }
+
+        public ActionResult TopViewIdea()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
+                return RedirectToAction("ViewIdea", new { id = _idea.Id});
+            }
+        }
+
+        public ActionResult Top5Idea()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _ideas = dbCT.Idea.OrderByDescending(c => c.Rank).Take(5).ToList();
+                return View(_ideas);
+            }
+        }
     }
 }
