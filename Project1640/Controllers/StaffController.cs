@@ -131,7 +131,7 @@ namespace Project1640.Controllers
 
 
         [HttpPost]
-        public ActionResult CreateIdea(Idea a, FormCollection f, HttpPostedFileBase postedFile)
+        public async Task<ActionResult> CreateIdea(Idea a, FormCollection f, HttpPostedFileBase postedFile)
         {
             if (!ModelState.IsValid)//if user input wrong
             {
@@ -147,11 +147,10 @@ namespace Project1640.Controllers
                 {
                     a.Status = !a.Status;
                     a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-                    
-                    a.UserId = "d1f87685-5e5d-4c51-b3e1-58ec1b44c278";
+                    a.UserId = await FindIdUserByEmail(TempData["UserEmail"].ToString());
                     Database.Idea.Add(a);
                     Database.SaveChanges();
-                    SaveFile(new FileUpload(), postedFile, a.Id);
+                    await SaveFile( new FileUpload(), postedFile, a.Id);
 
                 }
             }
@@ -159,7 +158,7 @@ namespace Project1640.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public void SaveFile(FileUpload a, HttpPostedFileBase postedFile, int IdeaId)
+        public async Task SaveFile(FileUpload a, HttpPostedFileBase postedFile, int IdeaId)
         {
             if (postedFile != null)
             {
@@ -171,7 +170,7 @@ namespace Project1640.Controllers
                 {
                     a.Name = postedFile.FileName;
                     a.Url = _path;
-                    a.UserId = "d1f87685-5e5d-4c51-b3e1-58ec1b44c278";
+                    a.UserId = await FindIdUserByEmail(TempData["UserEmail"].ToString());
                     a.IdeaId = IdeaId;
                     Database.File.Add(a);
                     Database.SaveChanges();
@@ -180,17 +179,17 @@ namespace Project1640.Controllers
 
         }
 
-        public ActionResult ViewIdea(int id)
+        public ActionResult ViewIdea(int IdeaId)
         {
             using (var FAPCtx = new EF.CMSContext())
             {
-                var _idea = FAPCtx.Idea.FirstOrDefault(c => c.Id == id);
+                var _idea = FAPCtx.Idea.FirstOrDefault(c => c.Id == IdeaId);
 
                 if (_idea != null)
                 {
                     _idea.Views++;
                     FAPCtx.SaveChanges();
-                    TempData["IdeaId"] = id;
+                    TempData["IdeaId"] = IdeaId;
                     return View(_idea);
                 }
                 else
@@ -201,13 +200,13 @@ namespace Project1640.Controllers
             }
         }
 
-        public ActionResult ShowComment(int id)
+        public ActionResult ShowComment(int IdeaId)
         {
 
                 using (var dbCT = new EF.CMSContext())
                 {
                     var _comment = dbCT.Comment
-                                            .Where(c => c.IdeaId == id)
+                                            .Where(c => c.IdeaId == IdeaId)
                                             .ToList();
                     if (_comment.Count != 0)
                     {
@@ -221,78 +220,93 @@ namespace Project1640.Controllers
                 }
         }
         [HttpGet]
-        public ActionResult CreateComment()
+        public ActionResult CreateComment(int IdeaId)
         {
+            TempData["IdeaId"] = IdeaId;
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateComment(Comment a, int id)
+        public async Task<ActionResult> CreateComment(Comment a)
         {
             using (var database = new EF.CMSContext())
             {
                 a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-                a.UserId = "b879a751-ae7b-4b2b-becf-49fcf0fe92a8";
-                a.IdeaId = id;
+                a.UserId = await FindIdUserByEmail(TempData["UserEmail"].ToString());
                 a.Status = !a.Status;
                 database.Comment.Add(a);
                 database.SaveChanges();
                 await SendEmail("123456789awdstk.mk@gmail.com", a.Content);
-                TempData["IdeaId"] = id;
+                TempData["IdeaId"] = a.IdeaId;
             }
-            return RedirectToAction("ViewIdea", new { id = id });
+            return RedirectToAction("ViewIdea", new { IdeaId = a.IdeaId });
         }
-        public ActionResult ShowCategory(int id)
+        public ActionResult ShowCategory(int CategoryId)
         {
 
             using (var dbCT = new EF.CMSContext())
             {
                 var _category = dbCT.Category
-                                        .Where(c => c.Id == id)
+                                        .Where(c => c.Id == CategoryId)
                                         .ToList();
              return View(_category);
             }
         }
+        public ActionResult ShowUser(string UserId)
+        {
 
-        [HttpGet]
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _category = dbCT.Users
+                                        .Where(c => c.Id == UserId)
+                                        .ToList();
+                return View(_category);
+            }
+        }
+
+        [HttpGet]       
         public ActionResult Like()
         {
-            Getlike(Int32.Parse(TempData["IdeaId"].ToString()), "d1f87685-5e5d-4c51-b3e1-58ec1b44c278");
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);           
+            Getlike(Int32.Parse(TempData["IdeaId"].ToString()), TempData["UserId"].ToString());
             return View();
         }
 
         [HttpPost]
-        public ActionResult Like(React a, string like)
+        public async Task<ActionResult> Like(React a, string like)
         {            
             using (var database = new EF.CMSContext())
             {
                 int react = database.React.Where(c => c.IdeaId == a.IdeaId).Count();
                 if(react != 0)
                 {
-                    var listLiked = database.React.Where(c => c.IdeaId == a.IdeaId).Where(c => c.UserId == "8c495b46-2b8b-4e41-a183-aac1b9e250bf");
+                    string u = await FindIdUserByEmail(TempData["UserEmail"].ToString());
+                    var listLiked = database.React.Where(c => c.IdeaId == a.IdeaId).Where(c => c.UserId == u).ToList();
                     database.React.RemoveRange(listLiked);
                 }
                 if(like == "Up")
                 {
                     a.React_Type = true;
                 }else a.React_Type = false;
-                a.UserId = "d1f87685-5e5d-4c51-b3e1-58ec1b44c278";
+                a.UserId = await FindIdUserByEmail(TempData["UserEmail"].ToString());
                 database.React.Add(a);
                 database.SaveChanges();
                 TempData["IdeaId"] = a.IdeaId;
             }
-            return RedirectToAction("ViewIdea", new { id = a.IdeaId });
+            return RedirectToAction("ViewIdea", new { IdeaId = a.IdeaId });
         }
         
-        public void Getlike(int IdeaID, string UserId)
+        public void Getlike(int IdeaID, string User)
         {
             using (var dbCT = new EF.CMSContext())
             {
                 int like = dbCT.React.Where(c => c.IdeaId == IdeaID).Where(c => c.React_Type == true).Count();
                 int dislike = dbCT.React.Where(c => c.IdeaId == IdeaID).Where(c => c.React_Type == false).Count();
                 TempData["LikeCount"] = like - dislike;
-                int Userlike = dbCT.React.Where(c => c.IdeaId == IdeaID).Where(c => c.React_Type == true).Where(c => c.UserId == UserId).Count();
-                int Userdislike = dbCT.React.Where(c => c.IdeaId == IdeaID).Where(c => c.React_Type == false).Where(c => c.UserId == UserId).Count();
+                int Userlike = dbCT.React.Where(c => c.IdeaId == IdeaID).Where(c => c.React_Type == true).Where(c => c.UserId == User).Count();
+                int Userdislike = dbCT.React.Where(c => c.IdeaId == IdeaID).Where(c => c.React_Type == false).Where(c => c.UserId == User).Count();
                 if(Userdislike != 0)
                 {
                     TempData["LikeStatus"] = "Dislike";
@@ -304,6 +318,7 @@ namespace Project1640.Controllers
                 {
                     var _idea = database.Idea.FirstOrDefault(c => c.Id == IdeaID);
                     _idea.Rank = like - dislike;
+                    database.SaveChanges();
                 }
             }
         }
@@ -313,7 +328,7 @@ namespace Project1640.Controllers
             using (var dbCT = new EF.CMSContext())
             {
                 var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
-                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
             }
 
         }
@@ -322,7 +337,7 @@ namespace Project1640.Controllers
             using (var dbCT = new EF.CMSContext())
             {
                 var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
-                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
             }
 
         }
@@ -332,7 +347,7 @@ namespace Project1640.Controllers
             using (var dbCT = new EF.CMSContext())
             {
                 var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
-                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
             }
         }
 
@@ -342,7 +357,7 @@ namespace Project1640.Controllers
             {
                 var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
                 TempData["LastComment"] = _comment.Id;
-                return RedirectToAction("ViewIdea", new { id = _comment.IdeaId });               
+                return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });               
             }
 
         }
@@ -368,6 +383,27 @@ namespace Project1640.Controllers
                 smtp.Port = 587;
                 smtp.EnableSsl = true;
                 await smtp.SendMailAsync(message);
+            }
+        }
+        public async Task<string> FindIdUserByEmail(string email)
+        {
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+            var user = await manager.FindByEmailAsync(email);
+            return user.Id.ToString();
+
+        }
+
+        public ActionResult ShowFile(int IdeaId)
+        {
+
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _files = dbCT.File
+                                        .Where(c => c.IdeaId == IdeaId)
+                                        .ToList();
+                return View(_files);
             }
         }
     }

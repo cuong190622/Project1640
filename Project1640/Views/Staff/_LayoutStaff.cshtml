@@ -1,5 +1,21 @@
 ﻿<!DOCTYPE html>
+@{
+    var a = "ab";
+    if (TempData["UserEmail"] != null)
+    {
+        a = TempData["UserEmail"].ToString();
+    }
 
+    TempData["UserEmail"] = a;
+
+    var b = "ab";
+    if (TempData["UserId"] != null)
+    {
+        b = TempData["UserId"].ToString();
+    }
+
+    TempData["UserId"] = b;
+}
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -46,8 +62,8 @@
                         <a class="dropdown-item" href="@Url.Action( "LastComment", "Staff" )">Latest Comment</a>
                     </li>
                 </ul>
-                <p class="nav-item" style="padding-top: 2% ; padding-right: 1%;">Admin(hiện tên user)</p>
-                <a class="btn btn-danger float-right" href="#" role="button">Logout button</a>
+                <p class="nav-item" style="padding-top: 2% ; padding-right: 1%;">@a.Split('@')[0] </p> 
+                <a class="btn btn-danger float-right" href="@Url.Action( "LogOut", "Login" )" role="button">Logout button</a>
                 <!-- Links -->
             </div>
             <!-- Collapsible content -->
