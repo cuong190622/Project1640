@@ -24,10 +24,10 @@
                     @Html.DisplayFor(modelItem => item.Content)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Date)  By User: @{
+                    @Html.DisplayFor(modelItem => item.Date)    By User: @{
                         if (item.Status == true)
                         {
-                            @Html.DisplayFor(modelItem => item.UserId)
+                            { Html.RenderAction("ShowUser", "Staff", new { UserId = item.UserId }); }
                         }
                         else
                         {

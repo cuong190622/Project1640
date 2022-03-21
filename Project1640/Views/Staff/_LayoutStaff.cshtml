@@ -1,5 +1,21 @@
 ﻿<!DOCTYPE html>
+@{
+    var a = "ab";
+    if (TempData["UserEmail"] != null)
+    {
+        a = TempData["UserEmail"].ToString();
+    }
 
+    TempData["UserEmail"] = a;
+
+    var b = "ab";
+    if (TempData["UserId"] != null)
+    {
+        b = TempData["UserId"].ToString();
+    }
+
+    TempData["UserId"] = b;
+}
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -13,7 +29,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary container">
 
             <!-- Navbar brand -->
-            <a class="navbar-brand" href="@Url.Action( "Index", "Staff" )">Administrator</a>
+            <a class="navbar-brand" href="@Url.Action( "Index", "Staff" )">Logo Here</a>
 
             <!-- Collapse button -->
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
@@ -26,28 +42,28 @@
 
                 <!-- Links -->
                 <ul class="navbar-nav mr-auto">
-
-
                     <!-- Dropdown -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">Manage Staff</a>
-                        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="@Url.Action( "CreateStaff", "Admin" )">Add Staff</a>
-                            <a class="dropdown-item" href="@Url.Action( "Index", "Admin" )">View All Staff</a>
-                        </div>
+                        <a class="dropdown-item" href="@Url.Action( "CreateIdea", "Staff" )">Create Idea</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                           aria-haspopup="true" aria-expanded="false">Manage Trainer</a>
-                        <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="@Url.Action( "CreateTrainer", "Admin" )">Add Trainer</a>
-                            <a class="dropdown-item" href="@Url.Action( "AMTrainer", "Admin" )">View All Trainer</a>
-                        </div>
+                        <a class="dropdown-item" href="@Url.Action( "Index", "Staff" )">Views Idea</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-item" href="@Url.Action( "TopView", "Staff" )">Top View</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-item" href="@Url.Action( "TopLike", "Staff" )">Top Like</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-item" href="@Url.Action( "LastIdea", "Staff" )">Latest Idea</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-item" href="@Url.Action( "LastComment", "Staff" )">Latest Comment</a>
                     </li>
                 </ul>
-                <p class="nav-item" style="padding-top: 2% ; padding-right: 1%;">Admin</p>
-                <a class="btn btn-danger float-right" href="@Url.Action("Logout", "Login")" role="button">Logout</a>
+                <p class="nav-item" style="padding-top: 2% ; padding-right: 1%;">@a.Split('@')[0] </p> 
+                <a class="btn btn-danger float-right" href="@Url.Action( "LogOut", "Login" )" role="button">Logout button</a>
                 <!-- Links -->
             </div>
             <!-- Collapsible content -->
