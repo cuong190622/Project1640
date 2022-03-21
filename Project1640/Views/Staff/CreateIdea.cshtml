@@ -49,16 +49,17 @@
         </div>
 
         <label>Upload File:</label>
-        <input type="file" name="postedFile" />
+        <input type="file" name="postedFile" onclick="return confirm('By click OK you accept with our Terms and Conditions!');" /> <a href="#">Terms and Conditions</a>
+        <hr />
         @Html.CheckBoxFor(model => model.Status)  Anonymously
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" onclick="return confirm('Are you sure you wish to delete?');" />
+                <input type="submit" value="Create" class="btn btn-default"  />
             </div>
         </div>
     </div>
     }
-
+    
     <div>
         @Html.ActionLink("Back to List", "Index")
     </div>
@@ -70,7 +71,7 @@
 <!--
 function confirmSubmit()
 {
-var agree=confirm("Are you sure you wish to continue?");
+    var agree = confirm("By click OK you accept with our Terms and Conditions!");
 if (agree)
  return true ;
 else
