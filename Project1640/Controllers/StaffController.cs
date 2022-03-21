@@ -303,8 +303,17 @@ namespace Project1640.Controllers
                     _idea.Rank = like - dislike;
                 }
             }
-        }   
+        }
 
+        public ActionResult TopView()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
+                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+            }
+
+        }
         public ActionResult TopLike()
         {
             using (var dbCT = new EF.CMSContext())
