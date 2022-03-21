@@ -431,5 +431,77 @@ namespace Project1640.Controllers
                 return RedirectToAction("IndexDepartment");
             }
         }
+        
+        /// ////////////////////////////////////////////////////
+     
+        public ActionResult ViewIdea(int id)
+        {
+            using (var FAPCtx = new EF.CMSContext())
+            {
+                var _idea = FAPCtx.Idea.FirstOrDefault(c => c.Id == id);
+
+                if (_idea != null)
+                {
+                    _idea.Views++;
+                    FAPCtx.SaveChanges();
+                    TempData["IdeaId"] = id;
+                    return View(_idea);
+                }
+                else
+                {
+                    return RedirectToAction("Indexx");
+                }
+
+            }
+        }
+
+        public ActionResult Indexx(int id = 1)
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                int Count = dbCT.Idea.Count();
+                if (Count <= 5)
+                {
+                    TempData["PageNo"] = 1;
+                    TempData["PageMax"] = 1;
+                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                    return View(ideas);
+                }
+                else
+                {
+                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                    if (Count % 5 != 0)
+                    {
+                        TempData["PageMax"] = (Count / 5) + 1;
+                    }
+                    else
+                    {
+                        TempData["PageMax"] = (Count / 5);
+                    }
+                    TempData["PageNo"] = id;
+                    return View(ideas);
+                }
+
+            }
+        }
+
+        public ActionResult LastIdea()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+            }
+        }
+
+        public ActionResult LastComment()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                TempData["LastComment"] = _comment.Id;
+                return RedirectToAction("ViewIdea", new { id = _comment.IdeaId });
+            }
+        }
     }
 }
