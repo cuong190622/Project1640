@@ -336,6 +336,7 @@
     <Content Include="Views\Admin\Createstaff.cshtml" />
     <Content Include="Views\Admin\CreateManager.cshtml" />
     <Content Include="Views\Admin\CreateCoor.cshtml" />
+    <Content Include="Views\Admin\Top5Idea.cshtml" />
     <Content Include="Views\Staff\ShowUser.cshtml" />
     <Content Include="Views\Staff\ShowFile.cshtml" />
   </ItemGroup>
