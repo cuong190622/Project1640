@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -225,7 +227,7 @@ namespace Project1640.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateComment(Comment a, int id)
+        public async Task<ActionResult> CreateComment(Comment a, int id)
         {
             using (var database = new EF.CMSContext())
             {
@@ -234,7 +236,8 @@ namespace Project1640.Controllers
                 a.IdeaId = id;
                 a.Status = !a.Status;
                 database.Comment.Add(a);
-                database.SaveChanges(); 
+                database.SaveChanges();
+                await SendEmail("123456789awdstk.mk@gmail.com", a.Content);
                 TempData["IdeaId"] = id;
             }
             return RedirectToAction("ViewIdea", new { id = id });
@@ -266,7 +269,7 @@ namespace Project1640.Controllers
                 int react = database.React.Where(c => c.IdeaId == a.IdeaId).Count();
                 if(react != 0)
                 {
-                    var listLiked = database.React.Where(c => c.IdeaId == a.IdeaId).Where(c => c.UserId == "8c495b46-2b8b-4e41-a183-aac1b9e250bf").ToList();
+                    var listLiked = database.React.Where(c => c.IdeaId == a.IdeaId).Where(c => c.UserId == "8c495b46-2b8b-4e41-a183-aac1b9e250bf");
                     database.React.RemoveRange(listLiked);
                 }
                 if(like == "Up")
@@ -303,8 +306,17 @@ namespace Project1640.Controllers
                     _idea.Rank = like - dislike;
                 }
             }
-        }   
+        }
 
+        public ActionResult TopView()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
+                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+            }
+
+        }
         public ActionResult TopLike()
         {
             using (var dbCT = new EF.CMSContext())
@@ -335,6 +347,30 @@ namespace Project1640.Controllers
                 
             }
 
-        }     
+        }
+        public async Task SendEmail(string email, string comment)
+        {
+            var body = "<p>Email From: {0} </p><p>Message: {1}</p> <p>Comment: {2}</p>";
+            var message = new MailMessage();
+            message.To.Add(new MailAddress(email));  
+            message.From = new MailAddress("ASPxyz123ab@gmail.com");  
+            message.Subject = "Someone comment in your post";
+            message.Body = string.Format(body, "Admin", "New user comment on your post!", comment);
+            message.IsBodyHtml = true;
+
+            using (var smtp = new SmtpClient())
+            {
+                var credential = new NetworkCredential
+                {
+                    UserName = "ASPxyz123ab@gmail.com",  
+                    Password = "123456789awds"  
+                };
+                smtp.Credentials = credential;
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                await smtp.SendMailAsync(message);
+            }
+        }
     }
 }
