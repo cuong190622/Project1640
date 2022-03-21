@@ -30,14 +30,14 @@
         </thead>
 
 
-        <tbody>
-            @foreach (var c in Model)
-            {
-                if (a>= first && a< last)
+            <tbody>
+                @foreach (var c in Model)
                 {
-                    <tr>
-                        <td>@Html.DisplayFor(model => c.Title)</td>
-                        <td>@Html.DisplayFor(model => c.Date)</td>
+                    if (a >= first && a < last)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(model => c.Title)</td>
+                            <td>@Html.DisplayFor(model => c.Date)</td>
 
                         <td>
                             <a type="button" class="btn btn-success btn-sm"
