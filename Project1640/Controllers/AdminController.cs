@@ -23,63 +23,176 @@ namespace Project1640.Controllers
             }
         }
         [HttpGet]
-        public ActionResult CreateAccount()
+        public ActionResult Createstaff()
         {
             ViewBag.Class = getList();
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateAccount(UserInfo newUser)
+        public async Task<ActionResult> Createstaff(UserInfo staff)
         {
-            CMSContext context = new CMSContext();
-            var roleManager = new Microsoft.AspNet.Identity.RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            var userManager = new Microsoft.AspNet.Identity.UserManager<UserInfo>(new UserStore<UserInfo>(context));
-            if (!ModelState.IsValid)
-            {
-                return View(newUser);
-            }
-            else
-            {
-                var user = new UserInfo
-                {
-                    UserName = newUser.Email.Split('@')[0],
-                    Email = newUser.Email,
-                    Age = newUser.Age,
-                    WorkingPlace = newUser.WorkingPlace,
-                    DoB = newUser.DoB,
-                    Name = newUser.Name,
-                    Role = newUser.Role,
-                    PasswordHash = newUser.PasswordHash,
-                    DepartmentId = newUser.DepartmentId
 
+
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+
+            var user = await manager.FindByEmailAsync(staff.Email);
+
+            if (user == null)
+            {
+                user = new UserInfo
+                {
+                    UserName = staff.Email.Split('@')[0],
+                    Email = staff.Email,
+                    Age = staff.Age,
+                    WorkingPlace = staff.WorkingPlace,
+                    DoB = staff.DoB,
+                    DepartmentId = staff.DepartmentId,
+                    Role = "staff",
+                    PasswordHash = "123qwe123",
+                    Name = staff.Name
                 };
-                //validate email
-                if (user.Email == null)
-                {
-                    ModelState.AddModelError("Gmail", "Email cannot be null ");
-                    ViewBag.Class = getList();
-                    return View(newUser);
-                }
-                else
-                {
-                    var ct = new CMSContext();
-                    var a = ct.Users.FirstOrDefault(t => t.Email == user.Email);
-                    //check email null
-                    if (a == null)
-                    {
-                        var result = await userManager.CreateAsync(user, "Xyz@12345");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("Gmail", "This Email already exists  ");
-                        ViewBag.Class = getList();
-                        return View(newUser);
-                    }
-                }
-                return RedirectToAction("Index");
+                await manager.CreateAsync(user, user.PasswordHash);
+                await CreateRole(staff.Email, "staff");
             }
+            return RedirectToAction("Index");
         }
+
+        // ########################################################
+        [HttpGet]
+        public ActionResult CreateManager()
+        {
+            ViewBag.Class = getList();
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateManager(UserInfo mana)
+        {
+
+
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+
+            var user = await manager.FindByEmailAsync(mana.Email);
+
+            if (user == null)
+            {
+                user = new UserInfo
+                {
+                    UserName = mana.Email.Split('@')[0],
+                    Email = mana.Email,
+                    Age = mana.Age,
+                    WorkingPlace = mana.WorkingPlace,
+                    DoB = mana.DoB,
+                    DepartmentId = mana.DepartmentId,
+                    Role = "manager",
+                    PasswordHash = "123qwe123",
+                    Name = mana.Name
+                };
+                await manager.CreateAsync(user, user.PasswordHash);
+                await CreateRole(mana.Email, "manager");
+            }
+            return RedirectToAction("Index");
+        }
+
+        // ###############
+        [HttpGet]
+        public ActionResult CreateCoor()
+        {
+            ViewBag.Class = getList();
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateCoor(UserInfo coor)
+        {
+
+
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+
+            var user = await manager.FindByEmailAsync(coor.Email);
+
+            if (user == null)
+            {
+                user = new UserInfo
+                {
+                    UserName = coor.Email.Split('@')[0],
+                    Email = coor.Email,
+                    Age = coor.Age,
+                    WorkingPlace = coor.WorkingPlace,
+                    DoB = coor.DoB,
+                    DepartmentId = coor.DepartmentId,
+                    Role = "coor",
+                    PasswordHash = "123qwe123",
+                    Name = coor.Name
+                };
+                await manager.CreateAsync(user, user.PasswordHash);
+                await CreateRole(coor.Email, "coor");
+            }
+            return RedirectToAction("Index");
+        }
+
+
+        // #####################################################
+
+        //CMSContext context = new CMSContext();
+        //var roleManager = new Microsoft.AspNet.Identity.RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+        //var userManager = new Microsoft.AspNet.Identity.UserManager<UserInfo>(new UserStore<UserInfo>(context));
+        //if (!ModelState.IsValid)
+        //{
+        //    return View(newUser);
+        //}
+        //else
+        //{
+        //    var user = new UserInfo
+        //    {
+        //        UserName = newUser.Email.Split('@')[0],
+        //        Email = newUser.Email,
+        //        Age = newUser.Age,
+        //        WorkingPlace = newUser.WorkingPlace,
+        //        DoB = newUser.DoB,
+        //        Name = newUser.Name,
+
+        //        PasswordHash = newUser.PasswordHash,
+        //        DepartmentId = newUser.DepartmentId
+
+        //    };
+
+        //await userManager.CreateAsync(user, PasswordHash);
+        //await CreateRole(user.Email, "admin");
+        //return Content($"Create Admin account Succsess")
+        //validate email
+        //if (user.Email == null)
+        //{
+        //    ModelState.AddModelError("Gmail", "Email cannot be null ");
+        //    ViewBag.Class = getList();
+        //    return View(newUser);
+        //}
+        //else
+        //{
+        //    var ct = new CMSContext();
+        //    var a = ct.Users.FirstOrDefault(t => t.Email == user.Email);
+        //    //check email null
+        //    if (a == null)
+        //    {
+        //        var result = await userManager.CreateAsync(user, "Xyz@12345");
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError("Gmail", "This Email already exists  ");
+        //        ViewBag.Class = getList();
+        //        return View(newUser);
+        //    }
+        //}
+        //    return RedirectToAction("Index");
+        //}
+
         private dynamic getList()
         {
             using (var abc = new EF.CMSContext()) //create a new value abc is an object of CMSContext
@@ -174,7 +287,61 @@ namespace Project1640.Controllers
             }
         }
 
-       
+
+
+
+        public async Task<ActionResult> CreateRole(string email, string role) // tạo role cho identity 
+        {
+            var context = new CMSContext();
+            var roleStore = new RoleStore<IdentityRole>(context);
+            var roleManager = new RoleManager<IdentityRole>(roleStore);
+
+            var userStore = new UserStore<UserInfo>(context);
+            var userManager = new UserManager<UserInfo>(userStore);
+
+            if (!await roleManager.RoleExistsAsync(SecurityRoles.Admin))
+            {
+                await roleManager.CreateAsync(new IdentityRole { Name = SecurityRoles.Admin });
+            }
+
+            if (!await roleManager.RoleExistsAsync(SecurityRoles.Staff))
+            {
+                await roleManager.CreateAsync(new IdentityRole { Name = SecurityRoles.Staff });
+            }
+            if (!await roleManager.RoleExistsAsync(SecurityRoles.Manager))
+            {
+
+                await roleManager.CreateAsync(new IdentityRole { Name = SecurityRoles.Manager });
+
+            }
+            if (!await roleManager.RoleExistsAsync(SecurityRoles.Coor))
+            {
+                await roleManager.CreateAsync(new IdentityRole { Name = SecurityRoles.Coor });
+
+            }
+
+            var User = await userManager.FindByEmailAsync(email); // gán role cho user (thêm role ) 
+
+            if (!await userManager.IsInRoleAsync(User.Id, SecurityRoles.Admin) && role == "admin")
+            {
+                userManager.AddToRole(User.Id, SecurityRoles.Admin);
+            }
+            if (!await userManager.IsInRoleAsync(User.Id, SecurityRoles.Staff) && role == "staff")
+            {
+                userManager.AddToRole(User.Id, SecurityRoles.Staff);
+            }
+            if (!await userManager.IsInRoleAsync(User.Id, SecurityRoles.Manager) && role == "manager")
+            {
+                userManager.AddToRole(User.Id, SecurityRoles.Manager);
+            }
+            if (!await userManager.IsInRoleAsync(User.Id, SecurityRoles.Coor) && role == "coor")
+            {
+                userManager.AddToRole(User.Id, SecurityRoles.Coor);
+            }
+            return Content("done!");
+        }
+
+
 
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
