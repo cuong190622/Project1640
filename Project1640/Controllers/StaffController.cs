@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Project1640.EF;
 using Project1640.Models;
@@ -177,6 +178,14 @@ namespace Project1640.Controllers
             }
 
         }
+
+
+
+        // download file 
+     
+
+
+
 
         public ActionResult ViewIdea(int id)
         {
