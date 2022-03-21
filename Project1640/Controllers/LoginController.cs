@@ -45,7 +45,7 @@ namespace Project1640.Controllers
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Staff))
                 {
                     
-                    return RedirectToAction("ShowCategory", "Staff");
+                    return RedirectToAction("Index", "Staff");
                 }
 
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Manager))
