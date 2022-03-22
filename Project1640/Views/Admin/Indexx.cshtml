@@ -1,12 +1,13 @@
 ﻿@model IEnumerable<Project1640.Models.Idea>
 
 @{
-    Layout = "~/Views/Admin/_LayoutAdmin.cshtml";
+    TempData["username"] = TempData["username"];
+    TempData["UserId"] = TempData["UserId"];
+    Layout = "~/Views/Staff/_LayoutStaff.cshtml";
     int No = Int16.Parse(TempData["PageNo"].ToString());
     int first = (No - 1) * 5;
     int last = No * 5;
     int a = 0;
-
 }
 
 <!DOCTYPE html>
@@ -17,9 +18,6 @@
     <title>Index</title>
 </head>
 <body>
-    <p>
-        @Html.ActionLink("Create New Idea", "CreateIdea") ---- @Html.ActionLink("Top View", "TopView")---- @Html.ActionLink("Top Like", "TopLike")---- @Html.ActionLink("Latest Idea", "LastIdea")---- @Html.ActionLink("Latest Comment", "LastComment")
-    </p>
     <table class="table table-hover">
         <thead class="thead-dark">
             <tr>
@@ -43,7 +41,7 @@
 
                         <td>
                             <a type="button" class="btn btn-success btn-sm"
-                               href="@Url.Action("ViewIdea", new {id = c.Id})">View</a>
+                               href="@Url.Action("ViewIdea", new {IdeaId = c.Id, CategoryId = c.CategoryId})">View</a>
                         </td>
                     </tr>
                 }
@@ -54,21 +52,28 @@
     <table class="table">
         <tbody>
             <tr>
+
                 @for (int i = 1; i <= Int16.Parse(TempData["PageMax"].ToString()); i++)
                 {
-                    if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
+                    if (i == 1)
                     {
-                        <td>
-                            <a href="@Url.Action("Index", new {id = i})" style="color: red;">@i</a>
-                        </td>
+                        <a href="@Url.Action("Indexx", new {id = i})"><< -</a>
                     }
-                    else
+                    if (TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) - 2) <= i
+                        && TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) + 2) >= i)
                     {
-                        <td>
-                            <a href="@Url.Action("Index", new {id = i})">@i</a>
-                        </td>
+                        if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
+                        {
+                            <a href="@Url.Action("Indexx", new {id = i})" style="color: red;">@i-</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Indexx", new {id = i})">@i-</a>
+                        }
                     }
+
                 }
+                <a href="@Url.Action("Indexx", new {id = Int16.Parse(TempData["PageMax"].ToString())})"> >></a>
             </tr>
         </tbody>
     </table>

@@ -60,6 +60,31 @@ namespace Project1640.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public ActionResult ViewAccount(string id)
+        {
+            CMSContext context = new CMSContext();
+            var roleManager = new Microsoft.AspNet.Identity.RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var userManager = new Microsoft.AspNet.Identity.UserManager<UserInfo>(new UserStore<UserInfo>(context));
+            using (var bwCtx = new CMSContext())
+            {
+                ViewBag.Class = getList();
+                var ct = bwCtx.Users.FirstOrDefault(t => t.Id == id);
+                //ef method to select only one or null if not found
+
+                if (ct != null) // if a book is found, show edit view
+                {
+                    ViewBag.Class = getList();
+                    return View(ct);
+                }
+                else // if no book is found, back to index
+                {
+                    ViewBag.Class = getList();
+                    return RedirectToAction("Index"); //redirect to action in the same controller
+                }
+            }
+        }
+
         // ########################################################
         [HttpGet]
         public ActionResult CreateManager()
@@ -193,11 +218,11 @@ namespace Project1640.Controllers
         //    return RedirectToAction("Index");
         //}
 
-        private dynamic getList()
+        private List<SelectListItem> getList()
         {
             using (var abc = new EF.CMSContext()) //create a new value abc is an object of CMSContext
             {
-                var stx = abc.Department.Select(p => new SelectListItem //Select anonymous
+                var stx = abc.Category.Select(p => new SelectListItem //Select anonymous
                 {
                     Text = p.Name,
                     Value = p.Id.ToString()
@@ -434,22 +459,22 @@ namespace Project1640.Controllers
 
         /// ////////////////////////////////////////////////////
 
-        public ActionResult ViewIdea(int Id)
+        public ActionResult ViewIdea(int IdeaId)
         {
             using (var FAPCtx = new EF.CMSContext())
             {
-                var _idea = FAPCtx.Idea.FirstOrDefault(c => c.Id == Id);
+                var _idea = FAPCtx.Idea.FirstOrDefault(c => c.Id == IdeaId);
 
                 if (_idea != null)
                 {
                     _idea.Views++;
                     FAPCtx.SaveChanges();
-                    TempData["Id"] = Id;
+                    TempData["IdeaId"] = IdeaId;
                     return View(_idea);
                 }
                 else
                 {
-                    return RedirectToAction("Indexx");
+                    return RedirectToAction("Index");
                 }
             }
         }
@@ -480,15 +505,17 @@ namespace Project1640.Controllers
                     TempData["PageNo"] = id;
                     return View(ideas);
                 }
+
             }
         }
+
 
         public ActionResult LastIdea()
         {
             using (var dbCT = new EF.CMSContext())
             {
                 var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
-                return RedirectToAction("ViewIdea", new { Id = _idea.Id });
+                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
             }
         }
 
@@ -498,19 +525,17 @@ namespace Project1640.Controllers
             {
                 var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
                 TempData["LastComment"] = _comment.Id;
-                return RedirectToAction("ViewIdea", new { Id = _comment.Id });
+                return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
             }
-
         }
 
-        public ActionResult TopViewIdea()
+        public ActionResult TopView()
         {
             using (var dbCT = new EF.CMSContext())
             {
                 var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
-                return RedirectToAction("ViewIdea", new { Id = _idea.Id });
+                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
             }
-
         }
 
         public ActionResult Top5Idea()

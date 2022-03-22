@@ -2,7 +2,9 @@
 
 @{
     Layout = "~/Views/Admin/_LayoutAdmin.cshtml";
-    TempData["IdeaId"] = @Model.Id;
+    TempData["UserEmail"] = TempData["UserEmail"];
+    TempData["UserId"] = TempData["UserId"];
+    TempData["IdeaId"] = TempData["IdeaId"];
     string Anonymously = "Anonymously";
 }
 
@@ -15,9 +17,11 @@
 </head>
 <body>
     <div>
-        <h4> @Html.DisplayFor(model => model.Title)</h4>
-        @Html.DisplayFor(model => model.Views) Views
-        @{Html.RenderAction("ShowCategory", "Staff");}
+        <h4>
+            @Html.DisplayFor(model => model.Title)
+        </h4>
+            @Html.DisplayFor(model => model.Views) Views
+            @{Html.RenderAction("ShowCategory", "Staff", new { CategoryId = Model.CategoryId });}
 
         <hr />
         <dl class="dl-horizontal">
@@ -26,16 +30,18 @@
                 @Html.DisplayFor(model => model.Content)
             </dd>
 
+            File Upload: @{Html.RenderAction("ShowFile", "Staff", new { IdeaId = Model.Id });}
 
             <dt>
                 @Html.DisplayNameFor(model => model.Date) : @Html.DisplayFor(model => model.Date) <br />
                 By User: @{
                     if (Model.Status == true)
                     {
-                        @Html.DisplayFor(model => model.UserId)
+                        { Html.RenderAction("ShowUser", "Staff", new { UserId = Model.UserId }); }
                     }
                     else
                     {
+
                         @Html.DisplayName(Anonymously)
                     }
                 }
@@ -46,9 +52,9 @@
     @{Html.RenderAction("Like", "Staff");}
 
     @{Html.RenderAction("ShowComment", "Staff");}
-    @{Html.RenderAction("CreateComment", "Staff");}
+    @{Html.RenderAction("CreateComment", "Staff", new { IdeaId = Model.Id });}
     <p>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to List", "Indexx")
     </p>
 </body>
 </html>

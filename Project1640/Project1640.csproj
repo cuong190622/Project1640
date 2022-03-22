@@ -352,6 +352,9 @@
     <Content Include="Views\Staff\ShowFile.cshtml" />
     <Content Include="Views\Manager\DeleteCategory.cshtml" />
     <Content Include="Views\Manager\Csvfile.cshtml" />
+    <Content Include="Views\Admin\Indexx.cshtml" />
+    <Content Include="Views\Admin\ViewIdea.cshtml" />
+    <Content Include="Views\Admin\ViewAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
