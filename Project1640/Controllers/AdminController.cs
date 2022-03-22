@@ -431,27 +431,26 @@ namespace Project1640.Controllers
                 return RedirectToAction("IndexDepartment");
             }
         }
-        
+
         /// ////////////////////////////////////////////////////
-     
-        public ActionResult ViewIdea(int id)
+
+        public ActionResult ViewIdea(int Id)
         {
             using (var FAPCtx = new EF.CMSContext())
             {
-                var _idea = FAPCtx.Idea.FirstOrDefault(c => c.Id == id);
+                var _idea = FAPCtx.Idea.FirstOrDefault(c => c.Id == Id);
 
                 if (_idea != null)
                 {
                     _idea.Views++;
                     FAPCtx.SaveChanges();
-                    TempData["IdeaId"] = id;
+                    TempData["Id"] = Id;
                     return View(_idea);
                 }
                 else
                 {
                     return RedirectToAction("Indexx");
                 }
-
             }
         }
 
@@ -481,7 +480,6 @@ namespace Project1640.Controllers
                     TempData["PageNo"] = id;
                     return View(ideas);
                 }
-
             }
         }
 
@@ -490,7 +488,7 @@ namespace Project1640.Controllers
             using (var dbCT = new EF.CMSContext())
             {
                 var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
-                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+                return RedirectToAction("ViewIdea", new { Id = _idea.Id });
             }
         }
 
@@ -500,8 +498,9 @@ namespace Project1640.Controllers
             {
                 var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
                 TempData["LastComment"] = _comment.Id;
-                return RedirectToAction("ViewIdea", new { id = _comment.IdeaId });
+                return RedirectToAction("ViewIdea", new { Id = _comment.Id });
             }
+
         }
 
         public ActionResult TopViewIdea()
@@ -509,15 +508,16 @@ namespace Project1640.Controllers
             using (var dbCT = new EF.CMSContext())
             {
                 var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
-                return RedirectToAction("ViewIdea", new { id = _idea.Id});
+                return RedirectToAction("ViewIdea", new { Id = _idea.Id });
             }
+
         }
 
         public ActionResult Top5Idea()
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _ideas = dbCT.Idea.OrderByDescending(c => c.Rank).Take(5).ToList();
+                var _ideas = dbCT.Idea.OrderByDescending(c => c.Views).Take(5).ToList();
                 return View(_ideas);
             }
         }
