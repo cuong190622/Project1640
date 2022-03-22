@@ -551,7 +551,7 @@ namespace Project1640.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateDepartment(SetDate a)
+        public ActionResult CreateDate(SetDate a)
         {
             using (var sd = new EF.CMSContext())
             {
