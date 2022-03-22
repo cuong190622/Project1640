@@ -167,8 +167,12 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
+    <Compile Include="EF\202203141302214_InitialCreate.cs" />
+    <Compile Include="EF\202203141302214_InitialCreate.Designer.cs">
+      <DependentUpon>202203141302214_InitialCreate.cs</DependentUpon>
+    </Compile>
     <Compile Include="EF\CMSContext.cs" />
-    <Compile Include="EF\Configuration.cs" />
+    <Compile Include="EF\Project1640\Configuration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -381,6 +385,11 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EF\202203141302214_InitialCreate.resx">
+      <DependentUpon>202203141302214_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
