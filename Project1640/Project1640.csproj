@@ -185,6 +185,7 @@
     <Compile Include="Models\Idea.cs" />
     <Compile Include="Models\React.cs" />
     <Compile Include="Models\SecurityRoles.cs" />
+    <Compile Include="Models\SetDate.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Models\UserInRole.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
