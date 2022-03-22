@@ -167,15 +167,12 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
-    <Compile Include="EF\202203141302214_InitialCreate.cs" />
-    <Compile Include="EF\202203141302214_InitialCreate.Designer.cs">
-      <DependentUpon>202203141302214_InitialCreate.cs</DependentUpon>
-    </Compile>
     <Compile Include="EF\CMSContext.cs" />
     <Compile Include="EF\Configuration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Department.cs" />
@@ -356,6 +353,8 @@
     <Content Include="Views\Admin\Indexx.cshtml" />
     <Content Include="Views\Admin\ViewIdea.cshtml" />
     <Content Include="Views\Admin\ViewAccount.cshtml" />
+    <Content Include="Views\Admin\IndexSetDate.cshtml" />
+    <Content Include="Views\Admin\CreateDate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -385,11 +384,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="EF\202203141302214_InitialCreate.resx">
-      <DependentUpon>202203141302214_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

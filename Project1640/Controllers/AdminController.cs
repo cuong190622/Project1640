@@ -531,5 +531,34 @@ namespace Project1640.Controllers
                 return View(_ideas);
             }
         }
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public ActionResult IndexSetDate()
+        {
+            using (var sd = new EF.CMSContext())
+            {
+                var setdate = sd.SetDate
+                                        .OrderBy(c => c.Id)
+                                        .ToList();
+                return View(setdate);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult CreateDate()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateDepartment(SetDate a)
+        {
+            using (var sd = new EF.CMSContext())
+            {
+                sd.SetDate.Add(a);
+                sd.SaveChanges();
+            }
+            return RedirectToAction("IndexSetDate");
+        } 
     }
 }
