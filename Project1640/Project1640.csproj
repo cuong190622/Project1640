@@ -172,7 +172,7 @@
       <DependentUpon>202203141302214_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="EF\CMSContext.cs" />
-    <Compile Include="EF\Project1640\Configuration.cs" />
+    <Compile Include="EF\Configuration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
