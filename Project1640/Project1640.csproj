@@ -359,6 +359,7 @@
     <Content Include="Views\Admin\ViewAccount.cshtml" />
     <Content Include="Views\Admin\IndexSetDate.cshtml" />
     <Content Include="Views\Admin\CreateDate.cshtml" />
+    <Content Include="Views\Admin\EditSetDate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />

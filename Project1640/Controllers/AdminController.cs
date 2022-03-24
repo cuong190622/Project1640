@@ -550,15 +550,68 @@ namespace Project1640.Controllers
             return View();
         }
 
+        //[HttpPost]
+        //public ActionResult CreateDate(SetDate a)
+        //{
+
+        //    using (var sd = new EF.CMSContext())
+        //    {
+        //        sd.SetDate.Add(a);
+        //        sd.SaveChanges();
+        //    }
+        //    return RedirectToAction("IndexSetDate");
+        //} 
+
         [HttpPost]
-        public ActionResult CreateDate(SetDate a)
+        public ActionResult CreateDate(DateTime startdate, DateTime enddate,SetDate a)
+        {
+            if(startdate < enddate)
+            {
+                using (var sd = new EF.CMSContext())
+                {
+                    sd.SetDate.Add(a);
+                    sd.SaveChanges();
+                }
+                return RedirectToAction("IndexSetDate");
+            }
+            else
+            {
+                return RedirectToAction("IndexSetDate");
+            }
+        }
+
+        public ActionResult DeleteSetDate(int id, SetDate a)
         {
             using (var sd = new EF.CMSContext())
             {
-                sd.SetDate.Add(a);
+                var setdate = sd.SetDate.FirstOrDefault(c => c.Id == id);
+                sd.SetDate.Remove(setdate);
                 sd.SaveChanges();
             }
             return RedirectToAction("IndexSetDate");
-        } 
+        }
+
+        //HTTPGET create EDITSETDATE
+        [HttpGet]
+        public ActionResult EditSetDate(int id)
+        {
+            using (var sd = new EF.CMSContext())
+            {
+                var setdate = sd.SetDate.FirstOrDefault(c => c.Id == id);
+                return View(setdate);
+            }
+        }
+
+        //HTTPOST CREATE EDITSETDATE
+        [HttpPost]
+        public ActionResult EditSetDate(int id, SetDate a)
+        {
+            using (var sd = new EF.CMSContext())
+            {
+                sd.Entry<SetDate>(a).State = System.Data.Entity.EntityState.Modified;
+                sd.SaveChanges();
+            }
+            return RedirectToAction("IndexSetDate");
+        }
     }
 }
