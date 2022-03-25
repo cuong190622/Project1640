@@ -14,6 +14,8 @@ namespace Project1640.EF
         {
 
         }
+
+        public DbSet<SetDate> SetDate { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<Idea> Idea { get; set; }
         public DbSet<Department> Department { get; set; }

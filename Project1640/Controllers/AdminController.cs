@@ -60,6 +60,16 @@ namespace Project1640.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult ViewAccount(string id)
+        {
+            using (var bwCtx = new CMSContext())
+            {
+                ViewBag.Class = getList();
+                var ct = bwCtx.Users.FirstOrDefault(t => t.Id == id);
+                return RedirectToAction("Index"); //redirect to action in the same controller
+            }
+        }
+
         // ########################################################
         [HttpGet]
         public ActionResult CreateManager()
@@ -193,11 +203,11 @@ namespace Project1640.Controllers
         //    return RedirectToAction("Index");
         //}
 
-        private dynamic getList()
+        private List<SelectListItem> getList()
         {
             using (var abc = new EF.CMSContext()) //create a new value abc is an object of CMSContext
             {
-                var stx = abc.Department.Select(p => new SelectListItem //Select anonymous
+                var stx = abc.Category.Select(p => new SelectListItem //Select anonymous
                 {
                     Text = p.Name,
                     Value = p.Id.ToString()
@@ -356,7 +366,6 @@ namespace Project1640.Controllers
                 return View(department);
             }
         }
-
         // create Department and view
         [HttpGet]
         public ActionResult CreateDepartment()
@@ -364,6 +373,7 @@ namespace Project1640.Controllers
             ViewBag.Class = getList();
             return View();
         }
+
 
         [HttpPost]
         public ActionResult CreateDepartment(Department a)
@@ -431,27 +441,26 @@ namespace Project1640.Controllers
                 return RedirectToAction("IndexDepartment");
             }
         }
-        
+
         /// ////////////////////////////////////////////////////
-     
-        public ActionResult ViewIdea(int id)
+
+        public ActionResult ViewIdea(int IdeaId)
         {
             using (var FAPCtx = new EF.CMSContext())
             {
-                var _idea = FAPCtx.Idea.FirstOrDefault(c => c.Id == id);
+                var _idea = FAPCtx.Idea.FirstOrDefault(c => c.Id == IdeaId);
 
                 if (_idea != null)
                 {
                     _idea.Views++;
                     FAPCtx.SaveChanges();
-                    TempData["IdeaId"] = id;
+                    TempData["IdeaId"] = IdeaId;
                     return View(_idea);
                 }
                 else
                 {
-                    return RedirectToAction("Indexx");
+                    return RedirectToAction("Index");
                 }
-
             }
         }
 
@@ -485,12 +494,13 @@ namespace Project1640.Controllers
             }
         }
 
+
         public ActionResult LastIdea()
         {
             using (var dbCT = new EF.CMSContext())
             {
                 var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
-                return RedirectToAction("ViewIdea", new { id = _idea.Id });
+                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
             }
         }
 
@@ -500,16 +510,16 @@ namespace Project1640.Controllers
             {
                 var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
                 TempData["LastComment"] = _comment.Id;
-                return RedirectToAction("ViewIdea", new { id = _comment.IdeaId });
+                return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
             }
         }
 
-        public ActionResult TopViewIdea()
+        public ActionResult TopView()
         {
             using (var dbCT = new EF.CMSContext())
             {
                 var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
-                return RedirectToAction("ViewIdea", new { id = _idea.Id});
+                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
             }
         }
 
@@ -517,9 +527,95 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _ideas = dbCT.Idea.OrderByDescending(c => c.Rank).Take(5).ToList();
+                var _ideas = dbCT.Idea.OrderByDescending(c => c.Views).Take(5).ToList();
                 return View(_ideas);
             }
+        }
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public ActionResult IndexSetDate()
+        {
+            using (var sd = new EF.CMSContext())
+            {
+                var setdate = sd.SetDate
+                                        .OrderBy(c => c.Id)
+                                        .ToList();
+                return View(setdate);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult CreateDate()
+        {
+            return View();
+        }
+
+        //[HttpPost]
+        //public ActionResult CreateDate(SetDate a)
+        //{
+
+        //    using (var sd = new EF.CMSContext())
+        //    {
+        //        sd.SetDate.Add(a);
+        //        sd.SaveChanges();
+        //    }
+        //    return RedirectToAction("IndexSetDate");
+        //} 
+
+        [HttpPost]
+        public ActionResult CreateDate(DateTime startdate, DateTime enddate,SetDate a)
+        {
+            if(startdate < enddate)
+            {
+                using (var sd = new EF.CMSContext())
+                {
+                    sd.SetDate.Add(a);
+                    sd.SaveChanges();
+                }
+                return RedirectToAction("IndexSetDate");
+            }
+            else
+            {
+                return RedirectToAction("IndexSetDate");
+            }
+        }
+
+        public ActionResult DeleteSetDate(int id, SetDate a)
+        {
+            using (var sd = new EF.CMSContext())
+            {
+                var setdate = sd.SetDate.FirstOrDefault(c => c.Id == id);
+                sd.SetDate.Remove(setdate);
+                sd.SaveChanges();
+            }
+            return RedirectToAction("IndexSetDate");
+        }
+
+        //HTTPGET create EDITSETDATE
+        [HttpGet]
+        public ActionResult EditSetDate(int id)
+        {
+            using (var sd = new EF.CMSContext())
+            {
+                var setdate = sd.SetDate.FirstOrDefault(c => c.Id == id);
+                return View(setdate);
+            }
+        }
+
+        //HTTPOST CREATE EDITSETDATE
+        [HttpPost]
+        public ActionResult EditSetDate(int id, SetDate a, DateTime startdate, DateTime enddate)
+        {
+            if (startdate < enddate)
+            {
+                using (var sd = new EF.CMSContext())
+                {
+                    sd.Entry<SetDate>(a).State = System.Data.Entity.EntityState.Modified;
+                    sd.SaveChanges();
+                }              
+            }
+            return RedirectToAction("IndexSetDate");
+
         }
     }
 }
