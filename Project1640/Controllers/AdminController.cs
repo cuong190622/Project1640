@@ -366,7 +366,6 @@ namespace Project1640.Controllers
                 return View(department);
             }
         }
-
         // create Department and view
         [HttpGet]
         public ActionResult CreateDepartment()
@@ -374,6 +373,7 @@ namespace Project1640.Controllers
             ViewBag.Class = getList();
             return View();
         }
+
 
         [HttpPost]
         public ActionResult CreateDepartment(Department a)

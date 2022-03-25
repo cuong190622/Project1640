@@ -173,6 +173,16 @@ namespace Project1640.EF
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
             
+            CreateTable(
+                "dbo.SetDates",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        StartDate = c.String(),
+                        EndDate = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
         }
         
         public override void Down()
@@ -205,6 +215,7 @@ namespace Project1640.EF
             DropIndex("dbo.Comments", new[] { "UserId" });
             DropIndex("dbo.Ideas", new[] { "UserInfo_Id" });
             DropIndex("dbo.Ideas", new[] { "CategoryId" });
+            DropTable("dbo.SetDates");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
