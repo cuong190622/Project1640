@@ -1,5 +1,21 @@
 ﻿<!DOCTYPE html>
+@{
+    var a = "ab";
+    if (TempData["UserEmail"] != null)
+    {
+        a = TempData["UserEmail"].ToString();
+    }
 
+    TempData["UserEmail"] = a;
+
+    var b = "ab";
+    if (TempData["UserId"] != null)
+    {
+        b = TempData["UserId"].ToString();
+    }
+
+    TempData["UserId"] = b;
+}
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -12,7 +28,8 @@
 </head>
 <body>
 
-    <div class="blog">
+            <!-- Navbar brand -->
+            <a class="navbar-brand" href="@Url.Action( "Index", "Staff" )">Logo Here</a>
 
         <div class="header">
             <div class="header_item-first">
@@ -25,28 +42,33 @@
                 <input type="text" placeholder="Search blog...">
             </div>
 
-            <div class="header_item-second">
-                <div class="dropdown">
-                    <p class="post_btn">@Html.ActionLink("Post Idea", "CreateIdea")</p>
-
-                    <span type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="font-weight: bold;">
-                        My Blog
-                    </span>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <img src="/image/logo.png" alt="" class="img-blog">
-                                <span>Đề nghị đình công để đòi tăng lương</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">
-                                <img src="/image/logo.png" alt="" class="img-blog">
-                                <span>Đề nghị đình công để đòi tăng lương</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <!-- Links -->
+                <ul class="navbar-nav mr-auto">
+                    <!-- Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-item" href="@Url.Action( "CreateIdea", "Staff" )">Create Idea</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-item" href="@Url.Action( "Index", "Staff" )">Views Idea</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-item" href="@Url.Action( "TopView", "Staff" )">Top View</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-item" href="@Url.Action( "TopLike", "Staff" )">Top Like</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-item" href="@Url.Action( "LastIdea", "Staff" )">Latest Idea</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-item" href="@Url.Action( "LastComment", "Staff" )">Latest Comment</a>
+                    </li>
+                </ul>
+                <p class="nav-item" style="padding-top: 2% ; padding-right: 1%;">@a.Split('@')[0] </p> 
+                <a class="btn btn-danger float-right" href="@Url.Action( "LogOut", "Login" )" role="button">Logout button</a>
+                <!-- Links -->
+            </div>
+            <!-- Collapsible content -->
 
                 <div class="dropdown">
                     <i class="fa-solid fa-user" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>

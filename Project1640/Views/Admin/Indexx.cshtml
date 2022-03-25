@@ -10,16 +10,17 @@
     int a = 0;
 }
 
+<!DOCTYPE html>
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" /> 
+    <meta name="viewport" content="width=device-width" />
     <title>Index</title>
 </head>
 <body>
     <table class="table table-hover">
         <thead class="thead-dark">
-            <tr>                
+            <tr>
                 <th scope="col">@Html.DisplayNameFor(model => model.Title)</th>
                 <th scope="col">@Html.DisplayNameFor(model => model.Date)</th>
                 <th scope="col">Idea</th>
@@ -28,16 +29,15 @@
             </tr>
         </thead>
 
-<div class="container_blog">
 
-            <tbody>
-                @foreach (var c in Model)
+        <tbody>
+            @foreach (var c in Model)
+            {
+                if (a >= first && a < last)
                 {
-                    if (a >= first && a < last)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(model => c.Title)</td>
-                            <td>@Html.DisplayFor(model => c.Date)</td>
+                    <tr>
+                        <td>@Html.DisplayFor(model => c.Title)</td>
+                        <td>@Html.DisplayFor(model => c.Date)</td>
 
                         <td>
                             <a type="button" class="btn btn-success btn-sm"
@@ -57,25 +57,25 @@
                 {
                     if (i == 1)
                     {
-                        <a href="@Url.Action("Index", new {id = i})"><< -</a>
+                        <a href="@Url.Action("Indexx", new {id = i})"><< -</a>
                     }
                     if (TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) - 2) <= i
                         && TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) + 2) >= i)
                     {
                         if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
                         {
-                                <a href="@Url.Action("Index", new {id = i})" style="color: red;">@i-</a>
+                            <a href="@Url.Action("Indexx", new {id = i})" style="color: red;">@i-</a>
                         }
                         else
                         {
-                                <a href="@Url.Action("Index", new {id = i})">@i-</a>
+                            <a href="@Url.Action("Indexx", new {id = i})">@i-</a>
                         }
                     }
 
                 }
-                <a href="@Url.Action("Index", new {id = Int16.Parse(TempData["PageMax"].ToString())})"> >></a>
+                <a href="@Url.Action("Indexx", new {id = Int16.Parse(TempData["PageMax"].ToString())})"> >></a>
             </tr>
-        </tbody> 
+        </tbody>
     </table>
 </body>
 </html>

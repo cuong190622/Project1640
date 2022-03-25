@@ -1,0 +1,60 @@
+﻿@model Project1640.Models.Idea
+
+@{
+    Layout = "~/Views/Admin/_LayoutAdmin.cshtml";
+    TempData["UserEmail"] = TempData["UserEmail"];
+    TempData["UserId"] = TempData["UserId"];
+    TempData["IdeaId"] = TempData["IdeaId"];
+    string Anonymously = "Anonymously";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ViewIdea</title>
+</head>
+<body>
+    <div>
+        <h4>
+            @Html.DisplayFor(model => model.Title)
+        </h4>
+            @Html.DisplayFor(model => model.Views) Views
+            @{Html.RenderAction("ShowCategory", "Staff", new { CategoryId = Model.CategoryId });}
+
+        <hr />
+        <dl class="dl-horizontal">
+
+            <dd>
+                @Html.DisplayFor(model => model.Content)
+            </dd>
+
+            File Upload: @{Html.RenderAction("ShowFile", "Staff", new { IdeaId = Model.Id });}
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Date) : @Html.DisplayFor(model => model.Date) <br />
+                By User: @{
+                    if (Model.Status == true)
+                    {
+                        { Html.RenderAction("ShowUser", "Staff", new { UserId = Model.UserId }); }
+                    }
+                    else
+                    {
+
+                        @Html.DisplayName(Anonymously)
+                    }
+                }
+            </dt>
+        </dl>
+    </div>
+
+    @{Html.RenderAction("Like", "Staff");}
+
+    @{Html.RenderAction("ShowComment", "Staff");}
+    @{Html.RenderAction("CreateComment", "Staff", new { IdeaId = Model.Id });}
+    <p>
+        @Html.ActionLink("Back to List", "Indexx")
+    </p>
+</body>
+</html>

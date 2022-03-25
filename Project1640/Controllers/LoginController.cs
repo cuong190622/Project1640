@@ -44,8 +44,9 @@ namespace Project1640.Controllers
                 }
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Staff))
                 {
-                    
-                    return RedirectToAction("ShowCategory", "Staff");
+                    TempData["UserEmail"] = user.Email;
+                    TempData["UserId"] = user.Id;
+                    return RedirectToAction("Index", "Staff");
                 }
 
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Manager))
@@ -150,7 +151,16 @@ namespace Project1640.Controllers
             }
             return RedirectToAction("LogIn");
         }
-
+        public ActionResult LogOut() // function to Logout
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie); //Signout authentication cookie  
+                ViewData.Clear(); // Clear All ViewData
+                Session.RemoveAll(); // Clear All Session
+            }
+            return RedirectToAction("LogIn", "Login"); // Redirect user to login page
+        }
 
 
     }

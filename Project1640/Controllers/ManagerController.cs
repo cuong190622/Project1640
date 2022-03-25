@@ -1,9 +1,16 @@
-﻿using Project1640.Models;
+﻿using ICSharpCode.SharpZipLib.Zip;
+using Project1640.EF;
+using Project1640.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
+
+
 
 namespace Project1640.Controllers
 {
@@ -95,5 +102,125 @@ namespace Project1640.Controllers
         }
         //-----
 
-    }
+
+        //public FileResult DownloadZipFile()
+        //{
+        //    var fileName = string.Format("{0} _Files.zip", DateTime.Today.Date.ToString("dd-MM-yyyy") + "_1");
+        //    var tempOutPutPath = Server.MapPath(Url.Content("~/FileUpload/Allfile/")) + fileName;
+
+        //    using (ICSharpCode.SharpZipLib.Zip.ZipOutputStream s = new ZipOutputStream(System.IO.File.Create(tempOutPutPath)))
+        //    {
+        //        s.SetLevel(9); // 0-9, 9 being the highest compression  
+
+        //        byte[] buffer = new byte[4096];
+
+        //        var FileList = new List<string>();
+
+        //        FileList.Add(Server.MapPath("~/FileUpload/Allfile/authors.txt"));
+        //        // FileList.Add(Server.MapPath("~/FileUpload/authors.txt"));
+
+
+        //        for (int i = 0; i < FileList.Count; i++)
+        //        {
+        //            ZipEntry entry = new ZipEntry(Path.GetFileName(FileList[i]));
+        //            entry.DateTime = DateTime.Now;
+        //            entry.IsUnicodeText = true;
+        //            s.PutNextEntry(entry);
+
+        //            using (FileStream fs = System.IO.File.OpenRead(FileList[i]))
+        //            {
+        //                int sourceBytes;
+        //                do
+        //                {
+        //                    sourceBytes = fs.Read(buffer, 0, buffer.Length);
+        //                    s.Write(buffer, 0, sourceBytes);
+        //                } while (sourceBytes > 0);
+        //            }
+        //        }
+        //        s.Finish();
+        //        s.Flush();
+        //        s.Close();
+
+        //        byte[] finalResult = System.IO.File.ReadAllBytes(tempOutPutPath);
+        //        if (System.IO.File.Exists(tempOutPutPath))
+        //            System.IO.File.Delete(tempOutPutPath);
+
+        //        if (finalResult == null || !finalResult.Any())
+        //            throw new Exception(String.Format("No Files found with Image"));
+
+        //        return File(finalResult, "application/zip", fileName);
+
+        //    }
+
+
+
+        //}
+
+        public ActionResult Download()
+        {
+            FileDownloads obj = new FileDownloads();
+
+            //////int CurrentFileID = Convert.ToInt32(FileID);
+
+            var filesCol = obj.GetFile().ToList();
+
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var ziparchive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    for (int i = 0; i < filesCol.Count; i++)
+                    {
+                        ziparchive.CreateEntryFromFile(filesCol[i].FilePath, filesCol[i].FileName);
+
+                    }
+                }
+
+                return File(memoryStream.ToArray(), "application/zip", "Attachments.zip");
+            }
+        }
+
+        
+        public ActionResult Csvfile()
+        {
+            CMSContext context = new CMSContext();
+            var lstIdeas = (from Idea in context.Idea
+                               select Idea);
+            return View(lstIdeas);
+        }
+
+
+        [HttpPost]
+        public FileResult Export()
+        {
+            CMSContext context = new CMSContext();
+            List<object> lstIdeas = (from Idea in context.Idea.ToList().Take(10)
+                                      select new[] { Idea.Id.ToString(),                                                                                                                    
+                                                            Idea.Title,
+                                                            Idea.Content
+                                }).ToList<object>();
+
+            //Insert the Column Names.
+            lstIdeas.Insert(0, new string[3] { "Idea ID", "Idea Title", "Idea content" });
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < lstIdeas.Count; i++)
+            {
+                string[] Ideas = (string[])lstIdeas[i];
+                for (int j = 0; j < Ideas.Length; j++)
+                {
+                    //Append data with separator.
+                    sb.Append(Ideas[j] + ',');
+                }
+
+                //Append new line character.
+                sb.Append("\r\n");
+
+            }
+
+            return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Grid.csv");
+        
+        }
+
+        }
+
 }

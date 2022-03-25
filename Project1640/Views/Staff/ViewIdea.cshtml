@@ -1,7 +1,10 @@
 ﻿@model Project1640.Models.Idea
 
 @{
-    TempData["IdeaId"] = @Model.Id;
+    Layout = "~/Views/Staff/_LayoutStaff.cshtml";
+    TempData["UserEmail"] = TempData["UserEmail"];
+    TempData["UserId"] = TempData["UserId"];
+    TempData["IdeaId"] = TempData["IdeaId"];
     string Anonymously = "Anonymously";
 }
 
@@ -19,6 +22,10 @@
 </head>
 
 <body>
+    <div>
+        <h4> @Html.DisplayFor(model => model.Title)</h4>
+        @Html.DisplayFor(model => model.Views) Views
+        @{Html.RenderAction("ShowCategory", "Staff", new { CategoryId = Model.CategoryId });}
 
     <div class="blog_detail">
 
@@ -31,196 +38,34 @@
                 </span>
             </div>
 
-            <div class="header_name">
-                <h1>Blog Detail</h1>
-            </div>
+            File Upload: @{Html.RenderAction("ShowFile", "Staff", new { IdeaId = Model.Id });}
 
-            <div class="header_item-second">
-                <div class="dropdown">
-                    <p class="post_btn">@Html.ActionLink("Post Idea", "CreateIdea")</p>
-                </div>
-                <div class="dropdown">
-                    <i class="fa-solid fa-user" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#">My Account</a></li>
-                        <li><a class="dropdown-item" href="#">Log Out</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="container_body">
-
-            <div class="container_blog" style="width: 100%; display: flex; justify-content: space-between;">
-
-                <div class="blog_react">
-                    <div class="blog_react-name">
-                        <h3>
-                            @{
-                                if (Model.Status == true)
-                                {
-                                    @Html.DisplayFor(model => model.UserId)
-                                }
-                                else
-                                {
-                                    @Html.DisplayName(Anonymously)
-                                }
-                            }
-                        </h3>
-                    </div>
+            <dt>
+                @Html.DisplayNameFor(model => model.Date) : @Html.DisplayFor(model => model.Date) <br />
+                By User: @{
+                    if (Model.Status == true)
+                    {
+                        { Html.RenderAction("ShowUser", "Staff", new { UserId = Model.UserId }); }
+                    }
+                    else
+                    {
+                        @Html.DisplayName(Anonymously)
+                    }
+                }
+            </dt>
+        </dl>
+    </div>
 
                     <div class="blog_react-item">
                         <div class="react_btn">
                             @{Html.RenderAction("Like", "Staff");}
                         </div>
 
-                        <div class="react_commment">
-                            <i class="fa-solid fa-comment"></i>
-                            <!--<span>11</span>-->
-                        </div>
-                    </div>
-                </div>
-
-                <div class="blog_post">
-                    <h1>@Html.DisplayFor(model => model.Title)</h1>
-
-                    <div class="blog_item-header">
-                        <div class="blog_avatar">
-                            <i class="fa-solid fa-user img-avatar" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                            <span>
-                                @{
-                                    if (Model.Status == true)
-                                    {
-                                        @Html.DisplayFor(model => model.UserId)
-                                    }
-                                    else
-                                    {
-                                        @Html.DisplayName(Anonymously)
-                                    }
-                                }
-                            </span>
-                        </div>
-
-                        <div class="blog_item-option">
-
-                            <div class="dropdown">
-                                <i class="btn btn-secondary fa-solid fa-ellipsis" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                </i>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">Copy Link</a></li>
-                                    <li><a class="dropdown-item" href="#">Download</a></li>
-                                </ul>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="blog_time">
-                        <span>
-                            @Html.DisplayFor(model => model.Views) Views
-                            <i class="fa-solid fa-circle-dot"></i>
-                            @Html.DisplayFor(model => model.Date)
-                        </span>
-                    </div>
-
-                    <div class="blog_post-content">
-                        <p>
-                            @Html.DisplayFor(model => model.Content)
-                        </p>
-                    </div>
-                </div>
-
-                <div class="empty" style="padding-left: 10px; border-left: 1px solid #6c757d">
-                    <span>@{Html.RenderAction("ShowCategory", "Staff");}</span>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="comment_layout">
-        <div class="comment_content">
-
-            <div class="comment_close">
-                <i class="fa-solid fa-x"></i>
-            </div>
-
-            <div class="comment_amount">
-                <span>Comment</span>
-            </div>
-
-            <div class="comment_write">
-                <div class="blog_avatar">
-                    <i class="fa-solid fa-user img-avatar" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                </div>
-                <!--<input type="text" placeholder="Text your comment..." class="comment_write-input">-->
-                <div class="form_input-comment">
-                    @{Html.RenderAction("CreateComment", "Staff");}
-                </div>
-            </div>
-
-            <div class="comment_list">
-                @{Html.RenderAction("ShowComment", "Staff");}
-            </div>
-        </div>
-    </div>
-
-    <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
-
-    <script>
-        var classLike = document.querySelector('.react_like')
-        var classDisLike = document.querySelector('.react_dislike')
-        var reactLike = document.querySelector('.react_like input')
-        var reatcDisLike = document.querySelector('.react_dislike input')
-        var amountLike = document.querySelector('.react_like span')
-        var amountDisLike = document.querySelector('.react_dislike span')
-        var reactCmt = document.querySelector('.react_commment')
-        var cmtLayout = document.querySelector('.comment_layout')
-        var clodeBtn = document.querySelector('.comment_close i')
-
-        reactLike.addEventListener('click', (e) => {
-            var like = document.querySelector('.blog_react-item .like')
-            var dislike = document.querySelector('.blog_react-item .dislike')
-
-            if (like) {
-                classLike.classList.remove('like')
-            } else {
-                classDisLike.classList.remove('dislike')
-                classLike.classList.add('like')
-            }
-        })
-
-        reatcDisLike.addEventListener('click', (e) => {
-            var like = document.querySelector('.blog_react-item .like')
-            var dislike = document.querySelector('.blog_react-item .dislike')
-
-            if (dislike) {
-                classDisLike.classList.remove('dislike')
-            } else {
-                classLike.classList.remove('like')
-                classDisLike.classList.add('dislike')
-            }
-        })
-
-        clodeBtn.addEventListener('click', (e) => {
-            cmtLayout.classList.remove('show')
-        })
-
-        // Giai thich
-        cmtLayout.addEventListener('click', function (e) {
-            if (e.target == e.currentTarget) {
-                cmtLayout.classList.remove('show')
-            }
-        })
-
-        reactCmt.addEventListener('click', (e) => {
-            cmtLayout.classList.add('show')
-        })
-
-    </script>
-
-    <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
+    @{Html.RenderAction("ShowComment", "Staff");}
+    @{Html.RenderAction("CreateComment", "Staff", new { IdeaId = Model.Id });}
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>
 </body>
 </html>
 

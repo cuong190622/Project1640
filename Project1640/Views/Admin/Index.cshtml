@@ -13,7 +13,6 @@
     <title>Index</title>
 </head>
 <body>
-    <h1>List Account</h1>
     <table class="table table-hover">
         <thead class="thead-dark">
             <tr>
@@ -23,7 +22,6 @@
                 <th scope="col">@Html.DisplayNameFor(model => model.WorkingPlace)</th>
                 <th scope="col">@Html.DisplayNameFor(model => model.Department)</th>
                 <th scope="col">Action</th>
-                <th scope="col"></th>
             </tr>
         </thead>
 
@@ -38,12 +36,13 @@
                     <td>@Html.DisplayFor(model => c.WorkingPlace)</td>
                     <td>@Html.DisplayFor(model => c.DepartmentId)</td>
                     <td>
+                        <a type="button" class="btn btn-dark btn-sm"
+                           href="@Url.Action("ViewAccount", new {id = c.Id })">View</a>
                         <a type="button" class="btn btn-success btn-sm"
                            href="@Url.Action("EditAccount", new {id = c.Id})">Edit</a>
-                    </td>
-                    <td>
                         <a type="button" class="btn btn-danger btn-sm"
                            href="@Url.Action("DeleteAccount", new {id = c.Id })">Delete</a>
+
                     </td>
                 </tr>
             }

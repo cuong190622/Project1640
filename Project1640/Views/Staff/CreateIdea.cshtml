@@ -1,5 +1,12 @@
 ﻿@model Project1640.Models.Idea
 
+@{
+    TempData["UserEmail"] = TempData["UserEmail"];
+    TempData["UserId"] = TempData["UserId"];
+    Layout = "~/Views/Staff/_LayoutStaff.cshtml";
+
+}
+
 <!DOCTYPE html>
 
 <html>
@@ -68,16 +75,20 @@
                         <input type="file" name="postedFile">
                     </div>
 
-                    <div>
-                        @Html.CheckBoxFor(model => model.Status)  Anonymously
-                    </div>
-
-                    <br>
-                    <button type="submit" class="btn btn-add">Submit</button>
-
-                }
+        <label>Upload File:</label>
+        <input type="file" name="postedFile" onclick="return confirm('By click OK you accept with our Terms and Conditions!');" /> <a href="#">Terms and Conditions</a>
+        <hr />
+        @Html.CheckBoxFor(model => model.Status)  Anonymously
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default"  />
             </div>
         </div>
+    </div>
+    }
+    
+    <div>
+        @Html.ActionLink("Back to List", "Index")
     </div>
 
     <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
@@ -201,3 +212,17 @@
         width: 100%;
     }
 </style>
+
+
+<script LANGUAGE="JavaScript">
+<!--
+function confirmSubmit()
+{
+    var agree = confirm("By click OK you accept with our Terms and Conditions!");
+if (agree)
+ return true ;
+else
+ return false ;
+}
+// -->
+</script>

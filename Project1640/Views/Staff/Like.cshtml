@@ -8,9 +8,6 @@
 {
     @Html.AntiForgeryToken()
     <div class="col-md-10" style="display: none;">
-        @Html.EditorFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control", Value = "3" } })
-    </div>
-    <div class="col-md-10" style="display: none;">
         @Html.EditorFor(model => model.IdeaId, new { htmlAttributes = new { @class = "form-control", Value = TempData["IdeaId"] } })
     </div>
 

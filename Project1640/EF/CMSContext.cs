@@ -14,11 +14,14 @@ namespace Project1640.EF
         {
 
         }
+
+        public DbSet<SetDate> SetDate { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<Idea> Idea { get; set; }
         public DbSet<Department> Department { get; set; }
         public DbSet<React> React { get; set; }
         public DbSet<Comment> Comment { get; set; }
         public DbSet<FileUpload> File { get; set; }
+
     }
 }

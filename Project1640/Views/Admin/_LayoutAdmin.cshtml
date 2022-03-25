@@ -1,5 +1,21 @@
 ﻿<!DOCTYPE html>
+@{
+    var a = "ab";
+    if (TempData["UserEmail"] != null)
+    {
+        a = TempData["UserEmail"].ToString();
+    }
 
+    TempData["UserEmail"] = a;
+
+    var b = "ab";
+    if (TempData["UserId"] != null)
+    {
+        b = TempData["UserId"].ToString();
+    }
+
+    TempData["UserId"] = b;
+}
 <html>
 <head>
     <meta charset="UTF-8">
@@ -13,145 +29,78 @@
     <link rel="stylesheet" href="~/Content/Site.css" />
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">Logo</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="admin">
-
-        <header class="admin_header">
-            <h2>Admin Page</h2>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
 
-                <li>
-                    <i class="fa-solid fa-house-user"></i>
-                    @Html.ActionLink("View Account", "Index")
-                </li>
-
-                <li class="new_acc">
-                    <i class="fa-solid fa-user-plus"></i>
-                    New Account
-                </li>
-
-                <li class="new_dep">
-                    <i class="fa-solid fa-building"></i>
-                    New Department
-                </li>
-
-                <li>
-                    <i class="fa-solid fa-building-circle-arrow-right"></i>
-                    @Html.ActionLink("View Department", "IndexDepartment")
+                <li class="nav-item active">
+                    <a class="navbar-brand" href="@Url.Action( "Index", "Admin" )">Home</a>
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa-solid fa-align-justify"></i>
-                        Options
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Add Account
                     </a>
-                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px;">
-                        <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Top View", "TopView")
-                        </div>
-                        <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Top Like", "TopLike")
-                        </div>
-                        <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Latest Idea", "LastIdea")
-                        </div>
-                        <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Latest Comment", "LastComment")
-                        </div>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="@Url.Action( "CreateAdmin", "Admin" )">Create Admin</a>
+                        <a class="dropdown-item" href="@Url.Action( "CreateManager", "Admin" )">Create Manager</a>
+                        <a class="dropdown-item" href="@Url.Action( "CreateStaff", "Admin" )">Create Staff</a>
+                        <a class="dropdown-item" href="@Url.Action( "CreateCoor", "Admin" )">Create Coordinator</a>
                     </div>
                 </li>
 
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Deparment
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="@Url.Action( "CreateDepartment", "Admin" )">Create Department</a>
+                        <a class="dropdown-item" href="@Url.Action( "IndexDepartment", "Admin" )">View Department</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Top
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="@Url.Action( "TopView", "Admin" )">Top View</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Last
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="@Url.Action( "LastComment", "Admin" )">Last Comment</a>
+                        <a class="dropdown-item" href="@Url.Action( "LastIdea", "Admin" )">Last Idea</a>
+                    </div>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Popular
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="@Url.Action( "Top5Like", "Admin" )">Follow Like</a>
+                        <a class="dropdown-item" href="@Url.Action( "Top5Idea", "Admin" )">Follow View</a>
+                    </div>
+                </li>
                 <li>
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    Log out
+                    <a class="dropdown-item" href="@Url.Action( "CreateDate", "Admin" )">Set Date</a>
                 </li>
             </ul>
-        </header>
-
-        <container>
-
-            @RenderBody()
-
-        </container>
-
-    </div>
-
-    <div class="overlay_acc">
-        <div class="add">
-            <div class="comment_close">
-                <i class="fa-solid fa-x"></i>
-            </div>
-
-            <div class="comment_amount">
-                <span>Add Account</span>
-            </div>
-
-            <div class="mt-4">
-
-                @{Html.RenderAction("CreateAccount", "Admin");}
-
-            </div>
         </div>
+    </nav>
+    <div class="container body-content" style="margin-top: 65px;">
+        @RenderBody()
     </div>
-
-    <div class="overlay_dep">
-        <div class="add">
-            <div class="comment_close-dep">
-                <i class="fa-solid fa-x"></i>
-            </div>
-
-            <div class="mt-4">
-
-                @{Html.RenderAction("CreateDepartment", "Admin");}
-
-            </div>
-        </div>
-    </div>
-
-    <script>
-
-        var overlayAcc = document.querySelector('.overlay_acc');
-        var overlayDep = document.querySelector('.overlay_dep');
-        var close = document.querySelector('.comment_close i')
-        var closeDep = document.querySelector('.comment_close-dep i')
-        var addAccBtn = document.querySelector('.new_acc')
-        var addDepBtn = document.querySelector('.new_dep')
-
-
-        close.addEventListener('click', (e) => {
-            overlayAcc.classList.remove('show')
-        })
-
-        // Giai thich
-        overlayAcc.addEventListener('click', (e) => {
-            if (e.target == e.currentTarget) {
-                overlayAcc.classList.remove('show')
-            }
-        })
-
-        addAccBtn.addEventListener('click', (e) => {
-            e.preventDefault()
-            overlayAcc.classList.add('show')
-        })
-
-        //Add department
-        closeDep.addEventListener('click', (e) => {
-            overlayDep.classList.remove('show')
-        })
-
-        // Giai thich
-        overlayDep.addEventListener('click', (e) => {
-            if (e.target == e.currentTarget) {
-                overlayDep.classList.remove('show')
-            }
-        })
-
-        addDepBtn.addEventListener('click', (e) => {
-            e.preventDefault()
-            overlayDep.classList.add('show')
-        })
-    </script>
-
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
@@ -166,203 +115,3 @@
 
 </body>
 </html>
-
-
-
-<style>
-
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        height: 100vh;
-        font-family: sans-serif;
-    }
-
-    container {
-        padding: 50px;
-        width: 100%;
-        background: linear-gradient(to right top, #c4dae2, #8bc3d1);
-    }
-
-    container h1 {
-        padding-bottom: 20px;
-        border-bottom: 2px solid #a9a9a9;
-    }
-
-    container table{
-        margin-top: 50px;
-    }
-
-    .admin {
-        width: 100%;
-        height: 100%;
-        display: flex;
-    }
-
-    .admin_header {
-        background-color: #494ca2;
-        width: 19%;
-        height: 100%;
-        padding: 20px 10px 20px 25px;
-        color: white;
-    }
-
-    .admin_header h2 {
-        font-size: 2.3rem;
-        font-weight: bold;
-        margin: 20px 0;
-    }
-
-    .admin_header ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .admin_header ul li {
-        font-size: 1.1rem;
-        padding: 10px 5px;
-        opacity: 0.7;
-        border-radius: 10px;
-    }
-
-
-    .admin_header ul a {
-        text-decoration: none;
-        color: white;
-    }
-
-    .admin_header ul li:hover {
-        opacity: 1;
-        background-color: rgba(255, 255, 255, 0.3);
-        cursor: pointer;
-    }
-
-    .admin_header ul li i {
-        margin-right: 15px;
-    }
-
-    .add_btn {
-        border: none;
-        width: 100%;
-    }
-
-    .overlay_dep,
-    .overlay_acc {
-        position: fixed;
-        background-color: rgba(0, 0, 0, 0.6);
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 100%;
-        display: none;
-    }
-
-    .add {
-        background-color: white;
-        top: 0;
-        bottom: 0;
-        width: 650px;
-        height: 100%;
-        right: 0;
-        padding: 20px;
-        animation: slide ease 0.8s;
-        overflow: scroll;
-    }
-
-    .comment_amount span {
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    .comment_close-dep,
-    .comment_close {
-        width: 100%;
-        height: 30px;
-    }
-
-    .comment_close-dep,
-    .comment_close i {
-        font-size: 1.5rem;
-        font-weight: bold;
-        cursor: pointer;
-        float: right;
-    }
-
-    .show {
-        display: block;
-    }
-
-    .form_title-input {
-        font-size: 1.3rem;
-        font-weight: bold;
-        border: none;
-        outline: none;
-        overflow: visible;
-        width: 100%;
-        border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-        margin: 20px 0;
-    }
-
-    .form_title-edit {
-        font-size: 3rem;
-        font-weight: bold;
-        border: none;
-        outline: none;
-        overflow: visible;
-        width: 100%;
-        border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-    }
-
-    .form_description-textarea {
-        width: 100%;
-        font-size: 1.2rem;
-        border: none;
-        outline: none;
-        margin-top: 40px;
-    }
-
-    .btn-add {
-        background-color: #e6e0bb;
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: rgb(99, 95, 95);
-        width: 100%;
-    }
-
-    .btn_edit,
-    .btn_delete{
-        text-decoration: none;
-        color: white;
-        font-weight: bold;
-        padding: 5px 10px;
-        border-radius: 10px;
-        width: 80px;
-        display: flex;
-        justify-content: center;
-    }
-
-    .btn_edit {
-        background-color: #3fba6c;
-    }
-
-    .btn_delete {
-        background-color: #fb5533;
-    }
-
-    .btn_edit:hover,
-    .btn_delete:hover {
-        color: white;
-        opacity: 0.6;
-    }
-
-    .hover:hover{
-        background-color: rgba(255, 255, 255, 0.6);
-    }
-
-</style>
