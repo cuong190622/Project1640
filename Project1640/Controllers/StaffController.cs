@@ -146,7 +146,7 @@ namespace Project1640.Controllers
                     a.Status = !a.Status;
                     a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
                     
-                    a.UserId = "d1f87685-5e5d-4c51-b3e1-58ec1b44c278";
+                    a.UserId = "79b2a965-2a7f-4702-82d5-3e0c831faffd";
                     Database.Idea.Add(a);
                     Database.SaveChanges();
                     SaveFile(new FileUpload(), postedFile, a.Id);
@@ -169,7 +169,7 @@ namespace Project1640.Controllers
                 {
                     a.Name = postedFile.FileName;
                     a.Url = _path;
-                    a.UserId = "d1f87685-5e5d-4c51-b3e1-58ec1b44c278";
+                    a.UserId = "79b2a965-2a7f-4702-82d5-3e0c831faffd";
                     a.IdeaId = IdeaId;
                     Database.File.Add(a);
                     Database.SaveChanges();
@@ -230,7 +230,7 @@ namespace Project1640.Controllers
             using (var database = new EF.CMSContext())
             {
                 a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-                a.UserId = "d1f87685-5e5d-4c51-b3e1-58ec1b44c278";
+                a.UserId = "79b2a965-2a7f-4702-82d5-3e0c831faffd";
                 a.IdeaId = id;
                 a.Status = !a.Status;
                 database.Comment.Add(a);
@@ -254,7 +254,7 @@ namespace Project1640.Controllers
         [HttpGet]
         public ActionResult Like()
         {
-            Getlike(Int32.Parse(TempData["IdeaId"].ToString()), "d1f87685-5e5d-4c51-b3e1-58ec1b44c278");
+            Getlike(Int32.Parse(TempData["IdeaId"].ToString()), "79b2a965-2a7f-4702-82d5-3e0c831faffd");
             return View();
         }
 
@@ -266,14 +266,14 @@ namespace Project1640.Controllers
                 int react = database.React.Where(c => c.IdeaId == a.IdeaId).Count();
                 if(react != 0)
                 {
-                    var listLiked = database.React.Where(c => c.IdeaId == a.IdeaId).Where(c => c.UserId == "d1f87685-5e5d-4c51-b3e1-58ec1b44c278").ToList();
+                    var listLiked = database.React.Where(c => c.IdeaId == a.IdeaId).Where(c => c.UserId == "79b2a965-2a7f-4702-82d5-3e0c831faffd").ToList();
                     database.React.RemoveRange(listLiked);
                 }
                 if(like == "Up")
                 {
                     a.React_Type = true;
                 }else a.React_Type = false;
-                a.UserId = "d1f87685-5e5d-4c51-b3e1-58ec1b44c278";
+                a.UserId = "79b2a965-2a7f-4702-82d5-3e0c831faffd";
                 database.React.Add(a);
                 database.SaveChanges();
                 TempData["IdeaId"] = a.IdeaId;

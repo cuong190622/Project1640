@@ -1,36 +1,51 @@
 ﻿@model IEnumerable<Project1640.Models.Department>
 
-<table class="table table-hover">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.Description)</th>
-            <th scope="col">Idea</th>
-            <th scope="col">&nbsp;</th>
-            <th scope="col">&nbsp;</th>
-        </tr>
-    </thead>
+@{
+    Layout = "~/Views/Admin/_LayoutAdmin.cshtml";
+}
 
+<!DOCTYPE html>
 
-    <tbody>
-        @foreach (var c in Model)
-        {
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <h1>List Department</h1>
+    <table class="table table-hover">
+        <thead class="thead-dark">
             <tr>
-                <th scope="row">@Html.DisplayFor(model => c.Id)</th>
-                <td>@Html.DisplayFor(model => c.Name)</td>
-                <td>@Html.DisplayFor(model => c.Description)</td>
-
-                <td>
-                    <a type="button" class="btn btn-success btn-sm"
-                       href="@Url.Action("EditDepartment", new {id = c.Id})">Edit</a>
-                </td>
-                <td>
-                    <a type="button" class="btn btn-danger btn-sm"
-                       href="@Url.Action("DeleteDepartment", new {id = c.Id })">Delete</a>
-                </td>
+                <th scope="col">#</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Description)</th>
+                <th scope="col">Idea</th>
+                <th scope="col">&nbsp;</th>
+                <th scope="col">&nbsp;</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+
+
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <th scope="row">@Html.DisplayFor(model => c.Id)</th>
+                    <td>@Html.DisplayFor(model => c.Name)</td>
+                    <td>@Html.DisplayFor(model => c.Description)</td>
+
+                    <td>
+                        <a type="button" class="btn btn-success btn-sm"
+                           href="@Url.Action("EditDepartment", new {id = c.Id})">Edit</a>
+                    </td>
+                    <td>
+                        <a type="button" class="btn btn-danger btn-sm"
+                           href="@Url.Action("DeleteDepartment", new {id = c.Id })">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</body>
+</html>
 
