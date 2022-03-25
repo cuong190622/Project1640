@@ -23,6 +23,11 @@ namespace Project1640.Controllers
         [HttpPost]
         public async Task<ActionResult> LogIn(UserInfo user)
         {
+            if(user.Email == null || user.PasswordHash == null)
+            {
+                ModelState.AddModelError("PasswordHash", "Please input username and password!");
+                return View();
+            }
             var context = new CMSContext();
             var store = new UserStore<UserInfo>(context);
             var manager = new UserManager<UserInfo>(store);
