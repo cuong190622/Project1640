@@ -229,6 +229,9 @@ namespace Project1640.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateComment(Comment a)
         {
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);                   
             using (var database = new EF.CMSContext())
             {
                 a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
@@ -236,7 +239,7 @@ namespace Project1640.Controllers
                 a.Status = !a.Status;
                 database.Comment.Add(a);
                 database.SaveChanges();
-                await SendEmail("123456789awdstk.mk@gmail.com", a.Content);
+                await SendEmail(FindEmailUserByCommentId(a.Id), a.Content);
                 TempData["IdeaId"] = a.IdeaId;
             }
             return RedirectToAction("ViewIdea", new { IdeaId = a.IdeaId });
@@ -393,6 +396,21 @@ namespace Project1640.Controllers
             var user = await manager.FindByEmailAsync(email);
             return user.Id.ToString();
 
+        }
+        public string FindEmailUserByCommentId(int commentId)
+        {
+            using (CMSContext context = new CMSContext()) //create a connection with the database
+            {
+                var email = (                    
+                    from c in context.Comment
+                    join i in context.Idea on c.IdeaId equals i.Id
+                    join u in context.Users on i.UserId equals u.Id
+                    select new {
+                        Id = c.Id,
+                        Email = u.Email
+                    }).Where(p => p.Id == commentId).First();
+                return email.Email.ToString();
+            }            
         }
 
         public ActionResult ShowFile(int IdeaId)
