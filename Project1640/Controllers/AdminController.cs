@@ -207,7 +207,7 @@ namespace Project1640.Controllers
         {
             using (var abc = new EF.CMSContext()) //create a new value abc is an object of CMSContext
             {
-                var stx = abc.Category.Select(p => new SelectListItem //Select anonymous
+                var stx = abc.Department.Select(p => new SelectListItem //Select anonymous
                 {
                     Text = p.Name,
                     Value = p.Id.ToString()
