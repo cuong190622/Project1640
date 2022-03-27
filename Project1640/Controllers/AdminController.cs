@@ -18,7 +18,7 @@ namespace Project1640.Controllers
         {
             using (var ct = new EF.CMSContext())
             {
-                var user = ct.Users.OrderBy(a => a.Id).ToList();
+                var user = ct.Users.Where(a => a.Role != "admin").OrderBy(a => a.Id).ToList();
                 return View(user);
             }
         }
@@ -207,7 +207,7 @@ namespace Project1640.Controllers
         {
             using (var abc = new EF.CMSContext()) //create a new value abc is an object of CMSContext
             {
-                var stx = abc.Category.Select(p => new SelectListItem //Select anonymous
+                var stx = abc.Department.Select(p => new SelectListItem //Select anonymous
                 {
                     Text = p.Name,
                     Value = p.Id.ToString()
@@ -532,68 +532,9 @@ namespace Project1640.Controllers
             }
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        public ActionResult IndexSetDate()
-        {
-            using (var sd = new EF.CMSContext())
-            {
-                var setdate = sd.SetDate
-                                        .OrderBy(c => c.Id)
-                                        .ToList();
-                return View(setdate);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult CreateDate()
-        {
-            return View();
-        }
-
-        //[HttpPost]
-        //public ActionResult CreateDate(SetDate a)
-        //{
-
-        //    using (var sd = new EF.CMSContext())
-        //    {
-        //        sd.SetDate.Add(a);
-        //        sd.SaveChanges();
-        //    }
-        //    return RedirectToAction("IndexSetDate");
-        //} 
-
-        [HttpPost]
-        public ActionResult CreateDate(DateTime startdate, DateTime enddate,SetDate a)
-        {
-            if(startdate < enddate)
-            {
-                using (var sd = new EF.CMSContext())
-                {
-                    sd.SetDate.Add(a);
-                    sd.SaveChanges();
-                }
-                return RedirectToAction("IndexSetDate");
-            }
-            else
-            {
-                return RedirectToAction("IndexSetDate");
-            }
-        }
-
-        public ActionResult DeleteSetDate(int id, SetDate a)
-        {
-            using (var sd = new EF.CMSContext())
-            {
-                var setdate = sd.SetDate.FirstOrDefault(c => c.Id == id);
-                sd.SetDate.Remove(setdate);
-                sd.SaveChanges();
-            }
-            return RedirectToAction("IndexSetDate");
-        }
-
         //HTTPGET create EDITSETDATE
         [HttpGet]
-        public ActionResult EditSetDate(int id)
+        public ActionResult EditSetDate(int id=1)
         {
             using (var sd = new EF.CMSContext())
             {
@@ -614,7 +555,7 @@ namespace Project1640.Controllers
                     sd.SaveChanges();
                 }              
             }
-            return RedirectToAction("IndexSetDate");
+            return RedirectToAction("Index");
 
         }
     }

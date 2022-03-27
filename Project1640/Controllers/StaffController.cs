@@ -105,8 +105,15 @@ namespace Project1640.Controllers
         [HttpGet]
         public ActionResult CreateIdea()
         {
-            ViewBag.Class = getList();
-            return View();
+            if (CheckDate())
+            {
+                ViewBag.Class = getList();
+                return View();
+            }
+            else
+            {
+                return Content($"Can not Create news Idea during BlockTime!");
+            }
         }
 
         private List<Category> Convert(EF.CMSContext database, string formatIds)
@@ -143,7 +150,6 @@ namespace Project1640.Controllers
             else
             {
 
-                var context = new CMSContext();
                 using (var Database = new EF.CMSContext())
                 {
                     a.Status = !a.Status;
@@ -200,7 +206,7 @@ namespace Project1640.Controllers
             }
         }
 
-        public ActionResult ShowComment(int IdeaId)
+        public ActionResult ShowComment(int IdeaId)  
         {
 
                 using (var dbCT = new EF.CMSContext())
@@ -222,8 +228,16 @@ namespace Project1640.Controllers
         [HttpGet]
         public ActionResult CreateComment(int IdeaId)
         {
-            TempData["IdeaId"] = IdeaId;
-            return View();
+
+            if (CheckDate())
+            {
+                TempData["IdeaId"] = IdeaId;
+                return View();
+            }
+            else
+            {
+                return Content($"Can not Create news Idea during BlockTime!");
+            }
         }
 
         [HttpPost]
@@ -422,6 +436,29 @@ namespace Project1640.Controllers
                                         .Where(c => c.IdeaId == IdeaId)
                                         .ToList();
                 return View(_files);
+            }
+        }
+
+        public bool CheckDate()
+        {
+            using (var Database = new EF.CMSContext())
+            {
+                var FirstDate = Database.SetDate.Where(p => p.Id == 1).FirstOrDefault();
+                if (FirstDate != null)
+                {
+                    if(Int32.Parse(FirstDate.StartDate.Split('-')[0]) <= Int32.Parse(DateTime.Now.ToString("yyyy")) && Int32.Parse(DateTime.Now.ToString("yyyy")) <= Int32.Parse(FirstDate.EndDate.Split('-')[0]))
+                    {
+                        if (Int32.Parse(FirstDate.StartDate.Split('-')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) <= Int32.Parse(FirstDate.EndDate.Split('-')[1]))
+                        {
+                            if (Int32.Parse(FirstDate.StartDate.Split('-')[2]) <= Int32.Parse(DateTime.Now.ToString("dd")) && Int32.Parse(DateTime.Now.ToString("dd")) <= Int32.Parse(FirstDate.EndDate.Split('-')[2]))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+
+                }
+                return false;
             }
         }
     }

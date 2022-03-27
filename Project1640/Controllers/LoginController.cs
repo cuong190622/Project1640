@@ -17,6 +17,7 @@ namespace Project1640.Controllers
         [HttpGet]
         public ActionResult LogIn()
         {
+            CreateDate();
             return View();
         }
 
@@ -126,8 +127,32 @@ namespace Project1640.Controllers
             return Content("done!");
         }
 
+        public void CreateDate()
+        {
+            var start = DateTime.Now.ToString("MM/dd/yyyy");
+            var end = DateTime.Now.ToString("MM/dd/yyyy");
+            using (var Database = new EF.CMSContext())
+            {
+                var FirstDate = Database.SetDate.Where(p => p.Id == 1).FirstOrDefault();
+                if(FirstDate == null)
+                {
+                    var Date = new SetDate();
+                    Date.StartDate = start;
+                    Date.EndDate = end;
+                    Database.SetDate.Add(Date);
+                    Database.SaveChanges();
+                }
+            }
+        }
         public async Task<ActionResult> CreateAdmin()
         {
+            using (var Database = new EF.CMSContext())
+            {
+                var Department = new Department();
+                Department.Name = "IT";
+                Database.Department.Add(Department);
+                Database.SaveChanges();
+            }
             var context = new CMSContext();
             var store = new UserStore<UserInfo>(context);
             var manager = new UserManager<UserInfo>(store);
