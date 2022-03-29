@@ -1,6 +1,5 @@
 ﻿@model Project1640.Models.UserInfo
 
-
 @if (!ViewData.ModelState.IsValid)
 {
     @Html.ValidationSummary(false, "Error Summary", new { @class = "text-danger" })
@@ -21,87 +20,110 @@
 
 <body>
 
-    @using (Html.BeginForm(FormMethod.Post))
-    {
-        <div class="row mt-2">
+    <div class="idea">
+        <div class="header_detail">
+            <div class="header_item-first">
+                <img src="https://scontent.fhan4-2.fna.fbcdn.net/v/t1.15752-9/273781853_387701592785192_2370446527590513023_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=5t9U-XyL9n0AX8tEXxK&_nc_ht=scontent.fhan4-2.fna&oh=03_AVJkRLxpI0Ki6LzscTR2FROaanmpZfCZTNYFs6-92N4g7Q&oe=62585F2A" alt="">
+                <span>
+                    <i class="fa-solid fa-caret-left"></i>
+                    @Html.ActionLink("Back", "Index")
+                </span>
+            </div>
 
-            <div class="col-8">
-                <form>
+            <div class="header_name">
+                <h1>View Account</h1>
+            </div>
 
-                    <h2>Show Account</h2>
+            <div class="header_item-second">
+
+                <div class="dropdown">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="add_container">
+            <div class="mt-4">
+
+                <h2 style="font-weight: bold;">View Account</h2><br>
+
+                @using (Html.BeginForm(FormMethod.Post))
+                {
+
                     @Html.HiddenFor(m => m.Role)
                     @Html.HiddenFor(m => m.Name)
                     @Html.HiddenFor(m => m.Age)
                     @Html.HiddenFor(m => m.WorkingPlace)
                     @Html.HiddenFor(m => m.DoB)
+                    @Html.HiddenFor(m => m.Email)
+                    @Html.HiddenFor(m => m.PhoneNumber)
+                    @Html.HiddenFor(m => m.UserName)
                     @Html.HiddenFor(m => m.Department)
 
                     <div class="form-group" contenteditable='false'>
 
-                        @Html.LabelFor(m => m.Role, htmlAttributes: new { @class = "font-weight-bold" })
-                        @Html.EditorFor(m => m.Role, new { htmlAttributes = new { @class = "form-control" } })
-
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            @Html.LabelFor(m => m.DepartmentId, htmlAttributes: new { @class = "form-weight-bold" })
-                            @Html.DropDownListFor(m => m.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.Class, htmlAttributes
-                           : new { @class = "form-control" }
-                           )
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-
-                        @Html.LabelFor(m => m.Age, htmlAttributes: new { @class = "font-weight-bold" })
-                        @Html.EditorFor(m => m.Age, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(m => m.Role, new { htmlAttributes = new { @class = "form_title-input" } })
 
                     </div>
 
                     <div class="form-group">
 
-                        @Html.LabelFor(m => m.WorkingPlace, htmlAttributes: new { @class = "font-weight-bold" })
-                        @Html.EditorFor(m => m.WorkingPlace, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownListFor(m => m.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.Class, htmlAttributes: new { @class = "form_title-input" })
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        @Html.EditorFor(m => m.Age, new { htmlAttributes = new { @class = "form_title-input" } })
 
                     </div>
 
                     <div class="form-group">
 
-                        @Html.LabelFor(m => m.Name, htmlAttributes: new { @class = "font-weight-bold" })
-                        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(m => m.WorkingPlace, new { htmlAttributes = new { @class = "form_title-input" } })
 
                     </div>
 
                     <div class="form-group">
 
-                        @Html.LabelFor(m => m.DoB, htmlAttributes: new { @class = "font-weight-bold" })
-                        @Html.EditorFor(m => m.DoB, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form_title-input" } })
 
                     </div>
 
                     <div class="form-group">
 
-                        @Html.LabelFor(m => m.Name, htmlAttributes: new { @class = "font-weight-bold" })
-                        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form_title-input" } })
 
                     </div>
 
                     <div class="form-group">
 
-                        @Html.LabelFor(m => m.UserName, htmlAttributes: new { @class = "font-weight-bold" })
-                        @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(m => m.DoB, new { htmlAttributes = new { @class = "form_title-input" } })
 
                     </div>
 
-                    <p>
-                        @Html.ActionLink("Back to List", "Index")
-                    </p>
-                </form>
+                    <div class="form-group">
+
+                        @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form_title-input" } })
+
+                    </div>
+
+                    <div class="form-group">
+
+                        @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form_title-input" } })
+
+                    </div>
+
+                    <button type="submit" class="btn btn-add">Update</button>
+
+                }
+
             </div>
         </div>
+    </div>
 
-    }
+    <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
 
 </body>
 </html>
@@ -211,4 +233,7 @@
         color: rgb(99, 95, 95);
         width: 100%;
     }
+
 </style>
+
+

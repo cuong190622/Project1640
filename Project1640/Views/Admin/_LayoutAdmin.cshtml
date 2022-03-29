@@ -18,84 +18,261 @@
 }
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/Content/Site.css" />
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Logo</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="admin">
+
+        <header class="admin_header w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
+            
+            <div onclick="w3_close()" class="w3-bar-item">
+                <i class="fa-solid fa-x"></i>
+            </div>
+
+            <h2>Admin Page</h2>
             <ul class="navbar-nav mr-auto">
 
-                <li class="nav-item active">
-                    <a class="navbar-brand" href="@Url.Action( "Index", "Admin" )">Home</a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Add Account
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="@Url.Action( "CreateAdmin", "Admin" )">Create Admin</a>
-                        <a class="dropdown-item" href="@Url.Action( "CreateManager", "Admin" )">Create Manager</a>
-                        <a class="dropdown-item" href="@Url.Action( "CreateStaff", "Admin" )">Create Staff</a>
-                        <a class="dropdown-item" href="@Url.Action( "CreateCoor", "Admin" )">Create Coordinator</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Deparment
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="@Url.Action( "CreateDepartment", "Admin" )">Create Department</a>
-                        <a class="dropdown-item" href="@Url.Action( "IndexDepartment", "Admin" )">View Department</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Top
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="@Url.Action( "TopView", "Admin" )">Top View</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Last
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="@Url.Action( "LastComment", "Admin" )">Last Comment</a>
-                        <a class="dropdown-item" href="@Url.Action( "LastIdea", "Admin" )">Last Idea</a>
-                    </div>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Popular
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="@Url.Action( "Top5Like", "Admin" )">Follow Like</a>
-                        <a class="dropdown-item" href="@Url.Action( "Top5Idea", "Admin" )">Follow View</a>
-                    </div>
-                </li>
                 <li>
-                    <a class="dropdown-item" href="@Url.Action( "CreateDate", "Admin" )">Set Date</a>
+                    <i class="fa-solid fa-house-user"></i>
+                    @Html.ActionLink("View Account", "Index")
+                </li>
+
+                <li>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-user-plus"></i>
+                        New Account
+                    </a>
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px; color: white">
+                        <div class="new_acc hover" style="padding: 5px;">
+                            Create Manager
+                        </div>
+                        <div class="new_staff hover" style="padding: 5px;">
+                            Create Staff
+                        </div>
+                        <div class="new_coor hover" style="padding: 5px;">
+                            Create Coordinator
+                        </div>
+                    </div>
+                </li>
+
+                <li class="new_dep">
+                    <i class="fa-solid fa-building"></i>
+                    New Department
+                </li>
+
+                <li>
+                    <i class="fa-solid fa-building-circle-arrow-right"></i>
+                    @Html.ActionLink("View Department", "IndexDepartment")
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-align-justify"></i>
+                        Options
+                    </a>
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px;">
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("Top View", "TopView")
+                        </div>
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("Top Like", "TopLike")
+                        </div>
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("Latest Idea", "LastIdea")
+                        </div>
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("Latest Comment", "LastComment")
+                        </div>
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("Top 5 View", "Top5Idea")
+                        </div>
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("Top 5 Like", "Top5Like")
+                        </div>
+                    </div>
+                </li>
+
+                <li>
+                    <i class="fa-solid fa-building-circle-arrow-right"></i>
+                    @Html.ActionLink("Set Date", "CreateDate")
+                </li>
+
+                <li style="display: flex;">
+                    <i class="fa-solid fa-right-from-bracket" style="display: flex; align-items: center;"></i>
+                    <a href="@Url.Action( "LogOut", "Login" )">Log Out</a>
                 </li>
             </ul>
-        </div>
-    </nav>
-    <div class="container body-content" style="margin-top: 65px;">
-        @RenderBody()
+        </header>
+
+        <container>
+
+            <div class="header_item-admin" onclick="w3_open()">
+                <i class="fa-solid fa-align-justify"></i>
+            </div>
+
+            @RenderBody()
+
+        </container>
+
     </div>
+
+    <div class="overlay_acc">
+        <div class="add">
+            <div class="comment_close">
+                <i class="fa-solid fa-x"></i>
+            </div>
+
+            <div class="mt-4">
+
+                @{Html.RenderAction("CreateManager", "Admin");}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay_staff">
+        <div class="add">
+            <div class="close_staff">
+                <i class="fa-solid fa-x"></i>
+            </div>
+
+            <div class="mt-4">
+
+                @{Html.RenderAction("CreateStaff", "Admin");}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay_coor">
+        <div class="add">
+            <div class="close_coor">
+                <i class="fa-solid fa-x"></i>
+            </div>
+
+            <div class="mt-4">
+
+                @{Html.RenderAction("CreateCoor", "Admin");}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay_dep">
+        <div class="add">
+            <div class="comment_close-dep">
+                <i class="fa-solid fa-x"></i>
+            </div>
+
+            <div class="mt-4">
+
+                @{Html.RenderAction("CreateDepartment", "Admin");}
+
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script>
+
+        var overlayAcc = document.querySelector('.overlay_acc');
+        var overlayStaff = document.querySelector('.overlay_staff');
+        var overlayCoor = document.querySelector('.overlay_coor');
+        var overlayDep = document.querySelector('.overlay_dep');
+        var close = document.querySelector('.comment_close i')
+        var closeStaff = document.querySelector('.close_staff i')
+        var closeCoor = document.querySelector('.close_coor i')
+        var closeDep = document.querySelector('.comment_close-dep i')
+        var addAccBtn = document.querySelector('.new_acc')
+        var addStaffBtn = document.querySelector('.new_staff')
+        var addCoorBtn = document.querySelector('.new_coor')
+        var addDepBtn = document.querySelector('.new_dep')
+
+        // Manager
+        close.addEventListener('click', (e) => {
+            overlayAcc.classList.remove('show')
+        })
+
+        overlayAcc.addEventListener('click', (e) => {
+            if (e.target == e.currentTarget) {
+                overlayAcc.classList.remove('show')
+            }
+        })
+
+        addAccBtn.addEventListener('click', (e) => {
+            e.preventDefault()
+            overlayAcc.classList.add('show')
+        })
+
+        // Staff
+        closeStaff.addEventListener('click', (e) => {
+            overlayStaff.classList.remove('show')
+        })
+
+        overlayStaff.addEventListener('click', (e) => {
+            if (e.target == e.currentTarget) {
+                overlayStaff.classList.remove('show')
+            }
+        })
+
+        addStaffBtn.addEventListener('click', (e) => {
+            e.preventDefault()
+            overlayStaff.classList.add('show')
+        })
+
+        // Coordinator
+        closeCoor.addEventListener('click', (e) => {
+            overlayCoor.classList.remove('show')
+        })
+
+        overlayCoor.addEventListener('click', (e) => {
+            if (e.target == e.currentTarget) {
+                overlayCoor.classList.remove('show')
+            }
+        })
+
+        addCoorBtn.addEventListener('click', (e) => {
+            e.preventDefault()
+            overlayCoor.classList.add('show')
+        })
+
+        //Add department
+        closeDep.addEventListener('click', (e) => {
+            overlayDep.classList.remove('show')
+        })
+
+        overlayDep.addEventListener('click', (e) => {
+            if (e.target == e.currentTarget) {
+                overlayDep.classList.remove('show')
+            }
+        })
+
+        addDepBtn.addEventListener('click', (e) => {
+            e.preventDefault()
+            overlayDep.classList.add('show')
+        })
+
+        function w3_open() {
+            document.getElementById("mySidebar").style.display = "block";
+        }
+
+        function w3_close() {
+            document.getElementById("mySidebar").style.display = "none";
+        }
+
+    </script>
+
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
@@ -106,7 +283,9 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
 
-    @RenderSection("scripts", required: false)
+    <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
 
 </body>
 </html>
+
+
