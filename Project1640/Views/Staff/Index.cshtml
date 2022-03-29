@@ -10,72 +10,159 @@
     int a = 0;
 }
 
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" /> 
-    <title>Index</title>
-</head>
-<body>
-    <table class="table table-hover">
-        <thead class="thead-dark">
-            <tr>                
-                <th scope="col">@Html.DisplayNameFor(model => model.Title)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.Date)</th>
-                <th scope="col">Idea</th>
-                <th scope="col">&nbsp;</th>
-                <th scope="col">&nbsp;</th>
-            </tr>
-        </thead>
+<div class="container_header">
+    <h1>List Blog</h1>
+    <span>Post ideas to give your opinion or interact with other ideas.</span>
+</div>
 
 <div class="container_blog">
 
-            <tbody>
-                @foreach (var c in Model)
-                {
-                    if (a >= first && a < last)
-                    {
-                        <tr>
-                            <td>@Html.DisplayFor(model => c.Title)</td>
-                            <td>@Html.DisplayFor(model => c.Date)</td>
+    <div class="blog_all-item">
 
-                        <td>
-                            <a type="button" class="btn btn-success btn-sm"
-                               href="@Url.Action("ViewIdea", new {IdeaId = c.Id, CategoryId = c.CategoryId})">View</a>
-                        </td>
-                    </tr>
-                }
-                a++;
+        <div class="filter">
+            <div class="filter_item">
+                @Html.ActionLink("Top View", "TopView")
+            </div>
+            <div class="filter_item">
+                @Html.ActionLink("Top Like", "TopLike")
+            </div>
+            <div class="filter_item">
+                @Html.ActionLink("Latest Idea", "LastIdea")
+            </div>
+            <div class="filter_item">
+                @Html.ActionLink("Latest Comment", "LastComment")
+            </div>
+        </div>
+
+        @foreach (var c in Model)
+        {
+            if (a >= first && a < last)
+            {
+                <div class="blog_item left-to-right">
+                    <div class="blog_item-header">
+                        <div class="blog_avatar">
+                            <i class="fa-solid fa-user"></i>
+                            <span>
+                                Users of CHAT LTD.
+                            </span>
+                        </div>
+
+                        <div class="blog_item-option">
+
+                            <div class="dropdown">
+                                <i class="btn btn-secondary fa-solid fa-ellipsis" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                </i>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="#">Copy Link</a></li>
+                                    <li><a class="dropdown-item" href="#">Report</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="blog_content">
+
+                        <a href="@Url.Action("ViewIdea", new {IdeaId = c.Id, CategoryId = c.CategoryId})">
+                            <h1>@Html.DisplayFor(model => c.Title)</h1>
+                        </a>
+
+                        <span>@Html.DisplayFor(model => c.Content)</span>
+
+                    </div>
+
+                    <div class="blog_time">
+                        <span>@Html.DisplayFor(model => c.Date)</span>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
-    <table class="table">
-        <tbody>
-            <tr>
+            a++;
+        }
 
-                @for (int i = 1; i <= Int16.Parse(TempData["PageMax"].ToString()); i++)
+    <ul class="pagination">
+
+        @for (int i = 1; i <= Int16.Parse(TempData["PageMax"].ToString()); i++)
+        {
+            if (i == 1)
+            {
+                <li>
+                    <a href="@Url.Action("Index", new {id = i})">
+                        <i class="fa-solid fa-caret-left"></i>
+                    </a>
+                </li>
+            }
+            if (TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) - 2) <= i
+                && TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) + 2) >= i)
+            {
+                if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
                 {
-                    if (i == 1)
-                    {
-                        <a href="@Url.Action("Index", new {id = i})"><< -</a>
-                    }
-                    if (TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) - 2) <= i
-                        && TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) + 2) >= i)
-                    {
-                        if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
-                        {
-                                <a href="@Url.Action("Index", new {id = i})" style="color: red;">@i-</a>
-                        }
-                        else
-                        {
-                                <a href="@Url.Action("Index", new {id = i})">@i-</a>
-                        }
-                    }
-
+                    <li>
+                        <a href="@Url.Action("Index", new {id = i})" style="color: red;">@i</a>
+                    </li>
                 }
-                <a href="@Url.Action("Index", new {id = Int16.Parse(TempData["PageMax"].ToString())})"> >></a>
-            </tr>
-        </tbody> 
-    </table>
-</body>
-</html>
+                else
+                {
+                    <li>
+                        <a href="@Url.Action("Index", new {id = i})">@i</a>
+                    </li>
+                }
+            }
+
+        }
+
+        <li>
+            <a href="@Url.Action("Index", new {id = Int16.Parse(TempData["PageMax"].ToString())})">
+                <i class="fa-solid fa-caret-right"></i>
+            </a>
+        </li>
+
+    </ul>
+
+    </div>
+
+    <div class="blog_all-categories">
+        <h2>All Categories</h2>
+
+        <div class="blog_categories">
+            <ul>
+                <li>
+                    <a href="">IT</a>
+                </li>
+                <li>
+                    <a href="">Design</a>
+                </li>
+                <li>
+                    <a href="">Business</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script>
+
+    var blogItem = document.querySelectorAll('.blog_item')
+
+    function scrollHandleAnimation(e) {
+        var rect = e.getClientRects()[0]
+        var heightScreen = window.innerHeight
+
+        if (!(rect.bottom < 0 || heightScreen.top > heightScreen)) {
+            e.classList.add('start')
+        } else {
+            e.classList.remove('start')
+        }
+    }
+
+    function checkElement() {
+        blogItem.forEach(e => {
+            scrollHandleAnimation(e)
+        })
+    }
+
+    window.onscroll = checkElement
+
+</script>

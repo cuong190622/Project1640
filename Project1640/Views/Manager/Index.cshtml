@@ -1,41 +1,99 @@
 ﻿@model IEnumerable<Project1640.Models.Category>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/Site.css" />
+</head>
 
-<a href="Download" target="_blank" class="btn btn-primary" style="margin-top:20px;">Download Zip</a>
-<table class="table table-hover">
-    
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.Description)</th>
-                <th scope="col">Idea</th>
-                <th scope="col">&nbsp;</th>
-                <th scope="col">&nbsp;</th>
-            </tr>
-        </thead>
+<body>
+
+    <div class="admin">
+
+        <header class="admin_header w3-sidebar w3-bar-block w3-border-right" style="display: none;" id="mySidebar">
+
+            <div onclick="w3_close()" class="w3-bar-item">
+                <i class="fa-solid fa-x"></i>
+            </div>
+
+            <h2>Manager Page</h2>
+            <ul>
+                <a href="~/Manager/Index.cshtml">
+                <li>
+                    <i class="fa-solid fa-house-user"></i>
+                    @Html.ActionLink("Home", "Index")
+                </li>
+                </a>
+
+                <a href="" class="add_btn">
+                <li>
+                    <i class="fa-solid fa-user-plus"></i>
+                    Add Category
+                </li>
+                </a>
+
+                <a href="Download" target="_blank">
+                <li>
+                    <i class="fa-solid fa-download"></i>
+                    Download all file
+                </li>
+                </a>
+
+                <a href="@Url.Action( "LogOut", "Login" )">
+                <li>
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Log out
+                </li>
+                </a>
+            </ul>
+        </header>
+
+        <container>
+            <div class="header_item-admin" onclick="w3_open()">
+                <i class="fa-solid fa-align-justify"></i>
+            </div>
 
 
-        <tbody>
-            @foreach (var c in Model)
-            {
-                <tr>
-                    <th scope="row">@Html.DisplayFor(model => c.Id)</th>
-                    <td>@Html.DisplayFor(model => c.Name)</td>
-                    <td>@Html.DisplayFor(model => c.Description)</td>
+            <h1>List category</h1>
 
-                    <td>
-                        <a type="button" class="btn btn-success btn-sm"
-                           href="@Url.Action("EditCategory", new {id = c.Id})">Edit</a>
-                    </td>
-                    <td>
-                        <a type="button" class="btn btn-danger btn-sm"
-                           href="@Url.Action("DeleteCategory", new {id = c.Id })">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+            <table class="table table-hover" style="margin: 10px 0 0;">
+
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
+                        <th scope="col">@Html.DisplayNameFor(model => model.Description)</th>
+                        <th scope="col">Options</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    @foreach (var c in Model)
+                    {
+                        <tr class="thead-body">
+                            <th scope="row">@Html.DisplayFor(model => c.Id)</th>
+                            <td>@Html.DisplayFor(model => c.Name)</td>
+                            <td>@Html.DisplayFor(model => c.Description)</td>
+
+                            <td>
+                                <a type="button" class="btn btn-success btn-sm" style="margin-top: 3px; width: 55px;"
+                                   href="@Url.Action("EditCategory", new {id = c.Id})">Edit</a>
+                                <a type="button" class="btn btn-danger btn-sm" style="margin-top: 3px; width: 55px;"
+                                   href="@Url.Action("DeleteCategory", new {id = c.Id })">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
         </container>
 
@@ -65,7 +123,7 @@
         var overlayEdit = document.querySelector('.overlay_edit');
         var close = document.querySelector('.comment_close i')
         var addBtn = document.querySelector('.add_btn')
-        
+
 
         close.addEventListener('click', (e) => {
             overlay.classList.remove('show')
@@ -82,192 +140,29 @@
             e.preventDefault()
             overlay.classList.add('show')
         })
-         
-        
+
+        function w3_open() {
+            document.getElementById("mySidebar").style.display = "block";
+        }
+
+        function w3_close() {
+            document.getElementById("mySidebar").style.display = "none";
+        }
 
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 
     <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
 </body>
 </html>
-
-<style>
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        height: 100vh;
-        font-family: sans-serif;
-    }
-
-    container {
-        padding: 50px;
-        width: 100%;
-        background: linear-gradient(to right top, #c4dae2, #8bc3d1);
-    }
-
-    container h1 {
-        padding-bottom: 20px;
-        border-bottom: 2px solid #a9a9a9;
-    }
-
-    container table{
-        margin-top: 50px;
-    }
-
-    .admin {
-        width: 100%;
-        height: 100%;
-        display: flex;
-    }
-
-    .admin_header {
-        background-color: #494ca2;
-        width: 17%;
-        height: 100%;
-        padding: 20px 10px 20px 25px;
-        color: white;
-    }
-
-    .admin_header h2 {
-        font-size: 2.3rem;
-        font-weight: bold;
-        margin: 20px 0;
-    }
-
-    .admin_header ul {
-        list-style: none;
-        padding: 0;
-    }
-
-    .admin_header ul li {
-        font-size: 1.1rem;
-        padding: 10px 5px;
-        opacity: 0.7;
-        border-radius: 10px;
-    }
-
-
-    .admin_header ul a {
-        text-decoration: none;
-        color: white;
-    }
-
-    .admin_header ul li:hover {
-        opacity: 1;
-        background-color: rgba(255, 255, 255, 0.3);
-        cursor: pointer;
-    }
-
-    .admin_header ul li i {
-        margin-right: 15px;
-    }
-
-    .add_btn {
-        border: none;
-        width: 100%;
-    }
-
-    .overlay_edit,
-    .overlay {
-        position: fixed;
-        background-color: rgba(0, 0, 0, 0.6);
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        height: 100%;
-        display: none;
-    }
-
-    .add {
-        background-color: white;
-        top: 0;
-        bottom: 0;
-        width: 650px;
-        height: 100%;
-        right: 0;
-        padding: 20px;
-        animation: slide ease 0.8s;
-    }
-
-    .comment_amount span {
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    .comment_close {
-        width: 100%;
-        height: 30px;
-    }
-
-    .comment_close i {
-        font-size: 1.5rem;
-        font-weight: bold;
-        cursor: pointer;
-        float: right;
-    }
-
-    .show {
-        display: block;
-    }
-
-    .form_title input {
-        font-size: 3rem;
-        font-weight: bold;
-        border: none;
-        outline: none;
-        overflow: visible;
-        width: 100%;
-        border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-    }
-
-    .form_description textarea {
-        width: 100%;
-        font-size: 1.2rem;
-        border: none;
-        outline: none;
-        margin-top: 40px;
-    }
-
-    .btn-add {
-        background-color: #e6e0bb;
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: rgb(99, 95, 95);
-        width: 100%;
-    }
-
-    .btn_edit,
-    .btn_delete{
-        text-decoration: none;
-        color: white;
-        font-weight: bold;
-        padding: 5px 10px;
-        border-radius: 10px;
-        width: 80px;
-        display: flex;
-        justify-content: center;
-    }
-
-    .btn_edit {
-        background-color: #3fba6c;
-    }
-
-    .btn_delete {
-        background-color: #fb5533;
-    }
-
-    .btn_edit:hover,
-    .btn_delete:hover {
-        color: white;
-        opacity: 0.6;
-    }
-
-</style>
 
 

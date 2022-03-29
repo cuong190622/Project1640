@@ -143,7 +143,7 @@ namespace Project1640.Controllers
                     PhoneNumber = phone,
                     Name = email.Split('@')[0],
                     Role = role,
-                    DepartmentId = 1
+                    DepartmentId = 7
                 };
                 await manager.CreateAsync(user, password);
                 await CreateRole(user.Email, "admin");

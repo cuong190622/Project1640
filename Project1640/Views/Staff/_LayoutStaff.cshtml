@@ -24,14 +24,14 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/Site.css" />
 
 </head>
 <body>
 
-            <!-- Navbar brand -->
-            <a class="navbar-brand" href="@Url.Action( "Index", "Staff" )">Logo Here</a>
-
+    <div class="blog">
         <div class="header">
+
             <div class="header_item-first">
                 <img src="https://scontent.fhan4-2.fna.fbcdn.net/v/t1.15752-9/273781853_387701592785192_2370446527590513023_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=5t9U-XyL9n0AX8tEXxK&_nc_ht=scontent.fhan4-2.fna&oh=03_AVJkRLxpI0Ki6LzscTR2FROaanmpZfCZTNYFs6-92N4g7Q&oe=62585F2A" alt="">
                 <span>CHAT LTD</span>
@@ -42,39 +42,25 @@
                 <input type="text" placeholder="Search blog...">
             </div>
 
-                <!-- Links -->
-                <ul class="navbar-nav mr-auto">
-                    <!-- Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="dropdown-item" href="@Url.Action( "CreateIdea", "Staff" )">Create Idea</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="dropdown-item" href="@Url.Action( "Index", "Staff" )">Views Idea</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="dropdown-item" href="@Url.Action( "TopView", "Staff" )">Top View</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="dropdown-item" href="@Url.Action( "TopLike", "Staff" )">Top Like</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="dropdown-item" href="@Url.Action( "LastIdea", "Staff" )">Latest Idea</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="dropdown-item" href="@Url.Action( "LastComment", "Staff" )">Latest Comment</a>
-                    </li>
-                </ul>
-                <p class="nav-item" style="padding-top: 2% ; padding-right: 1%;">@a.Split('@')[0] </p> 
-                <a class="btn btn-danger float-right" href="@Url.Action( "LogOut", "Login" )" role="button">Logout button</a>
-                <!-- Links -->
+            <div class="header_item-first header_option">
+                <i class="fa-solid fa-align-justify"></i>
             </div>
-            <!-- Collapsible content -->
+
+            <div class="header_item-second">
+                <div class="dropdown">
+                    <p class="post_btn">@Html.ActionLink("Post Idea", "CreateIdea")</p>
+                </div>
+
 
                 <div class="dropdown">
                     <i class="fa-solid fa-user" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#">My Account</a></li>
-                        <li><a class="dropdown-item" href="#">Log Out</a></li>
+                        <li>
+                            <p class="dropdown-item">@a.Split('@')[0] </p>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="@Url.Action( "LogOut", "Login" )">Log Out</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -84,48 +70,69 @@
             @RenderBody()
         </div>
 
-        <div class="container" style="margin: 0; max-width: 100%; padding: 0 110px 0 200px; background: linear-gradient(to right top, #58aec3, #ccdde4); bottom: 0;">
-            <footer class="row row-cols-4 py-5 border-top">
-                <div class="col">
-                    <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
-                        <img src="https://scontent.fhan4-2.fna.fbcdn.net/v/t1.15752-9/273781853_387701592785192_2370446527590513023_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=5t9U-XyL9n0AX8tEXxK&_nc_ht=scontent.fhan4-2.fna&oh=03_AVJkRLxpI0Ki6LzscTR2FROaanmpZfCZTNYFs6-92N4g7Q&oe=62585F2A" alt="">
-                    </a>
-                    <p class="text-muted">&copy; 2022</p>
-                </div>
+        <div class="container_footer">
+            <div class="container_footer-item">
+                <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
+                    <img src="https://scontent.fhan4-2.fna.fbcdn.net/v/t1.15752-9/273781853_387701592785192_2370446527590513023_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=5t9U-XyL9n0AX8tEXxK&_nc_ht=scontent.fhan4-2.fna&oh=03_AVJkRLxpI0Ki6LzscTR2FROaanmpZfCZTNYFs6-92N4g7Q&oe=62585F2A" alt="">
+                </a>
+                <p class="text-muted">&copy; 2022</p>
+            </div>
 
-                <div class="col">
-                    <h5>CHAT LTD</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>C</b>uong Nguyen Dinh</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>H</b>uy Tran Quang</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>A</b>nh Le Hoang</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>T</b>hien Le Minh</a></li>
-                    </ul>
-                </div>
+            <div class="container_footer-item">
+                <h5>CHAT LTD</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>C</b>uong Nguyen Dinh</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>H</b>uy Tran Quang</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>A</b>nh Le Hoang</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>T</b>hien Le Minh</a></li>
+                </ul>
+            </div>
 
-                <div class="col">
-                    <h5>Group 7</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Facebook</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Instargram</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Email</a></li>
-                    </ul>
-                </div>
+            <div class="container_footer-item">
+                <h5>Group 7</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Facebook</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Instargram</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Email</a></li>
+                </ul>
+            </div>
 
-                <div class="col">
-                    <h5>University of Greenwich</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Email</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Facebook</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Instargram</a></li>
-                    </ul>
-                </div>
-            </footer>
+            <div class="container_footer-item">
+                <h5>University of Greenwich</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Email</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Facebook</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Instargram</a></li>
+                </ul>
+            </div>
         </div>
 
     </div>
 
+    <div class="options_layout">
+        <div class="options_content">
 
+            <div class="options_close">
+                <i class="fa-solid fa-x"></i>
+            </div>
+
+            <ul>
+                <li>
+                    <i class="fa-solid fa-file-export"></i>
+                    <p class="post_btn" style="margin: 0;">@Html.ActionLink("Post Idea", "CreateIdea")</p>
+                </li>
+                <li>
+                    <i class="fa-solid fa-user"></i>
+                    <p class="dropdown-item" style="margin: 0;">@a.Split('@')[0] </p>
+                </li>
+                <li>
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <a class="dropdown-item" href="@Url.Action( "LogOut", "Login" )">Log Out</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -141,6 +148,27 @@
 
     <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
 
+    <script>
+
+        var headerOptions = document.querySelector('.header_option i')
+        var optionLayout = document.querySelector('.options_layout')
+        var closeBtn = document.querySelector('.options_close')
+
+        headerOptions.addEventListener('click', (e) => {
+            optionLayout.classList.add('show')
+        })
+
+        closeBtn.addEventListener('click', (e) => {
+            optionLayout.classList.remove('show')
+        })
+
+        optionLayout.addEventListener('click', (e) => {
+            if (e.target == e.currentTarget) {
+                optionLayout.classList.remove('show')
+            }
+        })
+
+    </script>
 
     @RenderSection("scripts", required: false)
 
@@ -148,333 +176,8 @@
 </html>
 
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
 
-    body {
-        height: 100vh;
-        font-family: sans-serif;
-        padding: 0;
-    }
 
-    /* BLOG */
-    /* HEADER */
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-        height: 70px;
-        background-color: #83c0cf;
-        position: sticky;
-        right: 0;
-        top: 0;
-        z-index: 10;
-    }
-
-    .header_detail {
-        display: flex;
-        justify-content: space-between;
-        height: 70px;
-        background-color: #e6e0bb;
-        z-index: 10;
-    }
-
-    .header_item-first {
-        height: 40px;
-        margin: 15px 30px;
-        display: flex;
-    }
-
-        .header_item-first img {
-            width: 40px;
-            height: 100%;
-        }
-
-        .header_item-first span {
-            color: rgb(75, 70, 70);
-            text-decoration: none;
-            font-size: 1.4rem;
-            margin: 12px;
-            display: flex;
-        }
-
-        .header_item-first i,
-        .header_item-first span {
-            display: flex;
-            align-items: center;
-        }
-
-        .header_item-first i {
-            margin-right: 5px;
-        }
-
-    .header_item-second {
-        height: 40px;
-        margin: 15px 30px;
-        display: flex;
-    }
-
-        .header_item-second .dropdown {
-            display: flex;
-            align-items: center;
-            margin: 0 10px;
-            cursor: pointer;
-        }
-
-        .header_item-second .img-avatar {
-            height: 35px;
-            width: 35px;
-            border-radius: 50%;
-            margin: 0 10px;
-            cursor: pointer;
-        }
-
-        .header_item-second .dropdown:first-child .dropdown-menu {
-            width: 400px;
-        }
-
-    .dropdown-item .img-blog {
-        height: 35px;
-        width: 35px;
-        cursor: pointer;
-    }
-
-    .header_search {
-        margin: 15px 0;
-        display: flex;
-        width: 300px;
-        padding: 0 10px;
-        border: 2px solid rgb(165, 162, 162);
-        border-radius: 15px;
-    }
-
-    .header_name {
-        display: flex;
-        align-items: center;
-        margin: 15px 0;
-        padding: 0 10px;
-    }
-
-    .header_search i,
-    .header_search input {
-        display: flex;
-        align-items: center;
-    }
-
-    .header_search i {
-        margin-right: 10px;
-        font-size: 1.2rem;
-        color: rgba(0, 0, 0, 0.6);
-    }
-
-    .header_search input {
-        width: 85%;
-        border: none;
-        outline: none;
-        background-color: #83c0cf;
-    }
-
-    .post_btn {
-        display: flex;
-        align-items: center;
-        margin-top: 15px;
-    }
-
-        .post_btn a {
-            margin-right: 25px;
-            background-color: #fe7a20;
-            border: none;
-            padding: 5px 15px;
-            border-radius: 15px;
-            color: #fff;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-    /* Blog Container */
-
-    .container_body {
-        padding: 50px 90px 60px;
-        background: linear-gradient(to top left, #58aec3, #ccdde4);
-    }
-
-    .container_header {
-        margin-bottom: 50px;
-    }
-
-    .container_blog {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .filter {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .filter_item {
-        margin: 0 20px;
-    }
-
-        .filter_item a {
-            border: 2px solid #fe7a20;
-            background-color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            color: #6d6953;
-            transition: 0.7s;
-            text-decoration: none;
-        }
-
-            .filter_item a:hover {
-                background-color: #fe7a20;
-                cursor: pointer;
-                color: white;
-                transition: 0.7s;
-            }
-
-    .blog_all-item {
-        width: 70%;
-        box-shadow: 0 6px 10px rgb(0 0 0 / 20%);
-        background-color: #daebf0;
-        padding: 30px;
-        border-radius: 20px;
-    }
-
-    .blog_item {
-        border: 2px solid rgba(0, 0, 0, 0.2);
-        padding: 20px;
-        border-radius: 15px;
-        margin: 30px 0;
-        box-shadow: 0 6px 10px rgb(0 0 0 / 20%);
-    }
-
-    .blog_item-header {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .blog_item-option {
-        display: flex;
-        align-items: center;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .blog_option li {
-        padding: 5px 10px 2px;
-        cursor: pointer;
-    }
-
-    .blog_avatar {
-        display: flex;
-    }
-
-        .blog_avatar i {
-            height: 25px;
-            width: 25px;
-            border-radius: 50px;
-            font-size: 1.3rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .blog_avatar span {
-            display: flex;
-            align-items: center;
-            margin-left: 10px;
-            font-size: 1.4rem;
-            font-weight: bold;
-        }
-
-    .blog_content a {
-        text-decoration: none;
-        color: black;
-    }
-
-        .blog_content a h1 {
-            margin: 15px 0 10px;
-        }
-
-    .blog_content span {
-        overflow: hidden;
-        display: block;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 1;
-    }
-
-    .blog_time {
-        color: rgba(0, 0, 0, 0.5);
-        margin-top: 10px;
-    }
-
-    .blog_time-comment {
-        font-size: 0.8rem;
-        color: rgba(0, 0, 0, 0.3);
-        margin-top: 5px;
-    }
-
-    .blog_all-categories {
-        width: 24%;
-        border-left: 1px solid rgba(0, 0, 0, 0.2);
-        padding: 23px;
-    }
-
-    .blog_categories {
-        margin: 15px 0;
-    }
-
-        .blog_categories li {
-            list-style: none;
-            margin: 25px 0;
-            width: 150px;
-        }
-
-        .blog_categories a {
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-            background-color: rgba(0, 0, 0, 0.1);
-            color: black;
-            padding: 7px 40px;
-            border-radius: 15px;
-        }
-
-    .pagination {
-        display: flex;
-        justify-content: center;
-    }
-
-        .pagination li {
-            list-style: none;
-            background-color: #e6e0bb;
-            margin: 0 5px;
-            padding: 5px 10px;
-            font-weight: bold;
-            border-radius: 10px;
-            color: white;
-        }
-
-            .pagination li a {
-                text-decoration: none;
-            }
-
-    /* animation */
-    .left-to-right {
-        transform: translateX(-150%);
-        transition: 1.5s;
-    }
-
-        .left-to-right.start {
-            transform: translateX(0)
-        }
 </style>
 

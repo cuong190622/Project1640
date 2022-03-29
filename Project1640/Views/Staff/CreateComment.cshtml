@@ -1,23 +1,25 @@
 ﻿@model Project1640.Models.Comment
-@{ 
+@{
     TempData["IdeaId"] = TempData["IdeaId"];
 }
-@using (Html.BeginForm("CreateComment", "Staff", FormMethod.Post, new {IdeaId = TempData["IdeaId"], enctype = "multipart/form-data" }))
+
+@using (Html.BeginForm("CreateComment", "Staff", FormMethod.Post, new { IdeaId = TempData["IdeaId"], enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        <div class="col-md-10">
-            @Html.TextAreaFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } }) @Html.CheckBoxFor(model => model.Status)  Anonymously <input type="submit" value="Add Comment" class="btn btn-default" />
-        </div>
-        <div style="display: none;">
-            @Html.EditorFor(model => model.IdeaId, new { htmlAttributes = new { @class = "form-control", Value = TempData["IdeaId"] } })
-        </div>
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "comment_write-input", @placeholder = "Text your comment...", name = "clearCache", autocomplete = "off" } })
+
+    <div class="checkbox">
+        @Html.CheckBoxFor(model => model.Status) Anonymously
     </div>
+
+    <input type="submit" value="Add Comment" class="btn btn-default btn_add-comment" />
+
+    <div style="display: none;">
+        @Html.EditorFor(model => model.IdeaId, new { htmlAttributes = new { @class = "form-control", Value = TempData["IdeaId"] } })
     </div>
+
 }
 

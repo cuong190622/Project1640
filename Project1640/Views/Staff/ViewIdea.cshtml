@@ -1,7 +1,23 @@
 ﻿@model Project1640.Models.Idea
 
 @{
-    Layout = "~/Views/Staff/_LayoutStaff.cshtml";
+
+    var a = "ab";
+    if (TempData["UserEmail"] != null)
+    {
+        a = TempData["UserEmail"].ToString();
+    }
+
+    TempData["UserEmail"] = a;
+
+    var b = "ab";
+    if (TempData["UserId"] != null)
+    {
+        b = TempData["UserId"].ToString();
+    }
+
+    TempData["UserId"] = b;
+
     TempData["UserEmail"] = TempData["UserEmail"];
     TempData["UserId"] = TempData["UserId"];
     TempData["IdeaId"] = TempData["IdeaId"];
@@ -22,10 +38,7 @@
 </head>
 
 <body>
-    <div>
-        <h4> @Html.DisplayFor(model => model.Title)</h4>
-        @Html.DisplayFor(model => model.Views) Views
-        @{Html.RenderAction("ShowCategory", "Staff", new { CategoryId = Model.CategoryId });}
+
 
     <div class="blog_detail">
 
@@ -38,381 +51,259 @@
                 </span>
             </div>
 
-            File Upload: @{Html.RenderAction("ShowFile", "Staff", new { IdeaId = Model.Id });}
+            <div class="header_name">
+                <span>Blog Detail</span>
+            </div>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Date) : @Html.DisplayFor(model => model.Date) <br />
-                By User: @{
-                    if (Model.Status == true)
-                    {
-                        { Html.RenderAction("ShowUser", "Staff", new { UserId = Model.UserId }); }
-                    }
-                    else
-                    {
-                        @Html.DisplayName(Anonymously)
-                    }
-                }
-            </dt>
-        </dl>
-    </div>
+            <div class="header_item-first header_option">
+                <i class="fa-solid fa-align-justify"></i>
+            </div>
+
+            <div class="header_item-second">
+                <div class="dropdown">
+                    <p class="post_btn">@Html.ActionLink("Post Idea", "CreateIdea")</p>
+                </div>
+                <div class="dropdown">
+                    <i class="fa-solid fa-user" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>
+                            <p class="dropdown-item">@a.Split('@')[0] </p>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="@Url.Action( "LogOut", "Login" )">Log Out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container_body_blog">
+
+            <div class="container_blog-view">
+
+                <div class="blog_react">
+                    <div class="blog_react-name">
+                        <h3>
+                            @{
+                                if (Model.Status == true)
+                                {
+                                    { Html.RenderAction("ShowUser", "Staff", new { UserId = Model.UserId }); }
+                                }
+                                else
+                                {
+                                    @Html.DisplayName(Anonymously)
+                                }
+                            }
+                        </h3>
+                    </div>
 
                     <div class="blog_react-item">
                         <div class="react_btn">
                             @{Html.RenderAction("Like", "Staff");}
                         </div>
 
-    @{Html.RenderAction("ShowComment", "Staff");}
-    @{Html.RenderAction("CreateComment", "Staff", new { IdeaId = Model.Id });}
-    <p>
-        @Html.ActionLink("Back to List", "Index")
-    </p>
+                        <div class="react_commment">
+                            <i class="fa-solid fa-comment"></i>
+                            <!--<span>11</span>-->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="blog_post">
+                    <h1>@Html.DisplayFor(model => model.Title)</h1>
+
+                    <div class="blog_item-header">
+                        <div class="blog_avatar">
+                            <i class="fa-solid fa-user img-avatar" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                            <span>
+                                @{
+                                    if (Model.Status == true)
+                                    {
+                                        { Html.RenderAction("ShowUser", "Staff", new { UserId = Model.UserId }); }
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayName(Anonymously)
+                                    }
+                                }
+                            </span>
+                        </div>
+
+                        <div class="blog_item-option">
+
+                            <div class="dropdown">
+                                <i class="btn btn-secondary fa-solid fa-ellipsis" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                </i>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="#">Copy Link</a></li>
+                                    <li><a class="dropdown-item" href="#">Download</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="blog_time">
+                        <span>
+                            @Html.DisplayFor(model => model.Views) Views
+                            <i class="fa-solid fa-circle-dot"></i>
+                            @Html.DisplayFor(model => model.Date)
+                        </span>
+                    </div>
+
+                    <div class="blog_post-content">
+                        <p>
+                            @Html.DisplayFor(model => model.Content)
+                        </p>
+                    </div>
+
+                    <div class="blog_post-content">
+                        <p>
+                            File Upload: @{Html.RenderAction("ShowFile", "Staff", new { IdeaId = Model.Id });}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="empty">
+                    <span>@{Html.RenderAction("ShowCategory", "Staff", new { CategoryId = Model.CategoryId });}</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="comment_layout">
+        <div class="comment_content">
+
+            <div class="comment_close">
+                <i class="fa-solid fa-x"></i>
+            </div>
+
+            <div class="comment_amount">
+                <span>Comment</span>
+            </div>
+
+            <div class="comment_write">
+                <div class="blog_avatar">
+                    <i class="fa-solid fa-user img-avatar" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                </div>
+                <!--<input type="text" placeholder="Text your comment..." class="comment_write-input">-->
+                <div class="form_input-comment">
+                    @{Html.RenderAction("CreateComment", "Staff", new { IdeaId = Model.Id });}
+                </div>
+            </div>
+
+            <div class="comment_list">
+                @{Html.RenderAction("ShowComment", "Staff");}
+            </div>
+        </div>
+    </div>
+
+    <div class="options_layout">
+        <div class="options_content">
+
+            <div class="options_close">
+                <i class="fa-solid fa-x"></i>
+            </div>
+
+            <ul>
+                <li>
+                    <i class="fa-solid fa-file-export"></i>
+                    <p class="post_btn" style="margin: 0;">@Html.ActionLink("Post Idea", "CreateIdea")</p>
+                </li>
+                <li>
+                    <i class="fa-solid fa-user"></i>
+                    <p class="dropdown-item" style="margin: 0;">@a.Split('@')[0] </p>
+                </li>
+                <li>
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <a class="dropdown-item" href="@Url.Action( "LogOut", "Login" )">Log Out</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+
+    <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
+
+    <script>
+        var classLike = document.querySelector('.react_like')
+        var classDisLike = document.querySelector('.react_dislike')
+        var reactLike = document.querySelector('.react_like input')
+        var reatcDisLike = document.querySelector('.react_dislike input')
+        var amountLike = document.querySelector('.react_like span')
+        var amountDisLike = document.querySelector('.react_dislike span')
+        var reactCmt = document.querySelector('.react_commment')
+        var cmtLayout = document.querySelector('.comment_layout')
+        var closeBtn = document.querySelector('.comment_close i')
+        var headerOptions = document.querySelector('.header_option i')
+        var optionLayout = document.querySelector('.options_layout')
+        var closeBtnOption = document.querySelector('.options_close')
+
+        reactLike.addEventListener('click', (e) => {
+            var like = document.querySelector('.blog_react-item .like')
+            var dislike = document.querySelector('.blog_react-item .dislike')
+
+            if (like) {
+                classLike.classList.remove('like')
+            } else {
+                classDisLike.classList.remove('dislike')
+                classLike.classList.add('like')
+            }
+        })
+
+        reatcDisLike.addEventListener('click', (e) => {
+            var like = document.querySelector('.blog_react-item .like')
+            var dislike = document.querySelector('.blog_react-item .dislike')
+
+            if (dislike) {
+                classDisLike.classList.remove('dislike')
+            } else {
+                classLike.classList.remove('like')
+                classDisLike.classList.add('dislike')
+            }
+        })
+
+        closeBtn.addEventListener('click', (e) => {
+            cmtLayout.classList.remove('show')
+        })
+
+        // Giai thich
+        cmtLayout.addEventListener('click', function (e) {
+            if (e.target == e.currentTarget) {
+                cmtLayout.classList.remove('show')
+            }
+        })
+
+        reactCmt.addEventListener('click', (e) => {
+            cmtLayout.classList.add('show')
+        })
+
+        headerOptions.addEventListener('click', (e) => {
+            optionLayout.classList.add('show')
+        })
+
+        closeBtnOption.addEventListener('click', (e) => {
+            optionLayout.classList.remove('show')
+        })
+
+        optionLayout.addEventListener('click', (e) => {
+            if (e.target == e.currentTarget) {
+                optionLayout.classList.remove('show')
+            }
+        })
+
+    </script>
+
+    <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
+
 </body>
 </html>
 
 <style>
 
-    .header_detail {
-        display: flex;
-        justify-content: space-between;
-        height: 70px;
-        background-color: #e6e0bb;
-        z-index: 10;
-    }
+    
 
-    .header_item-first {
-        height: 40px;
-        margin: 15px 30px;
-        display: flex;
-    }
-
-        .header_item-first img {
-            width: 40px;
-            height: 100%;
-        }
-
-        .header_item-first span {
-            color: rgb(75, 70, 70);
-            text-decoration: none;
-            font-size: 1.4rem;
-            margin: 12px;
-            display: flex;
-        }
-
-        .header_item-first i,
-        .header_item-first span {
-            display: flex;
-            align-items: center;
-        }
-
-        .header_item-first i {
-            margin-right: 5px;
-        }
-
-    .header_item-second {
-        height: 40px;
-        margin: 15px 30px;
-        display: flex;
-    }
-
-        .header_item-second .dropdown {
-            display: flex;
-            align-items: center;
-            margin: 0 10px;
-            cursor: pointer;
-        }
-
-        .header_item-second .img-avatar {
-            height: 35px;
-            width: 35px;
-            border-radius: 50%;
-            margin: 0 10px;
-            cursor: pointer;
-        }
-
-    .container_body {
-        margin: 50px 90px 60px;
-    }
-
-    .container_blog {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .blog_react {
-        width: 20%;
-        margin-right: 50px;
-    }
-
-    .blog_post {
-        width: 60%;
-        margin-right: 10px;
-    }
-
-    .empty {
-        width: 20%;
-    }
-
-    .blog_react-name {
-        border-bottom: 2px solid rgb(173, 167, 167);
-        padding-bottom: 5px;
-    }
-
-    .blog_react-item {
-        margin-top: 37px;
-        font-size: 1.5rem;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .react_like i,
-    .react_dislike i,
-    .react_commment i {
-        cursor: pointer;
-    }
-
-    .react_like.like i {
-        color: #0084ff;
-    }
-
-    .react_dislike.dislike i {
-        color: red;
-    }
-
-    .react_btn {
-        width: 70%;
-    }
-
-        .react_btn form {
-            display: flex;
-            width: 100%;
-            justify-content: space-between;
-        }
-
-    .react_like,
-    .react_dislike {
-        display: flex;
-        align-items: center;
-        border: 2px solid #fe7a20;
-        padding-left: 5px;
-        margin: 0 10px;
-        border-radius: 10px;
-    }
-
-        .react_like:hover,
-        .react_dislike:hover,
-        .react_like input:hover,
-        .react_dislike input:hover {
-            background-color: #fe7a20;
-            color: white;
-        }
-
-        .react_like input,
-        .react_dislike input {
-            height: 25px;
-            padding: 0;
-            font-size: 1rem;
-            padding: 0 5px;
-            background-color: white;
-            border: none;
-            border-radius: 10px;
-        }
-
-    .blog_post h1 {
-        margin-bottom: 45px;
-    }
-
-    .blog_post-content {
-        margin: 30px 0;
-    }
-
-        .blog_post-content img {
-            margin: 0 0 30px;
-            height: 500px;
-            width: 100%;
-            image-rendering: pixelated;
-            object-fit: cover;
-        }
-
-        .blog_post-content p {
-            text-align: justify;
-            text-indent: 50px;
-        }
-
-    .blog_item-header .img-avatar {
-        height: 35px;
-        width: 35px;
-        font-size: 2rem;
-        border-radius: 50%;
-        margin: 0 10px;
-        cursor: pointer;
-    }
-
-    .blog_item-header .img-avatar {
-        height: 35px;
-        width: 35px;
-        font-size: 1.5rem;
-        border-radius: 50%;
-        margin: 0 10px;
-        cursor: pointer;
-    }
-
-    .blog_item-header {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .blog_time {
-        color: rgba(0, 0, 0, 0.5);
-        margin-top: 5px;
-        margin-left: 10px;
-    }
-
-    .post_btn {
-        display: flex;
-        align-items: center;
-        margin-top: 15px;
-    }
-
-        .post_btn a {
-            margin-right: 25px;
-            background-color: #fe7a20;
-            border: none;
-            padding: 5px 15px;
-            border-radius: 15px;
-            color: #fff;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-    /* LAYOUT COMMENT */
-
-    .overlay,
-    .comment_layout {
-        position: fixed;
-        background-color: rgba(0, 0, 0, 0.6);
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: none;
-        z-index: 10;
-    }
-
-    .show {
-        display: block;
-    }
-
-    .add,
-    .comment_content {
-        background-color: white;
-        top: 0;
-        bottom: 0;
-        width: 650px;
-        height: 100%;
-        right: 0;
-        padding: 20px;
-        animation: slide ease 0.8s;
-        position: relative;
-        max-height: 100%;
-        overflow: scroll
-    }
-
-    .comment_close {
-        width: 100%;
-        height: 30px;
-    }
-
-        .comment_close i {
-            font-size: 1.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            float: right;
-        }
-
-    .comment_amount span {
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    .comment_write {
-        margin-top: 30px;
-        display: flex;
-    }
-
-    .comment_write-input {
-        width: 100%;
-        margin: 0 15px;
-        border: none;
-        outline: none;
-        border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-    }
-
-    .comment_list {
-        margin: 20px 0 20px;
-        position: relative;
-    }
-
-    .comment_item {
-        display: flex;
-        margin: 20px 0;
-        position: relative;
-    }
-
-        .comment_write .blog_avatar,
-        .comment_item .blog_avatar {
-            width: 6%;
-        }
-
-    .comment_item-content {
-        margin-left: 10px;
-        width: 92%;
-    }
-
-        .comment_item-content span {
-            margin: 5px 0;
-            font-weight: bold;
-        }
-
-        .comment_item-content p {
-            margin-bottom: 0;
-            width: 100%;
-        }
-
-    .form_input-comment {
-        width: 90%;
-    }
-
-    .hide {
-        display: none;
-    }
-
-    .blog_time-comment {
-        font-size: 0.8rem;
-        color: rgba(0, 0, 0, 0.3);
-        margin-top: 5px;
-    }
-
-    .checkbox {
-        margin: 14px;
-    }
-
-    .btn_add-comment {
-        border: 2px solid #fe7a20;
-        background-color: white;
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-weight: bold;
-        color: #6d6953;
-        transition: 0.7s;
-        text-decoration: none;
-        float: right;
-    }
-
-        .btn_add-comment:hover {
-            background-color: #fe7a20;
-            transition: 0.5s;
-            color: white;
-        }
 </style>
