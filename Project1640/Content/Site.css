@@ -103,15 +103,6 @@ body {
     cursor: pointer;
 }
 
-.header_search {
-    margin: 15px 0;
-    display: flex;
-    width: 300px;
-    padding: 0 10px;
-    border: 2px solid rgb(165, 162, 162);
-    border-radius: 15px;
-}
-
 .header_name {
     display: flex;
     align-items: center;
@@ -119,24 +110,6 @@ body {
     padding: 0 10px;
 }
 
-.header_search i,
-.header_search input {
-    display: flex;
-    align-items: center;
-}
-
-.header_search i {
-    margin-right: 10px;
-    font-size: 1.2rem;
-    color: rgba(0, 0, 0, 0.6);
-}
-
-.header_search input {
-    width: 85%;
-    border: none;
-    outline: none;
-    background-color: #83c0cf;
-}
 
 .post_btn {
     display: flex;
