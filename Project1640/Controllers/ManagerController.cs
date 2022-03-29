@@ -39,17 +39,38 @@ namespace Project1640.Controllers
         [HttpPost]
         public ActionResult CreateCategory(Category a )
         {
-            using (var cate = new EF.CMSContext())
+
+            CustomValidationCategory(a);
+            if (!ModelState.IsValid)
             {
-                cate.Category.Add(a);
-                cate.SaveChanges();
+                return View(a); // return lai Create.cshtml
+                                    //di kem voi data ma user da go vao
+            }
+            else
+            {
+
+                using (var cate = new EF.CMSContext())
+                {
+                    cate.Category.Add(a);
+                    cate.SaveChanges();
+                }
+
+                TempData["message"] = $"Successfully add class {a.Name} to system!";
+
+                return RedirectToAction("Index");
             }
 
-            TempData["message"] = $"Successfully add class {a.Name} to system!";
 
-            return RedirectToAction("Index");
+
         }
 
+        private void CustomValidationCategory(Category a)
+        {
+            if (string.IsNullOrEmpty(a.Description))
+            {
+                ModelState.AddModelError("Description", "Please input Description");
+            }
+        }
 
         [HttpGet]
         public ActionResult EditCategory(int id)
@@ -65,14 +86,24 @@ namespace Project1640.Controllers
         [HttpPost]
         public ActionResult EditCategory(int id, Category a)
         {
-            using (var cate = new EF.CMSContext())
+            CustomValidationCategory(a);
+            if (!ModelState.IsValid)
             {
-                cate.Entry<Category>(a).State = System.Data.Entity.EntityState.Modified;
+                return View(a); // return lai Create.cshtml
+                                //di kem voi data ma user da go vao
+            }
+            else {
+                using (var cate = new EF.CMSContext())
+                {
+                    cate.Entry<Category>(a).State = System.Data.Entity.EntityState.Modified;
 
-                cate.SaveChanges();
+                    cate.SaveChanges();
+                }
+
+                return RedirectToAction("Index");
             }
 
-            return RedirectToAction("Index");
+              
         }
 
         [HttpGet]

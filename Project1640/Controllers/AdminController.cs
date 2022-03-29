@@ -33,31 +33,55 @@ namespace Project1640.Controllers
         public async Task<ActionResult> Createstaff(UserInfo staff)
         {
 
+            CustomValidationStaff(staff);
 
-            var context = new CMSContext();
-            var store = new UserStore<UserInfo>(context);
-            var manager = new UserManager<UserInfo>(store);
-
-            var user = await manager.FindByEmailAsync(staff.Email);
-
-            if (user == null)
+            if (!ModelState.IsValid)
             {
-                user = new UserInfo
-                {
-                    UserName = staff.Email.Split('@')[0],
-                    Email = staff.Email,
-                    Age = staff.Age,
-                    WorkingPlace = staff.WorkingPlace,
-                    DoB = staff.DoB,
-                    DepartmentId = staff.DepartmentId,
-                    Role = "staff",
-                    PasswordHash = "123qwe123",
-                    Name = staff.Name
-                };
-                await manager.CreateAsync(user, user.PasswordHash);
-                await CreateRole(staff.Email, "staff");
+                ViewBag.Class = getList();
+                return View(staff);
             }
-            return RedirectToAction("Index");
+            else
+            {
+                var context = new CMSContext();
+                var store = new UserStore<UserInfo>(context);
+                var manager = new UserManager<UserInfo>(store);
+
+                var user = await manager.FindByEmailAsync(staff.Email);
+
+                if (user == null)
+                {
+                    user = new UserInfo
+                    {
+                        UserName = staff.UserName,
+                        Email = staff.Email,
+                        Age = staff.Age,
+                        WorkingPlace = staff.WorkingPlace,
+                        DoB = staff.DoB,
+                        DepartmentId = staff.DepartmentId,
+                        Role = "staff",
+                        PasswordHash = "123qwe123",
+                        Name = staff.Name
+                    };
+                    await manager.CreateAsync(user, user.PasswordHash);
+                    await CreateRole(staff.Email, "staff");
+                }
+                return RedirectToAction("Index");
+            }
+
+            
+        }
+
+        private void CustomValidationStaff(UserInfo staff)
+        {
+            if (string.IsNullOrEmpty(staff.Email))
+            {
+                ModelState.AddModelError("Email", "Please input Email");
+            }
+            if (string.IsNullOrEmpty(staff.UserName))
+            {
+                ModelState.AddModelError("UserName", "Please input Name");
+            }
+           
         }
 
         public ActionResult ViewAccount(string id)
@@ -207,7 +231,7 @@ namespace Project1640.Controllers
         {
             using (var abc = new EF.CMSContext()) //create a new value abc is an object of CMSContext
             {
-                var stx = abc.Category.Select(p => new SelectListItem //Select anonymous
+                var stx = abc.Department.Select(p => new SelectListItem //Select anonymous
                 {
                     Text = p.Name,
                     Value = p.Id.ToString()

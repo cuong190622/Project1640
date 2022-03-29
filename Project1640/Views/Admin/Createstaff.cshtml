@@ -10,8 +10,11 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>AddStaff</title>
+
 </head>
 <body>
+    
+
     @using (Html.BeginForm("Createstaff", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
@@ -28,7 +31,7 @@
                    )
                 </div>
             </div>
-      
+
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })

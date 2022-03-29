@@ -3,6 +3,11 @@
     ViewBag.Title = "CreateCategory";
 }
 
+@if (!ViewData.ModelState.IsValid)
+{
+    @Html.ValidationSummary(false, "Error Summary", new { @class = "text-danger" })
+}
+
 @using (Html.BeginForm(FormMethod.Post))
 {
     @Html.HiddenFor(m => m.Id)
