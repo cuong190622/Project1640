@@ -50,8 +50,8 @@ namespace Project1640.Controllers
                 }
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Staff))
                 {
-                    TempData["UserEmail"] = user.Email;
-                    TempData["UserId"] = user.Id;
+                    TempData["UserEmail"] = finder.Email;
+                    TempData["UserId"] = finder.Id;
                     return RedirectToAction("Index", "Staff");
                 }
 

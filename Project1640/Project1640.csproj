@@ -166,10 +166,6 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
-    <Compile Include="EF\202203250234150_InitialCreate.cs" />
-    <Compile Include="EF\202203250234150_InitialCreate.Designer.cs">
-      <DependentUpon>202203250234150_InitialCreate.cs</DependentUpon>
-    </Compile>
     <Compile Include="EF\CMSContext.cs" />
     <Compile Include="EF\Configuration.cs" />
     <Compile Include="Global.asax.cs">
@@ -188,6 +184,7 @@
     <Compile Include="Models\SetDate.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Models\UserInRole.cs" />
+    <Compile Include="Models\VerifyCode.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -355,6 +352,8 @@
     <Content Include="Views\Admin\ViewIdea.cshtml" />
     <Content Include="Views\Admin\ViewAccount.cshtml" />
     <Content Include="Views\Admin\EditSetDate.cshtml" />
+    <Content Include="Views\Staff\ChangePass.cshtml" />
+    <Content Include="Views\Staff\BlockTime.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -384,11 +383,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="EF\202203250234150_InitialCreate.resx">
-      <DependentUpon>202203250234150_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
