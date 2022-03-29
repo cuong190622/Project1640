@@ -52,7 +52,7 @@ namespace Project1640.Controllers
 
 
         [HttpGet]
-        public ActionResult EditCategory(int id)
+        public ActionResult EditCategory(int id )
         {
             // lay category qua id tu db
             using(var cate = new EF.CMSContext())

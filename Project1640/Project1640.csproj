@@ -352,6 +352,7 @@
     <Content Include="Views\Admin\ViewIdea.cshtml" />
     <Content Include="Views\Admin\ViewAccount.cshtml" />
     <Content Include="Views\Admin\EditSetDate.cshtml" />
+    <Content Include="Views\Admin\ViewAcc.cshtml" />
     <Content Include="Views\Staff\ChangePass.cshtml" />
     <Content Include="Views\Staff\BlockTime.cshtml" />
   </ItemGroup>
