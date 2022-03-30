@@ -51,6 +51,7 @@ namespace Project1640.Controllers
                     DoB = staff.DoB,
                     DepartmentId = staff.DepartmentId,
                     Role = "staff",
+                    PhoneNumber=staff.PhoneNumber,
                     PasswordHash = "123qwe123",
                     Name = staff.Name
                 };
@@ -60,17 +61,31 @@ namespace Project1640.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
         public ActionResult ViewAccount(string id)
         {
+            CMSContext context = new CMSContext();
+            var roleManager = new Microsoft.AspNet.Identity.RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var userManager = new Microsoft.AspNet.Identity.UserManager<UserInfo>(new UserStore<UserInfo>(context));
             using (var bwCtx = new CMSContext())
             {
                 ViewBag.Class = getList();
                 var ct = bwCtx.Users.FirstOrDefault(t => t.Id == id);
-                return RedirectToAction("Index"); //redirect to action in the same controller
-            }
+                return View(ct);
+            }   
         }
 
-        // ########################################################
+        [HttpPost]
+        public ActionResult ViewAccount(string id, UserInfo newUser)
+        {
+            CMSContext context = new CMSContext();
+            var roleManager = new Microsoft.AspNet.Identity.RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var userManager = new Microsoft.AspNet.Identity.UserManager<UserInfo>(new UserStore<UserInfo>(context));
+            return RedirectToAction("ViewAccount");
+
+            // ########################################################
+        }
+
         [HttpGet]
         public ActionResult CreateManager()
         {
@@ -101,6 +116,7 @@ namespace Project1640.Controllers
                     DepartmentId = mana.DepartmentId,
                     Role = "manager",
                     PasswordHash = "123qwe123",
+                    PhoneNumber = mana.PhoneNumber,
                     Name = mana.Name
                 };
                 await manager.CreateAsync(user, user.PasswordHash);
@@ -140,6 +156,7 @@ namespace Project1640.Controllers
                     DepartmentId = coor.DepartmentId,
                     Role = "coor",
                     PasswordHash = "123qwe123",
+                    PhoneNumber = coor.PhoneNumber,
                     Name = coor.Name
                 };
                 await manager.CreateAsync(user, user.PasswordHash);
