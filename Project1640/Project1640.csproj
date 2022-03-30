@@ -199,7 +199,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
-    <Content Include="FileUpload\authors.txt" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
@@ -226,9 +225,6 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="FileUpload\ASM1.docx" />
-    <Content Include="FileUpload\ASM1Slide %282%29.pptx" />
-    <Content Include="FileUpload\ASM2_1641.pdf" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -355,6 +351,8 @@
     <Content Include="Views\Admin\ViewAcc.cshtml" />
     <Content Include="Views\Staff\ChangePass.cshtml" />
     <Content Include="Views\Staff\BlockTime.cshtml" />
+    <Content Include="Views\Login\RSPEmail.cshtml" />
+    <Content Include="Views\Login\RSPConfirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -372,6 +370,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="FileUpload\" />
     <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <ItemGroup>

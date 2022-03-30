@@ -38,9 +38,9 @@
             box-shadow: 0 2px 5px 0 rgba(51, 62, 73, 0.1);
         }
 
-        .form .heading {
-            font-size: 2rem;
-        }
+            .form .heading {
+                font-size: 2rem;
+            }
 
         .form-group {
             display: flex;
@@ -83,9 +83,9 @@
             cursor: pointer;
         }
 
-        .form-submit:hover {
-            background-color: #1ac7b6;
-        }
+            .form-submit:hover {
+                background-color: #1ac7b6;
+            }
 
         .message ul,
         .message span {
@@ -101,42 +101,25 @@
 <body>
     <div class="main">
 
-        @using (Html.BeginForm("LogIn", "Login", FormMethod.Post, new { @class = "form", role = "form", _lpchecked = "1" }))
+        @using (Html.BeginForm("RSPConfirm", "Login", FormMethod.Post, new { @class = "form", role = "form", _lpchecked = "1" }))
         {
 
-            <h3 class="heading"> Login </h3>
-
-            <div class="form-group required">
-
-                @Html.LabelFor(m => m.Email, htmlAttributes: new { @class = "form-label" })
-
-                @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control" } })
-
-            </div>
-
-            <div class="form-group required">
-
-                <label class="form-label">Password</label>
-
-                @Html.PasswordFor(m => m.PasswordHash, new { @class = "form-control" })
-
-            </div>
+            <h2 class="visually-hidden">Change Password</h2>
+            <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
+            <div class="mb-3 required " style="display: none;"><input class="form-control" type="text" name="id" id="id" value="@TempData["UserId"]" /></div>
+            <div class="mb-3 required "><input class="form-control" type="password" placeholder="New password" name="newpass" id="new" /></div>
+            <div class="mb-3 required "><input class="form-control" type="password" placeholder="Confirm new password" name="confirmpass" id="confirm" /></div>
+            <div class="mb-3 required "><input class="form-control" type="password" placeholder="Email confirmation code" name="verifycode" id="verify" /></div>
+            <button class="btn btn-primary d-block w-100" type="submit">Confirm</button>
+            <a href="@Url.Action( "LogOut" )">Back to login?</a>
 
             <div class="message">
-
                 @if (!ViewData.ModelState.IsValid)
                 {
-
                     @Html.ValidationSummary(false, "Error Summary", new { @class = "text-danger" });
-
                 }
-
             </div>
 
-            <button class="form-submit" type="submit"> Login </button>
-            <br />
-            <div class="form-text">Contact to your Organization to create new Account! <a href="@Url.Action( "RSPEmail")">Forgot password?</a></div>
-        
         }
 
     </div>
