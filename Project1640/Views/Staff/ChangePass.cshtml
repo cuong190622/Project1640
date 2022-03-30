@@ -21,7 +21,7 @@
     <section class="login-dark">
         @using (Html.BeginForm("ChangePass", "Staff", FormMethod.Post, new { @class = "form-horizontal", role = "form", _lpchecked = "1" }))
         {
-            <h2 class="visually-hidden">Change Password</h2>
+            <h3 class="">Change Password</h3>
             <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
             <div class="mb-3 required "><input class="form-control" type="password" placeholder="Old password" name="oldpass" id="old" /></div>
             <div class="mb-3 required "><input class="form-control"  type="password" placeholder="New password" name="newpass" id="new" /></div>
