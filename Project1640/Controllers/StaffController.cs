@@ -18,75 +18,71 @@ namespace Project1640.Controllers
     public class StaffController : Controller
     {
 
-        public ActionResult Index(int id = 1)
+        public ActionResult Index(int id = 1, int categoryId = 0)
         {
-            using (var dbCT = new EF.CMSContext())
+            if(categoryId == 0)
             {
-                int Count = dbCT.Idea.Count();
-                if (Count <= 5)
+                using (var dbCT = new EF.CMSContext())
                 {
-                    TempData["PageNo"] = 1;
-                    TempData["PageMax"] = 1;
-                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
-                    return View(ideas);
-                }
-                else
-                {
-                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
-                    if (Count % 5 != 0)
-                    { 
-                        TempData["PageMax"] = (Count / 5) + 1;
+                    int Count = dbCT.Idea.Count();
+                    if (Count <= 5)
+                    {
+                        TempData["PageNo"] = 1;
+                        TempData["PageMax"] = 1;
+                        var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                        return View(ideas);
                     }
                     else
                     {
-                        TempData["PageMax"] = (Count / 5);
+                        var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                        if (Count % 5 != 0)
+                        {
+                            TempData["PageMax"] = (Count / 5) + 1;
+                        }
+                        else
+                        {
+                            TempData["PageMax"] = (Count / 5);
+                        }
+                        TempData["PageNo"] = id;
+                        return View(ideas);
                     }
-                    TempData["PageNo"] = id;
-                    return View(ideas);
+
                 }
-
-            }
-        }
-
-        [HttpGet]
-        public ActionResult TestAddUser()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<ActionResult> TestAddUser(UserInfo a)
-        {
-            if (!ModelState.IsValid)//if user input wrong
-            {
-                return View(a);
             }
             else
             {
-                var context = new CMSContext();
-                var store = new UserStore<UserInfo>(context);
-                var manager = new UserManager<UserInfo>(store);
-
-                var user = await manager.FindByEmailAsync(a.Email);
-
-                if (user == null)
+                using (var dbCT = new EF.CMSContext())
                 {
-                    user = new UserInfo
+                    TempData["CategoryId"] = categoryId;
+                    int Count = dbCT.Idea.Where(p => p.CategoryId == categoryId).Count();
+                    if (Count <= 5)
                     {
-                        UserName = a.Email.Split('@')[0],
-                        Email = a.Email,
-                        Age = a.Age,
-                        Name = a.Name,
-                        Role = "trainer",
-                        PasswordHash = "123qwe123",
-                        DepartmentId = 1
+                        TempData["PageNo"] = 1;
+                        TempData["PageMax"] = 1;
+                        var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
+                        return View(ideas);
+                    }
+                    else
+                    {
+                        var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
+                        if (Count % 5 != 0)
+                        {
+                            TempData["PageMax"] = (Count / 5) + 1;
+                        }
+                        else
+                        {
+                            TempData["PageMax"] = (Count / 5);
+                        }
+                        TempData["PageNo"] = id;
+                        return View(ideas);
+                    }
 
-                    };
-                    await manager.CreateAsync(user, user.PasswordHash);
                 }
             }
-            return RedirectToAction("Index");
+            
         }
 
+     
         private List<SelectListItem> getList()
         {
             using (var abc = new EF.CMSContext()) //create a new value abc is an object of CMSContext
@@ -459,6 +455,10 @@ namespace Project1640.Controllers
                                 return true;
                             }
                         }
+                        if (Int32.Parse(FirstDate.StartDate.Split('-')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) < Int32.Parse(FirstDate.EndDate.Split('-')[1]))
+                        {
+                            return true;
+                        }
                     }
 
                 }
@@ -589,6 +589,15 @@ namespace Project1640.Controllers
         public ActionResult BlockTime()
         {
             return View();
+        }
+        public ActionResult ShowAllCategory()
+        {
+
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _category = dbCT.Category.ToList();
+                return View(_category);
+            }
         }
     }
 }

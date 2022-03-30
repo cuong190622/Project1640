@@ -8,6 +8,7 @@
     int first = (No - 1) * 5;
     int last = No * 5;
     int a = 0;
+    string Anonymously = "Anonymously";
 }
 
 <div class="container_header">
@@ -43,7 +44,16 @@
                         <div class="blog_avatar">
                             <i class="fa-solid fa-user"></i>
                             <span>
-                                Users of CHAT LTD.
+                                @{
+                                    if (c.Status == true)
+                                    {
+                                        { Html.RenderAction("ShowUser", "Staff", new { UserId = c.UserId }); }
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayName(Anonymously)
+                                    }
+                                }
                             </span>
                         </div>
 
@@ -54,7 +64,6 @@
                                 </i>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <li><a class="dropdown-item" href="#">Copy Link</a></li>
-                                    <li><a class="dropdown-item" href="#">Report</a></li>
                                 </ul>
                             </div>
 
@@ -94,23 +103,43 @@
             if (TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) - 2) <= i
                 && TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) + 2) >= i)
             {
-                if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
+                if (TempData["CategoryId"] != null)
                 {
-                    <li>
-                        <a href="@Url.Action("Index", new {id = i})" style="color: red;">@i</a>
-                    </li>
+                    if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
+                    {
+                        <li>
+                            <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString())})" style="color: red;">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString())})">@i</a>
+                        </li>
+                    }
                 }
                 else
                 {
-                    <li>
-                        <a href="@Url.Action("Index", new {id = i})">@i</a>
-                    </li>
+                    if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
+                    {
+                        <li>
+                            <a href="@Url.Action("Index", new {id = i})" style="color: red;">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="@Url.Action("Index", new {id = i})">@i</a>
+                        </li>
+                    }
                 }
+
             }
 
         }
 
         <li>
+
             <a href="@Url.Action("Index", new {id = Int16.Parse(TempData["PageMax"].ToString())})">
                 <i class="fa-solid fa-caret-right"></i>
             </a>
@@ -124,17 +153,7 @@
         <h2>All Categories</h2>
 
         <div class="blog_categories">
-            <ul>
-                <li>
-                    <a href="">IT</a>
-                </li>
-                <li>
-                    <a href="">Design</a>
-                </li>
-                <li>
-                    <a href="">Business</a>
-                </li>
-            </ul>
+            @{Html.RenderAction("ShowAllCategory", "Staff");}        
         </div>
     </div>
 

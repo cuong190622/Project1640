@@ -321,7 +321,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Staff\_LayoutStaff.cshtml" />
     <Content Include="Views\Staff\CreateIdea.cshtml" />
-    <Content Include="Views\Staff\TestAddUser.cshtml" />
     <Content Include="Views\Staff\ViewIdea.cshtml" />
     <Content Include="Views\Staff\ShowComment.cshtml" />
     <Content Include="Views\Staff\CreateComment.cshtml" />
@@ -353,6 +352,7 @@
     <Content Include="Views\Staff\BlockTime.cshtml" />
     <Content Include="Views\Login\RSPEmail.cshtml" />
     <Content Include="Views\Login\RSPConfirm.cshtml" />
+    <Content Include="Views\Staff\ShowAllCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
