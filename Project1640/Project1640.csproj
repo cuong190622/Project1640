@@ -356,6 +356,10 @@
     <Content Include="Views\Login\RSPEmail.cshtml" />
     <Content Include="Views\Login\RSPConfirm.cshtml" />
     <Content Include="Views\Staff\ShowAllCategory.cshtml" />
+    <Content Include="Views\Admin\IndexCategory.cshtml" />
+    <Content Include="Views\Admin\CreateCategory.cshtml" />
+    <Content Include="Views\Admin\EditCategory.cshtml" />
+    <Content Include="Views\Admin\DeleteCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
