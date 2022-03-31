@@ -41,7 +41,7 @@
 
                 <h2 style="font-weight: bold;">Edit category and description</h2><br>
 
-                @using (Html.BeginForm("EditCategory", "Admin", FormMethod.Post))
+                @using (Html.BeginForm("EditCategory", "Manager", FormMethod.Post))
                 {
                     @Html.HiddenFor(m => m.Id)
 
