@@ -1,4 +1,4 @@
-﻿using ICSharpCode.SharpZipLib.Zip;
+﻿
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Project1640.EF;
@@ -18,75 +18,71 @@ namespace Project1640.Controllers
     public class StaffController : Controller
     {
 
-        public ActionResult Index(int id = 1)
+        public ActionResult Index(int id = 1, int categoryId = 0)
         {
-            using (var dbCT = new EF.CMSContext())
+            if(categoryId == 0)
             {
-                int Count = dbCT.Idea.Count();
-                if (Count <= 5)
+                using (var dbCT = new EF.CMSContext())
                 {
-                    TempData["PageNo"] = 1;
-                    TempData["PageMax"] = 1;
-                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
-                    return View(ideas);
-                }
-                else
-                {
-                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
-                    if (Count % 5 != 0)
-                    { 
-                        TempData["PageMax"] = (Count / 5) + 1;
+                    int Count = dbCT.Idea.Count();
+                    if (Count <= 5)
+                    {
+                        TempData["PageNo"] = 1;
+                        TempData["PageMax"] = 1;
+                        var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                        return View(ideas);
                     }
                     else
                     {
-                        TempData["PageMax"] = (Count / 5);
+                        var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                        if (Count % 5 != 0)
+                        {
+                            TempData["PageMax"] = (Count / 5) + 1;
+                        }
+                        else
+                        {
+                            TempData["PageMax"] = (Count / 5);
+                        }
+                        TempData["PageNo"] = id;
+                        return View(ideas);
                     }
-                    TempData["PageNo"] = id;
-                    return View(ideas);
+
                 }
-
-            }
-        }
-
-        [HttpGet]
-        public ActionResult TestAddUser()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<ActionResult> TestAddUser(UserInfo a)
-        {
-            if (!ModelState.IsValid)//if user input wrong
-            {
-                return View(a);
             }
             else
             {
-                var context = new CMSContext();
-                var store = new UserStore<UserInfo>(context);
-                var manager = new UserManager<UserInfo>(store);
-
-                var user = await manager.FindByEmailAsync(a.Email);
-
-                if (user == null)
+                using (var dbCT = new EF.CMSContext())
                 {
-                    user = new UserInfo
+                    TempData["CategoryId"] = categoryId;
+                    int Count = dbCT.Idea.Where(p => p.CategoryId == categoryId).Count();
+                    if (Count <= 5)
                     {
-                        UserName = a.Email.Split('@')[0],
-                        Email = a.Email,
-                        Age = a.Age,
-                        Name = a.Name,
-                        Role = "trainer",
-                        PasswordHash = "123qwe123",
-                        DepartmentId = 1
+                        TempData["PageNo"] = 1;
+                        TempData["PageMax"] = 1;
+                        var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
+                        return View(ideas);
+                    }
+                    else
+                    {
+                        var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
+                        if (Count % 5 != 0)
+                        {
+                            TempData["PageMax"] = (Count / 5) + 1;
+                        }
+                        else
+                        {
+                            TempData["PageMax"] = (Count / 5);
+                        }
+                        TempData["PageNo"] = id;
+                        return View(ideas);
+                    }
 
-                    };
-                    await manager.CreateAsync(user, user.PasswordHash);
                 }
             }
-            return RedirectToAction("Index");
+            
         }
 
+     
         private List<SelectListItem> getList()
         {
             using (var abc = new EF.CMSContext()) //create a new value abc is an object of CMSContext
@@ -105,8 +101,15 @@ namespace Project1640.Controllers
         [HttpGet]
         public ActionResult CreateIdea()
         {
-            ViewBag.Class = getList();
-            return View();
+            if (CheckDate())
+            {
+                ViewBag.Class = getList();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("BlockTime");
+            }
         }
 
         private List<Category> Convert(EF.CMSContext database, string formatIds)
@@ -142,13 +145,15 @@ namespace Project1640.Controllers
             }
             else
             {
-
                 var context = new CMSContext();
+                var store = new UserStore<UserInfo>(context);
+                var manager = new UserManager<UserInfo>(store);
+                var user = await manager.FindByIdAsync(User.Identity.GetUserId());
                 using (var Database = new EF.CMSContext())
                 {
                     a.Status = !a.Status;
                     a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-                    a.UserId = await FindIdUserByEmail(TempData["UserEmail"].ToString());
+                    a.UserId = user.Id;
                     Database.Idea.Add(a);
                     Database.SaveChanges();
                     await SaveFile( new FileUpload(), postedFile, a.Id);
@@ -200,7 +205,7 @@ namespace Project1640.Controllers
             }
         }
 
-        public ActionResult ShowComment(int IdeaId)
+        public ActionResult ShowComment(int IdeaId)  
         {
 
                 using (var dbCT = new EF.CMSContext())
@@ -222,21 +227,29 @@ namespace Project1640.Controllers
         [HttpGet]
         public ActionResult CreateComment(int IdeaId)
         {
-            TempData["IdeaId"] = IdeaId;
-            return View();
+                TempData["IdeaId"] = IdeaId;
+                return View();
         }
 
         [HttpPost]
         public async Task<ActionResult> CreateComment(Comment a)
         {
+            if (!CheckDate())
+            {
+                return RedirectToAction("BlockTime");
+            }
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+            var user = await manager.FindByIdAsync(User.Identity.GetUserId());
             using (var database = new EF.CMSContext())
             {
                 a.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
-                a.UserId = await FindIdUserByEmail(TempData["UserEmail"].ToString());
+                a.UserId = user.Id;
                 a.Status = !a.Status;
                 database.Comment.Add(a);
                 database.SaveChanges();
-                await SendEmail("123456789awdstk.mk@gmail.com", a.Content);
+                await SendEmail(FindEmailUserByCommentId(a.Id), "New user comment on your post! <p>Comment: " + a.Content + " </p>");
                 TempData["IdeaId"] = a.IdeaId;
             }
             return RedirectToAction("ViewIdea", new { IdeaId = a.IdeaId });
@@ -265,12 +278,13 @@ namespace Project1640.Controllers
         }
 
         [HttpGet]       
-        public ActionResult Like()
+        public ActionResult  Like()
         {
             var context = new CMSContext();
             var store = new UserStore<UserInfo>(context);
-            var manager = new UserManager<UserInfo>(store);           
-            Getlike(Int32.Parse(TempData["IdeaId"].ToString()), TempData["UserId"].ToString());
+            var manager = new UserManager<UserInfo>(store);
+            var user =  manager.FindById(User.Identity.GetUserId());
+            Getlike(Int32.Parse(TempData["IdeaId"].ToString()), user.Id);
             return View();
         }
 
@@ -279,18 +293,21 @@ namespace Project1640.Controllers
         {            
             using (var database = new EF.CMSContext())
             {
+                var context = new CMSContext();
+                var store = new UserStore<UserInfo>(context);
+                var manager = new UserManager<UserInfo>(store);
+                var user = await manager.FindByIdAsync(User.Identity.GetUserId());
                 int react = database.React.Where(c => c.IdeaId == a.IdeaId).Count();
                 if(react != 0)
                 {
-                    string u = await FindIdUserByEmail(TempData["UserEmail"].ToString());
-                    var listLiked = database.React.Where(c => c.IdeaId == a.IdeaId).Where(c => c.UserId == u).ToList();
+                    var listLiked = database.React.Where(c => c.IdeaId == a.IdeaId).Where(c => c.UserId == user.Id).ToList();
                     database.React.RemoveRange(listLiked);
                 }
                 if(like == "Up")
                 {
                     a.React_Type = true;
                 }else a.React_Type = false;
-                a.UserId = await FindIdUserByEmail(TempData["UserEmail"].ToString());
+                a.UserId = user.Id;
                 database.React.Add(a);
                 database.SaveChanges();
                 TempData["IdeaId"] = a.IdeaId;
@@ -363,12 +380,12 @@ namespace Project1640.Controllers
         }
         public async Task SendEmail(string email, string comment)
         {
-            var body = "<p>Email From: {0} </p><p>Message: {1}</p> <p>Comment: {2}</p>";
+            var body = "<p>Email From: {0} </p><p>Message: {1}</p>";
             var message = new MailMessage();
             message.To.Add(new MailAddress(email));  
             message.From = new MailAddress("ASPxyz123ab@gmail.com");  
-            message.Subject = "Someone comment in your post";
-            message.Body = string.Format(body, "Admin", "New user comment on your post!", comment);
+            message.Subject = "New email form CHAT.com.vn";
+            message.Body = string.Format(body, "Admin", comment);
             message.IsBodyHtml = true;
 
             using (var smtp = new SmtpClient())
@@ -394,6 +411,21 @@ namespace Project1640.Controllers
             return user.Id.ToString();
 
         }
+        public string FindEmailUserByCommentId(int commentId)
+        {
+            using (CMSContext context = new CMSContext()) //create a connection with the database
+            {
+                var email = (                    
+                    from c in context.Comment
+                    join i in context.Idea on c.IdeaId equals i.Id
+                    join u in context.Users on i.UserId equals u.Id
+                    select new {
+                        Id = c.Id,
+                        Email = u.Email
+                    }).Where(p => p.Id == commentId).First();
+                return email.Email.ToString();
+            }            
+        }
 
         public ActionResult ShowFile(int IdeaId)
         {
@@ -404,6 +436,167 @@ namespace Project1640.Controllers
                                         .Where(c => c.IdeaId == IdeaId)
                                         .ToList();
                 return View(_files);
+            }
+        }
+
+        public bool CheckDate()
+        {
+            using (var Database = new EF.CMSContext())
+            {
+                var FirstDate = Database.SetDate.Where(p => p.Id == 1).FirstOrDefault();
+                if (FirstDate != null)
+                {
+                    if(Int32.Parse(FirstDate.StartDate.Split('-')[0]) <= Int32.Parse(DateTime.Now.ToString("yyyy")) && Int32.Parse(DateTime.Now.ToString("yyyy")) <= Int32.Parse(FirstDate.EndDate.Split('-')[0]))
+                    {
+                        if (Int32.Parse(FirstDate.StartDate.Split('-')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) <= Int32.Parse(FirstDate.EndDate.Split('-')[1]))
+                        {
+                            if (Int32.Parse(FirstDate.StartDate.Split('-')[2]) <= Int32.Parse(DateTime.Now.ToString("dd")) && Int32.Parse(DateTime.Now.ToString("dd")) <= Int32.Parse(FirstDate.EndDate.Split('-')[2]))
+                            {
+                                return true;
+                            }
+                        }
+                        if (Int32.Parse(FirstDate.StartDate.Split('-')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) < Int32.Parse(FirstDate.EndDate.Split('-')[1]))
+                        {
+                            return true;
+                        }
+                    }
+
+                }
+                return false;
+            }
+        }
+        [HttpGet]
+        public async Task<ActionResult>  ChangePass()
+        {
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+            var user = await manager.FindByIdAsync(User.Identity.GetUserId());
+            TempData["UserEmail"] = TempData["UserEmail"];
+            TempData["UserId"] = TempData["UserId"];
+            await CreateCode(user.Id);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ChangePass(string oldpass, string newpass, string confirmpass, string verifycode)
+        {
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+
+            var user = await manager.FindByIdAsync(User.Identity.GetUserId());
+            CustomValidationTrainee(oldpass, newpass, confirmpass, verifycode, user.Id);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            else
+            {
+
+                if (user != null)
+                {
+                    var result = manager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, oldpass);
+                    if (result == PasswordVerificationResult.Success)
+                    {
+                        String newPassword = newpass;
+                        String hashedNewPassword = manager.PasswordHasher.HashPassword(newPassword);
+                        user.PasswordHash = hashedNewPassword;
+                        await store.UpdateAsync(user);
+                        @TempData["alert"] = "Change PassWord successful";
+                        return RedirectToAction("LogOut", "Login");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("PasswordHash", " Old Password incorrect!");
+                        TempData["UserEmail"] = TempData["UserEmail"];
+                        TempData["UserId"] = user.Id;
+                        return View();
+                    }
+
+                }
+                TempData["UserEmail"] = TempData["UserEmail"];
+                TempData["UserId"] = user.Id;
+
+                return RedirectToAction("Index", "Staff");
+            }
+        }
+
+        public void CustomValidationTrainee(string ollpass, string newpass, string confirmpass, string verifycode, string userid)
+        {
+            if (string.IsNullOrEmpty(ollpass))
+            {
+                ModelState.AddModelError("PasswordHash", "Please input old Password");
+            }
+            if (string.IsNullOrEmpty(newpass))
+            {
+                ModelState.AddModelError("NewPass", "Please input new Password");
+            }
+
+            if (string.IsNullOrEmpty(confirmpass))
+            {
+                ModelState.AddModelError("PassConfirm", "Please input Confirm Password");
+            }
+            if (!string.IsNullOrEmpty(confirmpass) && !string.IsNullOrEmpty(newpass) && (confirmpass != newpass))
+            {
+                ModelState.AddModelError("PassConfirm", "New password and Confirm password not match");
+            }
+            if (!string.IsNullOrEmpty(confirmpass) && !string.IsNullOrEmpty(newpass) && (newpass.Length < 6))
+            {
+                ModelState.AddModelError("PassConfirm", "New password must longer than 5 character");
+            }
+            using(var database = new EF.CMSContext())
+            {
+                var code = database.FCode.Where(c => c.Code.ToString() == verifycode).FirstOrDefault();
+                if(code == null)
+                {
+                    ModelState.AddModelError("VerifyCode", "Verify code not correct!");
+
+                }
+                if (code != null && code.UserId != userid)
+                {
+                    ModelState.AddModelError("VerifyCode", "Verify code not correct!");
+
+                }
+            }
+        }
+
+        public async Task CreateCode(string userid)
+        {
+            Random rnd = new Random();
+            int Newcode = rnd.Next(100000, 999999);
+            using(var database = new EF.CMSContext())
+            {
+                var code = database.FCode.Where(c => c.Code == Newcode).FirstOrDefault();
+                if(code == null)
+                {
+                    var context = new CMSContext();
+                    var store = new UserStore<UserInfo>(context);
+                    var manager = new UserManager<UserInfo>(store);
+                    var user = await manager.FindByIdAsync(User.Identity.GetUserId());
+                    var newcode = new VerifyCode();
+                    newcode.Code = Newcode;
+                    newcode.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
+                    newcode.UserId = userid;
+                    database.FCode.Add(newcode);
+                    database.SaveChanges();
+                    await SendEmail(user.Email, "Your confirmation code is: " + newcode.Code.ToString() + "<p>This code available in 60 minute!</p>");
+                }
+                else { await CreateCode(userid); }
+                
+            }
+        }
+        public ActionResult BlockTime()
+        {
+            return View();
+        }
+        public ActionResult ShowAllCategory()
+        {
+
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _category = dbCT.Category.ToList();
+                return View(_category);
             }
         }
     }

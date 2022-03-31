@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 @{
-    var a = "ab";
+    var a = "User";
     if (TempData["UserEmail"] != null)
     {
         a = TempData["UserEmail"].ToString();
@@ -38,8 +38,6 @@
             </div>
 
             <div class="header_search">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Search blog...">
             </div>
 
             <div class="header_item-first header_option">
@@ -57,6 +55,9 @@
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li>
                             <p class="dropdown-item">@a.Split('@')[0] </p>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="@Url.Action( "ChangePass", "Staff" )">Change Password</a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="@Url.Action( "LogOut", "Login" )">Log Out</a>

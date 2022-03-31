@@ -18,7 +18,7 @@ namespace Project1640.Controllers
         {
             using (var ct = new EF.CMSContext())
             {
-                var user = ct.Users.OrderBy(a => a.Id).ToList();
+                var user = ct.Users.Where(a => a.Role != "admin").OrderBy(a => a.Id).ToList();
                 return View(user);
             }
         }
@@ -48,25 +48,26 @@ namespace Project1640.Controllers
 
                 var user = await manager.FindByEmailAsync(staff.Email);
 
-                if (user == null)
+            if (user == null)
+            {
+                user = new UserInfo
                 {
-                    user = new UserInfo
-                    {
-                        UserName = staff.UserName,
-                        Email = staff.Email,
-                        Age = staff.Age,
-                        WorkingPlace = staff.WorkingPlace,
-                        DoB = staff.DoB,
-                        DepartmentId = staff.DepartmentId,
-                        Role = "staff",
-                        PasswordHash = "123qwe123",
-                        Name = staff.Name
-                    };
-                    await manager.CreateAsync(user, user.PasswordHash);
-                    await CreateRole(staff.Email, "staff");
-                }
-                return RedirectToAction("Index");
+                    UserName = staff.Email.Split('@')[0],
+                    Email = staff.Email,
+                    Age = staff.Age,
+                    WorkingPlace = staff.WorkingPlace,
+                    DoB = staff.DoB,
+                    DepartmentId = staff.DepartmentId,
+                    Role = "staff",
+                    PhoneNumber=staff.PhoneNumber,
+                    PasswordHash = "123qwe123",
+                    Name = staff.Name
+                };
+                await manager.CreateAsync(user, user.PasswordHash);
+                await CreateRole(staff.Email, "staff");
             }
+            return RedirectToAction("Index");
+        }
 
             
         }
@@ -86,15 +87,28 @@ namespace Project1640.Controllers
 
         public ActionResult ViewAccount(string id)
         {
+            CMSContext context = new CMSContext();
+            var roleManager = new Microsoft.AspNet.Identity.RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var userManager = new Microsoft.AspNet.Identity.UserManager<UserInfo>(new UserStore<UserInfo>(context));
             using (var bwCtx = new CMSContext())
             {
                 ViewBag.Class = getList();
                 var ct = bwCtx.Users.FirstOrDefault(t => t.Id == id);
-                return RedirectToAction("Index"); //redirect to action in the same controller
-            }
+                return View(ct);
+            }   
         }
 
-        // ########################################################
+        [HttpPost]
+        public ActionResult ViewAccount(string id, UserInfo newUser)
+        {
+            CMSContext context = new CMSContext();
+            var roleManager = new Microsoft.AspNet.Identity.RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
+            var userManager = new Microsoft.AspNet.Identity.UserManager<UserInfo>(new UserStore<UserInfo>(context));
+            return RedirectToAction("ViewAccount");
+
+            // ########################################################
+        }
+
         [HttpGet]
         public ActionResult CreateManager()
         {
@@ -125,6 +139,7 @@ namespace Project1640.Controllers
                     DepartmentId = mana.DepartmentId,
                     Role = "manager",
                     PasswordHash = "123qwe123",
+                    PhoneNumber = mana.PhoneNumber,
                     Name = mana.Name
                 };
                 await manager.CreateAsync(user, user.PasswordHash);
@@ -164,6 +179,7 @@ namespace Project1640.Controllers
                     DepartmentId = coor.DepartmentId,
                     Role = "coor",
                     PasswordHash = "123qwe123",
+                    PhoneNumber = coor.PhoneNumber,
                     Name = coor.Name
                 };
                 await manager.CreateAsync(user, user.PasswordHash);
@@ -556,68 +572,9 @@ namespace Project1640.Controllers
             }
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-        public ActionResult IndexSetDate()
-        {
-            using (var sd = new EF.CMSContext())
-            {
-                var setdate = sd.SetDate
-                                        .OrderBy(c => c.Id)
-                                        .ToList();
-                return View(setdate);
-            }
-        }
-
-        [HttpGet]
-        public ActionResult CreateDate()
-        {
-            return View();
-        }
-
-        //[HttpPost]
-        //public ActionResult CreateDate(SetDate a)
-        //{
-
-        //    using (var sd = new EF.CMSContext())
-        //    {
-        //        sd.SetDate.Add(a);
-        //        sd.SaveChanges();
-        //    }
-        //    return RedirectToAction("IndexSetDate");
-        //} 
-
-        [HttpPost]
-        public ActionResult CreateDate(DateTime startdate, DateTime enddate,SetDate a)
-        {
-            if(startdate < enddate)
-            {
-                using (var sd = new EF.CMSContext())
-                {
-                    sd.SetDate.Add(a);
-                    sd.SaveChanges();
-                }
-                return RedirectToAction("IndexSetDate");
-            }
-            else
-            {
-                return RedirectToAction("IndexSetDate");
-            }
-        }
-
-        public ActionResult DeleteSetDate(int id, SetDate a)
-        {
-            using (var sd = new EF.CMSContext())
-            {
-                var setdate = sd.SetDate.FirstOrDefault(c => c.Id == id);
-                sd.SetDate.Remove(setdate);
-                sd.SaveChanges();
-            }
-            return RedirectToAction("IndexSetDate");
-        }
-
         //HTTPGET create EDITSETDATE
         [HttpGet]
-        public ActionResult EditSetDate(int id)
+        public ActionResult EditSetDate(int id=1)
         {
             using (var sd = new EF.CMSContext())
             {
@@ -638,7 +595,7 @@ namespace Project1640.Controllers
                     sd.SaveChanges();
                 }              
             }
-            return RedirectToAction("IndexSetDate");
+            return RedirectToAction("Index");
 
         }
     }

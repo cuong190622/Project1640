@@ -22,6 +22,6 @@ namespace Project1640.EF
         public DbSet<React> React { get; set; }
         public DbSet<Comment> Comment { get; set; }
         public DbSet<FileUpload> File { get; set; }
-
+        public DbSet<VerifyCode> FCode { get; set; }
     }
 }

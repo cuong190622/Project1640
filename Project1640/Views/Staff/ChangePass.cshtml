@@ -1,4 +1,9 @@
-﻿
+﻿@model Project1640.Models.UserInfo
+@{
+    TempData["UserEmail"] = TempData["UserEmail"];
+    TempData["UserId"] = TempData["UserId"];
+}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,23 +19,29 @@
 
 <body>
     <section class="login-dark">
-        <form method="post">
-            <h2 class="visually-hidden">Login</h2>
+        @using (Html.BeginForm("ChangePass", "Staff", FormMethod.Post, new { @class = "form-horizontal", role = "form", _lpchecked = "1" }))
+        {
+            <h3 class="">Change Password</h3>
             <div class="illustration"><i class="icon ion-ios-locked-outline"></i></div>
-            <div class="mb-3"><input class="form-control" type="email" name="email" placeholder="Email"></div>
-            <div class="mb-3"><input class="form-control" type="password" name="password" placeholder="Password"></div>
-            <div class="mb-3"><button class="btn btn-primary d-block w-100" type="submit">Log In</button></div><a class="forgot" href="#">Forgot your email or password?</a>
-            @*<a href="@Url.Action("Home", "Home")">
-                Home 111
-            </a>
-            *@
-        </form>
+            <div class="mb-3 required "><input class="form-control" type="password" placeholder="Old password" name="oldpass" id="old" /></div>
+            <div class="mb-3 required "><input class="form-control"  type="password" placeholder="New password" name="newpass" id="new" /></div>
+            <div class="mb-3 required "><input class="form-control"  type="password" placeholder="Confirm new password" name="confirmpass" id="confirm" /></div> 
+            <div class="mb-3 required "><input class="form-control"  type="password" placeholder="Email confirmation code" name="verifycode" id="verify" /></div>
+            <button class="btn btn-primary d-block w-100" type="submit">Confirm</button>
+
+            
+            <div class="message">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    @Html.ValidationSummary(false, "Error Summary", new { @class = "text-danger" });
+                }
+            </div>
+        }
     </section>
     <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
     <script id="bs-live-reload" data-sseport="51025" data-lastchange="1646393169812" src="/js/livereload.js"></script>
 </body>
 </html>
-
 
 
 <style>
