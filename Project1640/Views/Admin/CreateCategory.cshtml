@@ -8,7 +8,7 @@
     @Html.ValidationSummary(false, "Error Summary", new { @class = "text-danger" })
 }
 
-@using (Html.BeginForm("CreateCategory", "Manager", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("CreateCategory", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <div class="form-group form_title">
 
