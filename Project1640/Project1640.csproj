@@ -363,6 +363,10 @@
     <Content Include="Views\Coor\ViewIdea.cshtml" />
     <Content Include="Views\Coor\ChangePass.cshtml" />
     <Content Include="Views\Coor\ShowUser.cshtml" />
+    <Content Include="Views\Admin\IndexCategory.cshtml" />
+    <Content Include="Views\Admin\CreateCategory.cshtml" />
+    <Content Include="Views\Admin\EditCategory.cshtml" />
+    <Content Include="Views\Admin\DeleteCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
