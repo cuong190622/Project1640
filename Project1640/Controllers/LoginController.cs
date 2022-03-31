@@ -176,10 +176,10 @@ namespace Project1640.Controllers
                     PhoneNumber = phone,
                     Name = email.Split('@')[0],
                     Role = role,
-                    DepartmentId = 7
+                    DepartmentId = 1
                 };
                 await manager.CreateAsync(user, password);
-                await CreateRole(user.Email, "admin");
+                await CreateRole(user.Email, "admin"); 
                 return Content($"Create Admin account Succsess");
             }
             return RedirectToAction("LogIn");
