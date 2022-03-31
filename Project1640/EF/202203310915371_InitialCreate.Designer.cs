@@ -13,11 +13,7 @@ namespace Project1640.EF
         
         string IMigrationMetadata.Id
         {
-<<<<<<< HEAD:Project1640/EF/202203250945003_InitialCreate.Designer.cs
-            get { return "202203250945003_InitialCreate"; }
-=======
-            get { return "202203301936308_InitialCreate"; }
->>>>>>> 2d427c3a06b75ea32b86330a825df742106df8a6:Project1640/EF/202203301936308_InitialCreate.Designer.cs
+            get { return "202203310915371_InitialCreate"; }
         }
         
         string IMigrationMetadata.Source
