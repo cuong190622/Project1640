@@ -15,6 +15,7 @@ using System.Web.Mvc;
 
 namespace Project1640.Controllers
 {
+    [Authorize(Roles = SecurityRoles.Staff)]
     public class StaffController : Controller
     {
 
@@ -137,10 +138,12 @@ namespace Project1640.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateIdea(Idea a, FormCollection f, HttpPostedFileBase postedFile)
         {
+            
             if (!ModelState.IsValid)//if user input wrong
             {
                 TempData["abc"] = f["formatIds[]"];
-                SetViewBag();// call function get viewbag to return the data when the user input wrong
+                //SetViewBag();
+                ViewBag.Class = getList();
                 return View(a);
             }
             else
@@ -234,6 +237,10 @@ namespace Project1640.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateComment(Comment a)
         {
+            if (!ModelState.IsValid)
+            {               
+                return RedirectToAction("ViewIdea", new { IdeaId = a.IdeaId });
+            }
             if (!CheckDate())
             {
                 return RedirectToAction("BlockTime");
@@ -486,7 +493,7 @@ namespace Project1640.Controllers
             var manager = new UserManager<UserInfo>(store);
 
             var user = await manager.FindByIdAsync(User.Identity.GetUserId());
-            CustomValidationTrainee(oldpass, newpass, confirmpass, verifycode, user.Id);
+            CustomValidationForPassword(oldpass, newpass, confirmpass, verifycode, user.Id);
             if (!ModelState.IsValid)
             {
                 return View();
@@ -522,7 +529,7 @@ namespace Project1640.Controllers
             }
         }
 
-        public void CustomValidationTrainee(string ollpass, string newpass, string confirmpass, string verifycode, string userid)
+        public void CustomValidationForPassword(string ollpass, string newpass, string confirmpass, string verifycode, string userid)
         {
             if (string.IsNullOrEmpty(ollpass))
             {
@@ -560,7 +567,6 @@ namespace Project1640.Controllers
                 }
             }
         }
-
         public async Task CreateCode(string userid)
         {
             Random rnd = new Random();

@@ -170,6 +170,10 @@
     <Compile Include="EF\202203301936308_InitialCreate.Designer.cs">
       <DependentUpon>202203301936308_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="EF\202203310938271_AddValidate.cs" />
+    <Compile Include="EF\202203310938271_AddValidate.Designer.cs">
+      <DependentUpon>202203310938271_AddValidate.cs</DependentUpon>
+    </Compile>
     <Compile Include="EF\CMSContext.cs" />
     <Compile Include="EF\Configuration.cs" />
     <Compile Include="Global.asax.cs">
@@ -356,6 +360,8 @@
     <Content Include="Views\Login\RSPEmail.cshtml" />
     <Content Include="Views\Login\RSPConfirm.cshtml" />
     <Content Include="Views\Staff\ShowAllCategory.cshtml" />
+    <Content Include="Views\Login\NotAuth.cshtml" />
+    <Content Include="Views\Login\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -390,6 +396,9 @@
   <ItemGroup>
     <EmbeddedResource Include="EF\202203301936308_InitialCreate.resx">
       <DependentUpon>202203301936308_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EF\202203310938271_AddValidate.resx">
+      <DependentUpon>202203310938271_AddValidate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

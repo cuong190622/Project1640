@@ -11,8 +11,9 @@ namespace Project1640.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required(ErrorMessage = "Need to input content")]
+        [Required(ErrorMessage = "Need to input Title")]
         public string Title { get; set; }
+        [Required(ErrorMessage = "Need to input content")]
         public string Content { get; set; }
         public bool Status { get; set; }
         public int Rank { get; set; }
