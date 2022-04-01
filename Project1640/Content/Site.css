@@ -260,11 +260,21 @@ body {
 
 .blog_categories {
     margin: 15px 0;
+    height: 300px;
+    overflow: hidden;
+    overflow: auto;
+    -ms-overflow-style: none;
+}
+
+.blog_categories::-webkit-scrollbar {
+    width: 0 !important;
+    display: none;
 }
 
 .blog_categories ul {
     padding: 0;
     width: 100%;
+    height: 100%;
 }
 
 .blog_categories li {
