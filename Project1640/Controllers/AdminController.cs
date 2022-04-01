@@ -33,12 +33,20 @@ namespace Project1640.Controllers
         public async Task<ActionResult> Createstaff(UserInfo staff)
         {
 
+            CustomValidationStaff(staff);
 
-            var context = new CMSContext();
-            var store = new UserStore<UserInfo>(context);
-            var manager = new UserManager<UserInfo>(store);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Class = getList();
+                return View(staff);
+            }
+            else
+            {
+                var context = new CMSContext();
+                var store = new UserStore<UserInfo>(context);
+                var manager = new UserManager<UserInfo>(store);
 
-            var user = await manager.FindByEmailAsync(staff.Email);
+                var user = await manager.FindByEmailAsync(staff.Email);
 
             if (user == null)
             {
@@ -61,7 +69,22 @@ namespace Project1640.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
+            
+        }
+
+        private void CustomValidationStaff(UserInfo staff)
+        {
+            if (string.IsNullOrEmpty(staff.Email))
+            {
+                ModelState.AddModelError("Email", "Please input Email");
+            }
+            if (string.IsNullOrEmpty(staff.UserName))
+            {
+                ModelState.AddModelError("UserName", "Please input Name");
+            }
+           
+        }
+
         public ActionResult ViewAccount(string id)
         {
             CMSContext context = new CMSContext();
@@ -96,33 +119,55 @@ namespace Project1640.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateManager(UserInfo mana)
         {
+            CustomValidationManager(mana);
 
-
-            var context = new CMSContext();
-            var store = new UserStore<UserInfo>(context);
-            var manager = new UserManager<UserInfo>(store);
-
-            var user = await manager.FindByEmailAsync(mana.Email);
-
-            if (user == null)
+            if (!ModelState.IsValid)
             {
-                user = new UserInfo
-                {
-                    UserName = mana.Email.Split('@')[0],
-                    Email = mana.Email,
-                    Age = mana.Age,
-                    WorkingPlace = mana.WorkingPlace,
-                    DoB = mana.DoB,
-                    DepartmentId = mana.DepartmentId,
-                    Role = "manager",
-                    PasswordHash = "123qwe123",
-                    PhoneNumber = mana.PhoneNumber,
-                    Name = mana.Name
-                };
-                await manager.CreateAsync(user, user.PasswordHash);
-                await CreateRole(mana.Email, "manager");
+                ViewBag.Class = getList();
+                return View(mana);
             }
-            return RedirectToAction("Index");
+            else
+            {
+                var context = new CMSContext();
+                var store = new UserStore<UserInfo>(context);
+                var manager = new UserManager<UserInfo>(store);
+
+                var user = await manager.FindByEmailAsync(mana.Email);
+
+                if (user == null)
+                {
+                    user = new UserInfo
+                    {
+                        UserName = mana.Email.Split('@')[0],
+                        Email = mana.Email,
+                        Age = mana.Age,
+                        WorkingPlace = mana.WorkingPlace,
+                        DoB = mana.DoB,
+                        DepartmentId = mana.DepartmentId,
+                        Role = "manager",
+                        PasswordHash = "123qwe123",
+                        PhoneNumber = mana.PhoneNumber,
+                        Name = mana.Name
+                    };
+                    await manager.CreateAsync(user, user.PasswordHash);
+                    await CreateRole(mana.Email, "manager");
+                }
+                return RedirectToAction("Index");
+            }
+
+                
+        }
+
+        private void CustomValidationManager(UserInfo mana)
+        {
+            if (string.IsNullOrEmpty(mana.Email))
+            {
+                ModelState.AddModelError("Email", "Please input Email");
+            }
+            if (string.IsNullOrEmpty(mana.UserName))
+            {
+                ModelState.AddModelError("UserName", "Please input Name");
+            }
         }
 
         // ###############
@@ -136,33 +181,55 @@ namespace Project1640.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateCoor(UserInfo coor)
         {
+            CustomValidationCoor(coor);
 
-
-            var context = new CMSContext();
-            var store = new UserStore<UserInfo>(context);
-            var manager = new UserManager<UserInfo>(store);
-
-            var user = await manager.FindByEmailAsync(coor.Email);
-
-            if (user == null)
+            if (!ModelState.IsValid)
             {
-                user = new UserInfo
-                {
-                    UserName = coor.Email.Split('@')[0],
-                    Email = coor.Email,
-                    Age = coor.Age,
-                    WorkingPlace = coor.WorkingPlace,
-                    DoB = coor.DoB,
-                    DepartmentId = coor.DepartmentId,
-                    Role = "coor",
-                    PasswordHash = "123qwe123",
-                    PhoneNumber = coor.PhoneNumber,
-                    Name = coor.Name
-                };
-                await manager.CreateAsync(user, user.PasswordHash);
-                await CreateRole(coor.Email, "coor");
+                ViewBag.Class = getList();
+                return View(coor);
             }
-            return RedirectToAction("Index");
+            else
+            {
+                var context = new CMSContext();
+                var store = new UserStore<UserInfo>(context);
+                var manager = new UserManager<UserInfo>(store);
+
+                var user = await manager.FindByEmailAsync(coor.Email);
+
+                if (user == null)
+                {
+                    user = new UserInfo
+                    {
+                        UserName = coor.Email.Split('@')[0],
+                        Email = coor.Email,
+                        Age = coor.Age,
+                        WorkingPlace = coor.WorkingPlace,
+                        DoB = coor.DoB,
+                        DepartmentId = coor.DepartmentId,
+                        Role = "coor",
+                        PasswordHash = "123qwe123",
+                        PhoneNumber = coor.PhoneNumber,
+                        Name = coor.Name
+                    };
+                    await manager.CreateAsync(user, user.PasswordHash);
+                    await CreateRole(coor.Email, "coor");
+                }
+                return RedirectToAction("Index");
+            }
+
+               
+        }
+
+        private void CustomValidationCoor(UserInfo coor)
+        {
+            if (string.IsNullOrEmpty(coor.Email))
+            {
+                ModelState.AddModelError("Email", "Please input Email");
+            }
+            if (string.IsNullOrEmpty(coor.UserName))
+            {
+                ModelState.AddModelError("UserName", "Please input Name");
+            }
         }
 
 
@@ -574,6 +641,90 @@ namespace Project1640.Controllers
             }
             return RedirectToAction("Index");
 
+        }
+
+        public ActionResult IndexCategory()
+        {
+            using (var ctgrCt = new EF.CMSContext())
+            {
+                var categories = ctgrCt.Category
+                                        .OrderBy(c => c.Id)
+                                        .ToList();
+                return View(categories);
+            }
+        }
+
+
+
+        [HttpGet]
+        public ActionResult CreateCategory()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult CreateCategory(Category a)
+        {
+            using (var cate = new EF.CMSContext())
+            {
+                cate.Category.Add(a);
+                cate.SaveChanges();
+            }
+
+            TempData["message"] = $"Successfully add class {a.Name} to system!";
+
+            return RedirectToAction("IndexCategory");
+        }
+
+
+        [HttpGet]
+        public ActionResult EditCategory(int id)
+        {
+            // lay category qua id tu db
+            using (var cate = new EF.CMSContext())
+            {
+                var Category = cate.Category.FirstOrDefault(c => c.Id == id);
+                return View(Category);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditCategory(int id, Category a)
+        {
+            using (var cate = new EF.CMSContext())
+            {
+                cate.Entry<Category>(a).State = System.Data.Entity.EntityState.Modified;
+
+                cate.SaveChanges();
+            }
+
+            return RedirectToAction("IndexCategory");
+        }
+
+        [HttpGet]
+        public ActionResult DeleteCategory(int id, Category a)
+        {
+            using (var cate = new EF.CMSContext())
+            {
+                var category = cate.Category.FirstOrDefault(c => c.Id == id);
+                return View(category);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeleteCategory(int id)
+        {
+            using (var cate = new EF.CMSContext())
+            {
+                var Category = cate.Category.FirstOrDefault(b => b.Id == id);
+                if (cate != null)
+                {
+                    cate.Category.Remove(Category);
+                    cate.SaveChanges();
+                }
+                TempData["message"] = $"Successfully delete book with Id: {Category.Id}";
+                return RedirectToAction("IndexCategory");
+            }
         }
     }
 }

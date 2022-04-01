@@ -24,9 +24,9 @@
                 <i class="fa-solid fa-x"></i>
             </div>
 
-            <h2>Manager Page</h2>
+            <h2>Admin Page</h2>
             <ul>
-                <a href="~/Manager/Index.cshtml">
+                <a href="~/Admin/Index.cshtml">
                 <li>
                     <i class="fa-solid fa-house-user"></i>
                     @Html.ActionLink("Home", "Index")
@@ -39,17 +39,6 @@
                     Add Category
                 </li>
                 </a>
-
-                <a href="Download" target="_blank">
-                <li>
-                    <i class="fa-solid fa-download"></i>
-                    Download all file
-                </li>
-                <a href="@Url.Action( "Csvfile", "Manager" )" target="_blank">
-                <li>
-                    <i class="fa-solid fa-download"></i>
-                    Download csv file
-                </li>
 
                 </a>
 
@@ -117,7 +106,7 @@
 
             <div class="mt-4">
 
-                @{Html.RenderAction("CreateCategory", "Manager");}
+                @{Html.RenderAction("CreateCategory", "Admin");}
 
             </div>
         </div>

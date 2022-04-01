@@ -163,16 +163,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CoorController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
-    <Compile Include="EF\202203301936308_InitialCreate.cs" />
-    <Compile Include="EF\202203301936308_InitialCreate.Designer.cs">
-      <DependentUpon>202203301936308_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="EF\202203310938271_AddValidate.cs" />
-    <Compile Include="EF\202203310938271_AddValidate.Designer.cs">
-      <DependentUpon>202203310938271_AddValidate.cs</DependentUpon>
+    <Compile Include="EF\202203310915371_InitialCreate.cs" />
+    <Compile Include="EF\202203310915371_InitialCreate.Designer.cs">
+      <DependentUpon>202203310915371_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="EF\CMSContext.cs" />
     <Compile Include="EF\Configuration.cs" />
@@ -360,6 +357,16 @@
     <Content Include="Views\Login\RSPEmail.cshtml" />
     <Content Include="Views\Login\RSPConfirm.cshtml" />
     <Content Include="Views\Staff\ShowAllCategory.cshtml" />
+    <Content Include="Views\Coor\Index.cshtml" />
+    <Content Include="Views\Coor\_LayoutCoor.cshtml" />
+    <Content Include="Views\Coor\ShowAllCategory.cshtml" />
+    <Content Include="Views\Coor\ViewIdea.cshtml" />
+    <Content Include="Views\Coor\ChangePass.cshtml" />
+    <Content Include="Views\Coor\ShowUser.cshtml" />
+    <Content Include="Views\Admin\IndexCategory.cshtml" />
+    <Content Include="Views\Admin\CreateCategory.cshtml" />
+    <Content Include="Views\Admin\EditCategory.cshtml" />
+    <Content Include="Views\Admin\DeleteCategory.cshtml" />
     <Content Include="Views\Login\NotAuth.cshtml" />
     <Content Include="Views\Login\NotFound.cshtml" />
   </ItemGroup>
@@ -394,11 +401,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EF\202203301936308_InitialCreate.resx">
-      <DependentUpon>202203301936308_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EF\202203310938271_AddValidate.resx">
-      <DependentUpon>202203310938271_AddValidate.cs</DependentUpon>
+    <EmbeddedResource Include="EF\202203310915371_InitialCreate.resx">
+      <DependentUpon>202203310915371_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
