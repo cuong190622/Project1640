@@ -342,7 +342,14 @@ namespace Project1640.Controllers
                 await smtp.SendMailAsync(message);
             }
         }
-
+        public ActionResult NotAuth()
+        {
+            return View();
+        }
+        public ActionResult NotFound()
+        {
+            return View();
+        }
     }
 
 }
