@@ -13,7 +13,18 @@
                 <i class="fa-solid fa-user img-avatar" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
             </div>
             <div class="comment_item-content">
-                <span>@Html.DisplayFor(modelItem => item.UserId)</span>
+                <span>
+                    @{
+                        if (item.Status == true)
+                        {
+                            { Html.RenderAction("ShowUser", "Staff", new { UserId = item.UserId }); }
+                        }
+                        else
+                        {
+                            @Html.DisplayName(Anonymously)
+                        }
+                    }
+                </span>
                 <p>@Html.DisplayFor(modelItem => item.Content)</p>
                 <div class="blog_time-comment">
                     <span>@Html.DisplayFor(modelItem => item.Date)</span>

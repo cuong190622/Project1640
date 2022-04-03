@@ -108,13 +108,13 @@
                         if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
                         {
                             <li>
-                                <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})" style="color: red;">@i</a>
+                                <a href="@Url.Action("ViewAllIdea", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})" style="color: red;">@i</a>
                             </li>
                         }
                         else
                         {
                             <li>
-                                <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">@i</a>
+                                <a href="@Url.Action("ViewAllIdea", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">@i</a>
                             </li>
                         }
                     }
@@ -123,13 +123,13 @@
                         if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
                         {
                             <li>
-                                <a href="@Url.Action("Index", new {id = i, count = TempData["Number"].ToString()})" style="color: red;">@i</a>
+                                <a href="@Url.Action("ViewAllIdea", new {id = i, count = TempData["Number"].ToString()})" style="color: red;">@i</a>
                             </li>
                         }
                         else
                         {
                             <li>
-                                <a href="@Url.Action("Index", new {id = i, count = TempData["Number"].ToString()})">@i</a>
+                                <a href="@Url.Action("ViewAllIdea", new {id = i, count = TempData["Number"].ToString()})">@i</a>
                             </li>
                         }
                     }
@@ -139,7 +139,7 @@
             }
             <li>
 
-                <a href="@Url.Action("Index", new {id = Int16.Parse(TempData["PageMax"].ToString()), categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">
+                <a href="@Url.Action("ViewAllIdea", new {id = Int16.Parse(TempData["PageMax"].ToString()), categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">
                     <i class="fa-solid fa-caret-right"></i>
                 </a>
             </li>
@@ -148,13 +148,13 @@
 
     </div>
     <div>
-        @{Html.RenderAction("Filter", "Manager");}
+        @{Html.RenderAction("Filter", "Admin");}
     </div>
     <div class="blog_all-categories">
         <h2>All Categories</h2>
 
         <div class="blog_categories">
-            @{Html.RenderAction("ShowAllCategory", "Manager");}
+            @{Html.RenderAction("ShowAllCategory", "Admin");}
         </div>
     </div>
 
