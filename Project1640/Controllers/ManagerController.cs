@@ -1,4 +1,5 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
+using Newtonsoft.Json;
 using Project1640.EF;
 using Project1640.Models;
 using System;
@@ -7,6 +8,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -51,6 +53,10 @@ namespace Project1640.Controllers
 
                 using (var cate = new EF.CMSContext())
                 {
+                    if(a.Description == null)
+                    {
+                        a.Description = "No Description!";
+                    }
                     cate.Category.Add(a);
                     cate.SaveChanges();
                 }
@@ -127,7 +133,7 @@ namespace Project1640.Controllers
                     cate.Category.Remove(Category);
                     cate.SaveChanges();
                 }
-                TempData["message"] = $"Successfully delete book with Id: {Category.Id}";
+                TempData["message"] = $"Successfully delete category with Id: {Category.Id}";
                 return RedirectToAction("Index");
             }
         }
@@ -252,8 +258,106 @@ namespace Project1640.Controllers
         
         }
 
-        
+        public ActionResult Chart(string year = "2022")
+        {
+            int number = 0;
+            if (Regex.IsMatch(year, @"^\d+$") && Int32.Parse(year) > 0)
+            {
+                number = Int32.Parse(year);
+            }
+            using (CMSContext context = new CMSContext()) //create a connection with the database
+            {
+                var ideaDepartment = (
+                   from d in context.Department
+                   join u in context.Users on d.Id equals u.DepartmentId
+                   join i in context.Idea on u.Id equals i.UserId
+                   select new
+                   {
+                       name = d.Name,
+                       year = i.Date 
+                   }).Where(p => p.year.Contains(year)).ToList();
+                if(ideaDepartment.Count() == 0)
+                {
+                    List<DataPoint> dataPoints = new List<DataPoint>();
+                    foreach (var a in ListDepartment())
+                    {
+                        dataPoints.Add(new DataPoint(a.Name, CountIdeaPerDepartment(a.Name, 0)));
+                    }
+                    ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
+                    TempData["Sub"] = "No data Idea per department in year" + year + "|| All data will be shown!";
+                    return View();
+                }
+                else
+                {
+                    List<DataPoint> dataPoints = new List<DataPoint>();
+                    foreach (var a in ListDepartment())
+                    {
+                        dataPoints.Add(new DataPoint(a.Name, CountIdeaPerDepartment(a.Name, number)));
+                    }
+                    ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
+                    TempData["Sub"] = "Idea per department in year" + year;
+                    return View();
+                }
+            }
+            
+        }
+        public List<ListDepartment> ListDepartment()
+        {
+            using (CMSContext context = new CMSContext()) //create a connection with the database
+            {
+                var Department = (from d in context.Department select new ListDepartment { Name = d.Name }).ToList();
+                return Department;
+            }
+        }
 
+        public int CountIdeaPerDepartment(string department, int year)
+        {
+            if (year !=0 )
+            {
+                using (CMSContext context = new CMSContext()) //create a connection with the database
+                {
+                    var ideaDepartment = (
+                       from d in context.Department
+                       join u in context.Users on d.Id equals u.DepartmentId
+                       join i in context.Idea on u.Id equals i.UserId
+                       select new
+                       {
+                           name = d.Name,
+                           year = i.Date
+                       }).Where(p => p.name == department).Where(p => p.year.Contains(year.ToString())).ToList();
+                    return ideaDepartment.Count();
+                }
+            }
+            else
+            {
+                using (CMSContext context = new CMSContext()) //create a connection with the database
+                {
+                    var ideaDepartment = (
+                       from d in context.Department
+                       join u in context.Users on d.Id equals u.DepartmentId
+                       join i in context.Idea on u.Id equals i.UserId
+                       select new
+                       {
+                           name = d.Name,
+                           year = i.Date
+                       }).Where(p => p.name == department).ToList();
+                    return ideaDepartment.Count();
+                }
+            }
+            
+        }
+
+        public void Statitisc()
+        {
+            using(var database =  new EF.CMSContext())
+            {
+              //  var 
+            }
+        }
+        public ActionResult FliterYear()
+        {
+            return View();
+        }
 
     }
 
