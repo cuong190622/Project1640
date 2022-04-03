@@ -470,23 +470,23 @@ namespace Project1640.Controllers
                 var FirstDate = Database.SetDate.Where(p => p.Id == 1).FirstOrDefault();
                 if (FirstDate != null)
                 {
-                    if(Int32.Parse(FirstDate.StartDate.Split('/')[0]) <= Int32.Parse(DateTime.Now.ToString("yyyy")) && Int32.Parse(DateTime.Now.ToString("yyyy")) <= Int32.Parse(FirstDate.EndDate.Split('/')[0]))
+                    if(Int32.Parse(FirstDate.StartDate.Split('-')[0]) <= Int32.Parse(DateTime.Now.ToString("yyyy")) && Int32.Parse(DateTime.Now.ToString("yyyy")) <= Int32.Parse(FirstDate.EndDate.Split('-')[0]))
                     {
-                        if (Int32.Parse(FirstDate.StartDate.Split('/')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) <= Int32.Parse(FirstDate.EndDate.Split('/')[1]))
+                        if (Int32.Parse(FirstDate.StartDate.Split('-')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) <= Int32.Parse(FirstDate.EndDate.Split('-')[1]))
                         {
-                            if (Int32.Parse(FirstDate.StartDate.Split('/')[2]) <= Int32.Parse(DateTime.Now.ToString("dd")) && Int32.Parse(DateTime.Now.ToString("dd")) <= Int32.Parse(FirstDate.EndDate.Split('/')[2]))
+                            if (Int32.Parse(FirstDate.StartDate.Split('-')[2]) <= Int32.Parse(DateTime.Now.ToString("dd")) && Int32.Parse(DateTime.Now.ToString("dd")) <= Int32.Parse(FirstDate.EndDate.Split('-')[2]))
                             {
                                 return true;
                             }
                         }
-                        if (Int32.Parse(FirstDate.StartDate.Split('/')[1]) < Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) <= Int32.Parse(FirstDate.EndDate.Split('/')[1]))
+                        if (Int32.Parse(FirstDate.StartDate.Split('-')[1]) < Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) <= Int32.Parse(FirstDate.EndDate.Split('-')[1]))
                         {
-                            if (Int32.Parse(DateTime.Now.ToString("dd")) <= Int32.Parse(FirstDate.EndDate.Split('/')[2]))
+                            if (Int32.Parse(DateTime.Now.ToString("dd")) <= Int32.Parse(FirstDate.EndDate.Split('-')[2]))
                             {
                                 return true;
                             }
                         }
-                        if (Int32.Parse(FirstDate.StartDate.Split('/')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) < Int32.Parse(FirstDate.EndDate.Split('/')[1]))
+                        if (Int32.Parse(FirstDate.StartDate.Split('-')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) < Int32.Parse(FirstDate.EndDate.Split('-')[1]))
                         {
                             return true;
                         }

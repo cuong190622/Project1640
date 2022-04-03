@@ -132,8 +132,8 @@ namespace Project1640.Controllers
 
         public void CreateDate()
         {
-            var start = DateTime.Now.ToString("MM/dd/yyyy");
-            var end = DateTime.Now.ToString("MM/dd/yyyy");
+            var start = DateTime.Now.ToString("MM-dd-yyyy");
+            var end = DateTime.Now.ToString("MM-dd-yyyy");
             using (var Database = new EF.CMSContext())
             {
                 var FirstDate = Database.SetDate.Where(p => p.Id == 1).FirstOrDefault();
