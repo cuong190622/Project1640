@@ -63,48 +63,61 @@
                         </div>
                     </div>
                 </li>
-
-                <li class="new_dep">
-                    <i class="fa-solid fa-building"></i>
-                    New Department
-
-                </li>
-
                 <li>
-                    <i class="fa-solid fa-building-circle-arrow-right"></i>
-                    @Html.ActionLink("View Department", "IndexDepartment")
-                </li>
-
-
-
-                <li>
-                    <i class="fa-solid fa-building-circle-arrow-right"></i>
-                    @Html.ActionLink("View Category", "IndexCategory")
-                </li>
-
-                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-align-justify"></i>
-                        Options
+                        Department
                     </a>
                     <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px;">
                         <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Top View", "TopView")
+                            @Html.ActionLink("View Department", "IndexDepartment")
                         </div>
                         <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Top Like", "TopLike")
+                            @Html.ActionLink("Create Department", "CreateDepartment")
+                        </div>
+
+                    </div>
+                </li>
+
+
+                <li>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-align-justify"></i>
+                        Category
+                    </a>
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px;">
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("View Category", "IndexCategory")
+                        </div>
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("Create Category", "CreateCategory")
+                        </div>
+
+                    </div>                 
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-align-justify"></i>
+                        Ideas
+                    </a>
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px;">
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("All Ideas", "ViewAllIdea")
+                        </div>
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("Most Viewed Ideas", "TopView")
+                        </div>
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("Most Liked Ideas", "TopLike")
                         </div>
                         <div class="hover" style="padding: 5px;">
                             @Html.ActionLink("Latest Idea", "LastIdea")
                         </div>
                         <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Latest Comment", "LastComment")
+                            @Html.ActionLink("Top Viewed Ideas ", "Top5Idea")
                         </div>
                         <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Top 5 View", "Top5Idea")
-                        </div>
-                        <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Top 5 Like", "Top5Like")
+                            @Html.ActionLink("Top Liked Ideas", "Top5Like")
                         </div>
                     </div>
                 </li>
@@ -175,19 +188,7 @@
         </div>
     </div>
 
-    <div class="overlay_dep">
-        <div class="add">
-            <div class="comment_close-dep">
-                <i class="fa-solid fa-x"></i>
-            </div>
-
-            <div class="mt-4">
-
-                @{Html.RenderAction("CreateDepartment", "Admin");}
-
-            </div>
-        </div>
-    </div>
+ 
 
     
 
@@ -196,7 +197,6 @@
         var overlayAcc = document.querySelector('.overlay_acc');
         var overlayStaff = document.querySelector('.overlay_staff');
         var overlayCoor = document.querySelector('.overlay_coor');
-        var overlayDep = document.querySelector('.overlay_dep');
         var close = document.querySelector('.comment_close i')
         var closeStaff = document.querySelector('.close_staff i')
         var closeCoor = document.querySelector('.close_coor i')
@@ -204,7 +204,6 @@
         var addAccBtn = document.querySelector('.new_acc')
         var addStaffBtn = document.querySelector('.new_staff')
         var addCoorBtn = document.querySelector('.new_coor')
-        var addDepBtn = document.querySelector('.new_dep')
 
         // Manager
         close.addEventListener('click', (e) => {
@@ -253,23 +252,6 @@
             e.preventDefault()
             overlayCoor.classList.add('show')
         })
-
-        //Add department
-        closeDep.addEventListener('click', (e) => {
-            overlayDep.classList.remove('show')
-        })
-
-        overlayDep.addEventListener('click', (e) => {
-            if (e.target == e.currentTarget) {
-                overlayDep.classList.remove('show')
-            }
-        })
-
-        addDepBtn.addEventListener('click', (e) => {
-            e.preventDefault()
-            overlayDep.classList.add('show')
-        })
-
         function w3_open() {
             document.getElementById("mySidebar").style.display = "block";
         }

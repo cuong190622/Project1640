@@ -1,5 +1,7 @@
 ﻿@model IEnumerable<Project1640.Models.Category>
-
+@{
+    Layout = "~/Views/Admin/_LayoutAdmin.cshtml";
+}
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,52 +20,14 @@
 
     <div class="admin">
 
-        <header class="admin_header w3-sidebar w3-bar-block w3-border-right" style="display: none;" id="mySidebar">
-
-            <div onclick="w3_close()" class="w3-bar-item">
-                <i class="fa-solid fa-x"></i>
-            </div>
-
-            <h2>Admin Page</h2>
-            <ul>
-                <a href="~/Admin/Index.cshtml">
-                <li>
-                    <i class="fa-solid fa-house-user"></i>
-                    @Html.ActionLink("Home", "Index")
-                </li>
-                </a>
-
-                <a href="" class="add_btn">
-                <li>
-                    <i class="fa-solid fa-user-plus"></i>
-                    Add Category
-                </li>
-                </a>
-
-                </a>
-
-                <a href="@Url.Action( "LogOut", "Login" )">
-                <li>
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    Log out
-                </li>
-                </a>
-            </ul>
-        </header>
-
         <container>
-            <div class="header_item-admin" onclick="w3_open()">
-                <i class="fa-solid fa-align-justify"></i>
-            </div>
-
-
             <h1>List category</h1>
 
             <table class="table table-hover" style="margin: 10px 0 0;">
 
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">#</th>
+                       
                         <th scope="col">@Html.DisplayNameFor(model => model.Name)</th>
                         <th scope="col">@Html.DisplayNameFor(model => model.Description)</th>
                         <th scope="col">Options</th>
@@ -75,7 +39,7 @@
                     @foreach (var c in Model)
                     {
                         <tr class="thead-body">
-                            <th scope="row">@Html.DisplayFor(model => c.Id)</th>
+                     
                             <td>@Html.DisplayFor(model => c.Name)</td>
                             <td>@Html.DisplayFor(model => c.Description)</td>
 
@@ -93,70 +57,6 @@
         </container>
 
     </div>
-
-    <div class="overlay">
-        <div class="add">
-            <div class="comment_close">
-                <i class="fa-solid fa-x"></i>
-            </div>
-
-            <div class="comment_amount">
-                <span>Add Category</span>
-            </div>
-
-            <div class="mt-4">
-
-                @{Html.RenderAction("CreateCategory", "Admin");}
-
-            </div>
-        </div>
-    </div>
-
-    <script>
-
-        var overlay = document.querySelector('.overlay');
-        var overlayEdit = document.querySelector('.overlay_edit');
-        var close = document.querySelector('.comment_close i')
-        var addBtn = document.querySelector('.add_btn')
-
-
-        close.addEventListener('click', (e) => {
-            overlay.classList.remove('show')
-        })
-
-        // Giai thich
-        overlay.addEventListener('click', (e) => {
-            if (e.target == e.currentTarget) {
-                overlay.classList.remove('show')
-            }
-        })
-
-        addBtn.addEventListener('click', (e) => {
-            e.preventDefault()
-            overlay.classList.add('show')
-        })
-
-        function w3_open() {
-            document.getElementById("mySidebar").style.display = "block";
-        }
-
-        function w3_close() {
-            document.getElementById("mySidebar").style.display = "none";
-        }
-
-    </script>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
-
-    <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
 </body>
 </html>
 
