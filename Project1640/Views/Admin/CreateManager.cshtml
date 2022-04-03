@@ -48,11 +48,6 @@
             @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
         </div>
 
-        <div class="form-group">
-            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form_title-input", @placeholder = "Username" } })
-            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-        </div>
-
         <button type="submit" class="btn btn-add">Submit</button>
     </div>
 }
