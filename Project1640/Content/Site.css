@@ -260,6 +260,15 @@ body {
 
 .blog_categories {
     margin: 15px 0;
+    height: 200px;
+    overflow: hidden;
+    overflow: auto;
+    -ms-overflow-style: none;
+}
+
+.blog_categories::-webkit-scrollbar {
+    width: 0 !important;
+    display: none;
 }
 
 .blog_categories ul {
@@ -958,7 +967,7 @@ container table {
 @media (min-width: 719px) and (max-width: 768px) {
 
     .blog_all-categories {
-        padding: 25px 0 25px 25px;
+        padding: 25px 0 25px 0px;
     }
 }
 

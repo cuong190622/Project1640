@@ -10,37 +10,46 @@ using System.Web;
 using System.Web.Mvc;
 using System.Net.Mail;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace Project1640.Controllers
 {
     public class CoorController : Controller
     {
         // GET: Coor
-        public ActionResult Index(int id = 1, int categoryId = 0)
+        public ActionResult Index(int id = 1, int categoryId = 0, string count = "a")
         {
+            int number = 5;
+            if (Regex.IsMatch(count, @"^\d+$"))
+            {
+                number = Int32.Parse(count);
+            }
             if (categoryId == 0)
             {
                 using (var dbCT = new EF.CMSContext())
                 {
+                    TempData["CategoryId"] = 0;
                     int Count = dbCT.Idea.Count();
-                    if (Count <= 5)
+                    if (Count <= number)
                     {
                         TempData["PageNo"] = 1;
                         TempData["PageMax"] = 1;
+                        TempData["Number"] = number;
                         var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
                         return View(ideas);
                     }
                     else
                     {
                         var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
-                        if (Count % 5 != 0)
+                        if (Count % number != 0)
                         {
-                            TempData["PageMax"] = (Count / 5) + 1;
+                            TempData["PageMax"] = (Count / number) + 1;
                         }
                         else
                         {
-                            TempData["PageMax"] = (Count / 5);
+                            TempData["PageMax"] = (Count / number);
                         }
+                        TempData["Number"] = number;
                         TempData["PageNo"] = id;
                         return View(ideas);
                     }
@@ -53,24 +62,26 @@ namespace Project1640.Controllers
                 {
                     TempData["CategoryId"] = categoryId;
                     int Count = dbCT.Idea.Where(p => p.CategoryId == categoryId).Count();
-                    if (Count <= 5)
+                    if (Count <= number)
                     {
                         TempData["PageNo"] = 1;
                         TempData["PageMax"] = 1;
+                        TempData["Number"] = number;
                         var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
                         return View(ideas);
                     }
                     else
                     {
                         var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
-                        if (Count % 5 != 0)
+                        if (Count % number != 0)
                         {
-                            TempData["PageMax"] = (Count / 5) + 1;
+                            TempData["PageMax"] = (Count / number) + 1;
                         }
                         else
                         {
-                            TempData["PageMax"] = (Count / 5);
+                            TempData["PageMax"] = (Count / number);
                         }
+                        TempData["Number"] = number;
                         TempData["PageNo"] = id;
                         return View(ideas);
                     }
@@ -79,7 +90,7 @@ namespace Project1640.Controllers
             }
 
         }
-    
+
 
         public ActionResult TopView()
         {
@@ -286,6 +297,10 @@ namespace Project1640.Controllers
                 var _category = dbCT.Category.ToList();
                 return View(_category);
             }
+        }
+        public ActionResult Filter()
+        {
+            return View();
         }
 
     }

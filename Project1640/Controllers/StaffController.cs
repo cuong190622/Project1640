@@ -9,41 +9,50 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Project1640.Controllers
 {
-    [Authorize(Roles = SecurityRoles.Staff)]
+   //[Authorize(Roles = SecurityRoles.Staff)]
     public class StaffController : Controller
     {
 
-        public ActionResult Index(int id = 1, int categoryId = 0)
+        public ActionResult Index(int id = 1, int categoryId = 0, string count = "a")
         {
+            int number = 5;
+            if(Regex.IsMatch(count, @"^\d+$") && Int32.Parse(count) >0)
+            {
+                number = Int32.Parse(count);
+            }
             if(categoryId == 0)
             {
                 using (var dbCT = new EF.CMSContext())
                 {
+                    TempData["CategoryId"] = 0;
                     int Count = dbCT.Idea.Count();
-                    if (Count <= 5)
+                    if (Count <= number)
                     {
                         TempData["PageNo"] = 1;
                         TempData["PageMax"] = 1;
+                        TempData["Number"] = number;
                         var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
                         return View(ideas);
                     }
                     else
                     {
                         var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
-                        if (Count % 5 != 0)
+                        if (Count % number != 0)
                         {
-                            TempData["PageMax"] = (Count / 5) + 1;
+                            TempData["PageMax"] = (Count / number) + 1;
                         }
                         else
                         {
-                            TempData["PageMax"] = (Count / 5);
+                            TempData["PageMax"] = (Count / number);
                         }
+                        TempData["Number"] = number;
                         TempData["PageNo"] = id;
                         return View(ideas);
                     }
@@ -56,24 +65,26 @@ namespace Project1640.Controllers
                 {
                     TempData["CategoryId"] = categoryId;
                     int Count = dbCT.Idea.Where(p => p.CategoryId == categoryId).Count();
-                    if (Count <= 5)
+                    if (Count <= number)
                     {
                         TempData["PageNo"] = 1;
                         TempData["PageMax"] = 1;
+                        TempData["Number"] = number;
                         var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
                         return View(ideas);
                     }
                     else
                     {
                         var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
-                        if (Count % 5 != 0)
+                        if (Count % number != 0)
                         {
-                            TempData["PageMax"] = (Count / 5) + 1;
+                            TempData["PageMax"] = (Count / number) + 1;
                         }
                         else
                         {
-                            TempData["PageMax"] = (Count / 5);
+                            TempData["PageMax"] = (Count / number);
                         }
+                        TempData["Number"] = number;
                         TempData["PageNo"] = id;
                         return View(ideas);
                     }
@@ -383,7 +394,6 @@ namespace Project1640.Controllers
                 TempData["LastComment"] = _comment.Id;
                 return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });               
             }
-
         }
         public async Task SendEmail(string email, string comment)
         {
@@ -442,7 +452,14 @@ namespace Project1640.Controllers
                 var _files = dbCT.File
                                         .Where(c => c.IdeaId == IdeaId)
                                         .ToList();
-                return View(_files);
+                if(_files.Count != 0)
+                {
+                    return View(_files);
+                }
+                else
+                {
+                    return Content($"No File uploaded!");
+                }
             }
         }
 
@@ -453,16 +470,23 @@ namespace Project1640.Controllers
                 var FirstDate = Database.SetDate.Where(p => p.Id == 1).FirstOrDefault();
                 if (FirstDate != null)
                 {
-                    if(Int32.Parse(FirstDate.StartDate.Split('-')[0]) <= Int32.Parse(DateTime.Now.ToString("yyyy")) && Int32.Parse(DateTime.Now.ToString("yyyy")) <= Int32.Parse(FirstDate.EndDate.Split('-')[0]))
+                    if(Int32.Parse(FirstDate.StartDate.Split('/')[0]) <= Int32.Parse(DateTime.Now.ToString("yyyy")) && Int32.Parse(DateTime.Now.ToString("yyyy")) <= Int32.Parse(FirstDate.EndDate.Split('/')[0]))
                     {
-                        if (Int32.Parse(FirstDate.StartDate.Split('-')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) <= Int32.Parse(FirstDate.EndDate.Split('-')[1]))
+                        if (Int32.Parse(FirstDate.StartDate.Split('/')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) <= Int32.Parse(FirstDate.EndDate.Split('/')[1]))
                         {
-                            if (Int32.Parse(FirstDate.StartDate.Split('-')[2]) <= Int32.Parse(DateTime.Now.ToString("dd")) && Int32.Parse(DateTime.Now.ToString("dd")) <= Int32.Parse(FirstDate.EndDate.Split('-')[2]))
+                            if (Int32.Parse(FirstDate.StartDate.Split('/')[2]) <= Int32.Parse(DateTime.Now.ToString("dd")) && Int32.Parse(DateTime.Now.ToString("dd")) <= Int32.Parse(FirstDate.EndDate.Split('/')[2]))
                             {
                                 return true;
                             }
                         }
-                        if (Int32.Parse(FirstDate.StartDate.Split('-')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) < Int32.Parse(FirstDate.EndDate.Split('-')[1]))
+                        if (Int32.Parse(FirstDate.StartDate.Split('/')[1]) < Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) <= Int32.Parse(FirstDate.EndDate.Split('/')[1]))
+                        {
+                            if (Int32.Parse(DateTime.Now.ToString("dd")) <= Int32.Parse(FirstDate.EndDate.Split('/')[2]))
+                            {
+                                return true;
+                            }
+                        }
+                        if (Int32.Parse(FirstDate.StartDate.Split('/')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) < Int32.Parse(FirstDate.EndDate.Split('/')[1]))
                         {
                             return true;
                         }
@@ -604,6 +628,10 @@ namespace Project1640.Controllers
                 var _category = dbCT.Category.ToList();
                 return View(_category);
             }
+        }
+        public ActionResult Fiter()
+        {
+            return View();
         }
     }
 }

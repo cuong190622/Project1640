@@ -44,9 +44,6 @@
                     </div>
 
                     <div class="blog_react-item">
-                        <div class="react_btn">
-                            @{Html.RenderAction("Like", "Staff");}
-                        </div>
 
                         <div class="react_commment">
                             <i class="fa-solid fa-comment"></i>
@@ -133,10 +130,6 @@
             <div class="comment_write">
                 <div class="blog_avatar">
                     <i class="fa-solid fa-user img-avatar" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                </div>
-                <!--<input type="text" placeholder="Text your comment..." class="comment_write-input">-->
-                <div class="form_input-comment">
-                    @{Html.RenderAction("CreateComment", "Staff", new { IdeaId = Model.Id });}
                 </div>
             </div>
 
