@@ -91,6 +91,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -178,11 +179,13 @@
     </Compile>
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\FileDownloads.cs" />
     <Compile Include="Models\FileInfo.cs" />
     <Compile Include="Models\FileUpload.cs" />
     <Compile Include="Models\Idea.cs" />
+    <Compile Include="Models\ListDepartment.cs" />
     <Compile Include="Models\React.cs" />
     <Compile Include="Models\SecurityRoles.cs" />
     <Compile Include="Models\SetDate.cs" />
@@ -369,6 +372,10 @@
     <Content Include="Views\Admin\DeleteCategory.cshtml" />
     <Content Include="Views\Login\NotAuth.cshtml" />
     <Content Include="Views\Login\NotFound.cshtml" />
+    <Content Include="Views\Staff\Fiter.cshtml" />
+    <Content Include="Views\Coor\Filter.cshtml" />
+    <Content Include="Views\Manager\Chart.cshtml" />
+    <Content Include="Views\Manager\FliterYear.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
