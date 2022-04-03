@@ -14,13 +14,13 @@
 </head>
 <body>
     <div>
-        @{Html.RenderAction("Filter", "Admin");}
+        @{Html.RenderAction("Filter3", "Admin");}
     </div>
     <table class="table table-hover">
         <thead class="thead-dark">
             <tr>
                 <th scope="col">@Html.DisplayNameFor(model => model.Title)</th>
-                <th scope="col">@Html.DisplayNameFor(model => model.Views)</th>
+                <th scope="col">@Html.Display("Rank")</th>
                 <th scope="col">Action</th>
             </tr>
 
@@ -32,7 +32,7 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(model => c.Title)</td>
-                    <td>@Html.DisplayFor(model => c.Views)</td>
+                    <td>@Html.DisplayFor(model => c.Rank)</td>
                     <td>
                         <a type="button" class="btn btn-success btn-sm"
                            href="@Url.Action("ViewIdea", new {IdeaId = c.Id, CategoryId = c.CategoryId})">View</a>

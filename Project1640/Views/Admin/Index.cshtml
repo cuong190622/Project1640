@@ -20,7 +20,9 @@
                 <th scope="col">Role</th>
                 <th scope="col">Name</th>
                 <th scope="col">Age</th>
-                <th scope="col">Dep.</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Working Place</th>
                 <th scope="col">Action</th>
             </tr>
         </thead>
@@ -29,21 +31,26 @@
         <tbody>
             @foreach (var c in Model)
             {
-                <tr>
-                    <td>@Html.DisplayFor(model => c.Role)</td>
-                    <td>@Html.DisplayFor(model => c.Name)</td>
-                    <td>@Html.DisplayFor(model => c.Age)</td>
-                    <td>@Html.DisplayFor(model => c.DepartmentId)</td>
-                    <td>
-                        <a type="button" class="btn btn-dark btn-sm" style="margin-top: 3px; width: 55px;"
-                           href="@Url.Action("ViewAccount", new {id = c.Id })">View</a>
-                        <a type="button" class="btn btn-success btn-sm" style="margin-top: 3px; width: 55px; "
-                           href="@Url.Action("EditAccount", new {id = c.Id})">Edit</a>
-                        <a type="button" class="btn btn-danger btn-sm" style="margin-top: 3px; width: 55px; "
-                           href="@Url.Action("DeleteAccount", new {id = c.Id })">Delete</a>
+            <tr>
+                <td>@Html.DisplayFor(model => c.Role)</td>
+                <td>@Html.DisplayFor(model => c.Name)</td>
+                <td>@Html.DisplayFor(model => c.Age)</td>
+                <td>@Html.DisplayFor(model => c.Email)</td>
+                <td>@Html.DisplayFor(model => c.PhoneNumber)</td>
+                <td>@Html.DisplayFor(model => c.WorkingPlace)</td>
 
-                    </td>
-                </tr>
+
+
+                <td>
+                    <a type="button" class="btn btn-dark btn-sm" style="margin-top: 3px; width: 55px;"
+                       href="@Url.Action("ViewAccount", new {id = c.Id })">View</a>
+                    <a type="button" class="btn btn-success btn-sm" style="margin-top: 3px; width: 55px; "
+                       href="@Url.Action("EditAccount", new {id = c.Id})">Edit</a>
+                    <a type="button" class="btn btn-danger btn-sm" style="margin-top: 3px; width: 55px; "
+                       href="@Url.Action("DeleteAccount", new {id = c.Id })">Delete</a>
+
+                </td>
+            </tr>
             }
         </tbody>
     </table>

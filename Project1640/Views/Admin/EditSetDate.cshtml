@@ -4,7 +4,7 @@
     ViewBag.Title = "EditSetDate";
 }
 
-@using (Html.BeginForm(FormMethod.Post))
+@using (Html.BeginForm("EditSetDate", "Admin", FormMethod.Post, new { @class = "form-horizontal", role = "form", _lpchecked = "1" }))
 {
     var a = Model.StartDate;
     @Html.HiddenFor(m => m.Id)
