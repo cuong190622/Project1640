@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<Project1640.Models.FileUpload>
 
-
-@foreach (var item in Model) {
-    <tr>
-        <a href="#">@Html.DisplayFor(modelItem => item.Name)</a>
-    </tr>
+@foreach (var item in Model)
+{
+        <tr>
+            <span>File Upload: </span>  <a href="#">@Html.DisplayFor(modelItem => item.Name)</a>
+        </tr>
 }
 
