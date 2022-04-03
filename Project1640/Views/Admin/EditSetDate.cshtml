@@ -1,10 +1,12 @@
 ﻿@model Project1640.Models.SetDate
 @{
+    Layout = "~/Views/Admin/_LayoutAdmin.cshtml";
     ViewBag.Title = "EditSetDate";
 }
 
 @using (Html.BeginForm(FormMethod.Post))
 {
+    var a = Model.StartDate;
     @Html.HiddenFor(m => m.Id)
     <div class="form-group">
         @Html.LabelFor(m => m.StartDate,
@@ -14,7 +16,7 @@
         @Html.EditorFor(m => m.StartDate,
          new
          {
-           htmlAttributes = new { @class = "form-control" }
+           htmlAttributes = new { @class = "form-control", }
          })
     </div>
 

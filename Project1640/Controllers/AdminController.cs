@@ -629,16 +629,12 @@ namespace Project1640.Controllers
 
         //HTTPOST CREATE EDITSETDATE
         [HttpPost]
-        public ActionResult EditSetDate(int id, SetDate a, DateTime startdate, DateTime enddate)
+        public ActionResult EditSetDate(SetDate a)
         {
-            if (startdate < enddate)
-            {
                 using (var sd = new EF.CMSContext())
                 {
-                    sd.Entry<SetDate>(a).State = System.Data.Entity.EntityState.Modified;
                     sd.SaveChanges();
                 }              
-            }
             return RedirectToAction("Index");
 
         }
