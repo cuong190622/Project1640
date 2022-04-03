@@ -47,7 +47,7 @@
                 <img src="https://scontent.fhan4-2.fna.fbcdn.net/v/t1.15752-9/273781853_387701592785192_2370446527590513023_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=5t9U-XyL9n0AX8tEXxK&_nc_ht=scontent.fhan4-2.fna&oh=03_AVJkRLxpI0Ki6LzscTR2FROaanmpZfCZTNYFs6-92N4g7Q&oe=62585F2A" alt="">
                 <span>
                     <i class="fa-solid fa-caret-left"></i>
-                    @Html.ActionLink("Back", "Index")
+                    @Html.ActionLink("Back", "ViewAllIdea")
                 </span>
             </div>
 
@@ -95,7 +95,7 @@
                         </h3>
                     </div>
 
-                   
+
                 </div>
 
                 <div class="blog_post">
@@ -179,12 +179,12 @@
                 </div>
                 <!--<input type="text" placeholder="Text your comment..." class="comment_write-input">-->
                 <div class="form_input-comment">
-                    
+
                 </div>
             </div>
 
             <div class="comment_list">
-                @{Html.RenderAction("ShowComment", "Coor");}
+                @{Html.RenderAction("ShowComment", "Manager");}
             </div>
         </div>
     </div>
@@ -288,7 +288,4 @@
 </html>
 
 <style>
-
-    
-
 </style>

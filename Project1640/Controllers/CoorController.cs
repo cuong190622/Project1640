@@ -101,7 +101,34 @@ namespace Project1640.Controllers
             }
 
         }
+        public ActionResult TopLike()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
+                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+            }
 
+        }
+
+        public ActionResult LastIdea()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+            }
+        }
+
+        public ActionResult LastComment()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                TempData["LastComment"] = _comment.Id;
+                return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
+            }
+        }
         public ActionResult ShowUser(string UserId)
         {
 
@@ -302,6 +329,24 @@ namespace Project1640.Controllers
         {
             return View();
         }
+        public ActionResult ShowComment(int IdeaId)
+        {
 
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _comment = dbCT.Comment
+                                        .Where(c => c.IdeaId == IdeaId)
+                                        .ToList();
+                if (_comment.Count != 0)
+                {
+                    return View(_comment);
+                }
+                else
+                {
+                    return Content($"No Comment yet!");
+                }
+
+            }
+        }
     }
 }
