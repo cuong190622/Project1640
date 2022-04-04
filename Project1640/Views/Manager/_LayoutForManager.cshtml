@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+    <div>
+        @if (TempData["alert"] != null)
+        {
+
+            <div class="alert">
+                <div class="process"></div>
+                <ion-icon name="shield-outline"></ion-icon>
+                <span>@TempData["alert"].ToString()</span>
+            </div>
+
+        }
+        @if (TempData["message"] != null)
+        {
+
+            <div class="alert" style="background-color: aqua;">
+                <div class="process"></div>
+                <ion-icon name="shield-outline"></ion-icon>
+                <span>@TempData["message"].ToString()</span>
+            </div>
+
+        }
+        @RenderBody()
+    </div>
+    <script>
+
+        const alert = document.querySelector('.alert')
+        document.addEventListener("DOMContentLoaded", () => {
+            alert.style.right = '20px'
+            let length = 70
+            let process = document.querySelector('.process')
+            const run = setInterval(() => {
+                process.style.height = length + 'px'
+                length -= 5
+                if (length <= -10) {
+                    clearInterval(run)
+                    alert.style.left = '-700px'
+                }
+            }, 300)
+        })
+    </script>
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;1,500&display=swap');
+
+        * {
+            font-family: 'Poppins', sans-serif;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+
+        .alert {
+            width: 400px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0px 0px 5px #0ebaec;
+            position: absolute;
+            background-color: lightcoral;
+            top: 70px;
+            right: -500px;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.5s;
+        }
+
+        .process {
+            height: 70px;
+            border-left: 5px solid aqua;
+            top: 0;
+            left: 0;
+            position: absolute;
+            transition: all 0.2s;
+        }
+
+        .alert ion-icon {
+            padding: 0px 10px;
+            font-size: 20px;
+            color: #0ebaec;
+        }
+    </style>
+</body>
+</html>

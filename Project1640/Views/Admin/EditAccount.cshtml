@@ -38,62 +38,72 @@
 
         <div class="add_container" style="margin: 0;">
 
-                @using (Html.BeginForm(FormMethod.Post))
-                {
-                    <h2 style="font-weight: bold;">Edit Account</h2>
-                    @Html.HiddenFor(m => m.Role)
-                    
-                    <div class="form-group">
-                        @Html.DropDownListFor(m => m.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.Class, htmlAttributes : new { @class = "form_title-acc" } )
-                    </div>
+            @using (Html.BeginForm(FormMethod.Post))
+            {
+                <h2 style="font-weight: bold;">Edit Account</h2>
+                @Html.HiddenFor(m => m.Role)
 
-                    <div class="form-group">
+                <div class="form-group">
+                    @Html.DropDownListFor(m => m.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.Class, htmlAttributes: new { @class = "form_title-acc" })
+                </div>
 
-                        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form_title-acc" } })
+                <div class="form-group">
 
-                    </div>
+                    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form_title-acc" } })
 
-                    <div class="form-group">
+                </div>
 
-                        @Html.EditorFor(m => m.Age, new { htmlAttributes = new { @class = "form_title-acc" } })
+                <div class="form-group">
 
-                    </div>
+                    @Html.EditorFor(m => m.Age, new { htmlAttributes = new { @class = "form_title-acc" } })
 
-                    <div class="form-group">
+                </div>
 
-                        @Html.EditorFor(m => m.WorkingPlace, new { htmlAttributes = new { @class = "form_title-acc" } })
+                <div class="form-group">
 
-                    </div>
+                    @Html.EditorFor(m => m.WorkingPlace, new { htmlAttributes = new { @class = "form_title-acc" } })
 
-
-                    <div class="form-group">
-
-                        @Html.EditorFor(m => m.DoB, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                    </div>
-
-                    <div class="form-group">
-
-                        @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                    </div>
-
-                    <div class="form-group">
-
-                        @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                    </div>
+                </div>
 
 
-                    <div class="form-group">
+                <div class="form-group">
 
-                        @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form_title-acc" } })
+                    @Html.EditorFor(m => m.DoB, new { htmlAttributes = new { @class = "form_title-acc" } })
 
-                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form_title-acc" } })
+
+                </div>
+
+                <div class="form-group">
+
+                    @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form_title-acc" } })
+
+                </div>
 
 
-                    <button type="submit" class="btn btn-add">Update</button>
-                }
+                <div class="form-group">
+
+                    @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form_title-acc" } })
+
+                </div>
+                <div class="form-group" style="display: none;">
+
+                    @Html.EditorFor(m => m.PasswordHash, new { htmlAttributes = new { @class = "form_title-acc" } })
+
+                </div>
+                <div class="form-group" style="display: none;">
+
+                    @Html.EditorFor(m => m.SecurityStamp, new { htmlAttributes = new { @class = "form_title-acc" } })
+
+                </div>
+
+
+                <button type="submit" class="btn btn-add">Update</button>
+            }
         </div>
     </div>
 

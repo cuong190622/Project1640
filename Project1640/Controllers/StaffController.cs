@@ -174,7 +174,7 @@ namespace Project1640.Controllers
 
                 }
             }
-
+            TempData["message"] = $"Create new idea Successfully!";
             return RedirectToAction("Index");
         }
         [HttpPost]
@@ -249,7 +249,7 @@ namespace Project1640.Controllers
         public async Task<ActionResult> CreateComment(Comment a)
         {
             if (!ModelState.IsValid)
-            {               
+            {
                 return RedirectToAction("ViewIdea", new { IdeaId = a.IdeaId });
             }
             if (!CheckDate())
@@ -270,6 +270,7 @@ namespace Project1640.Controllers
                 await SendEmail(FindEmailUserByCommentId(a.Id), "New user comment on your post! <p>Comment: " + a.Content + " </p>");
                 TempData["IdeaId"] = a.IdeaId;
             }
+            TempData["message"] = $"Create new comment Successfully!";
             return RedirectToAction("ViewIdea", new { IdeaId = a.IdeaId });
         }
         public ActionResult ShowCategory(int CategoryId)
@@ -362,8 +363,16 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
             }
 
         }
@@ -371,8 +380,16 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
             }
 
         }
@@ -381,8 +398,17 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
             }
         }
 
@@ -390,9 +416,19 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
-                TempData["LastComment"] = _comment.Id;
-                return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });               
+
+                try
+                {
+                    var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                    TempData["LastComment"] = _comment.Id;
+                    return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No Comment at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
+
             }
         }
         public async Task SendEmail(string email, string comment)
