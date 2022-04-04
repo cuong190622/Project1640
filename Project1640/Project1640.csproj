@@ -388,6 +388,7 @@
     <Content Include="Views\Admin\Filter2.cshtml" />
     <Content Include="Views\Admin\Top5Like.cshtml" />
     <Content Include="Views\Admin\Filter3.cshtml" />
+    <Content Include="Views\Manager\_LayoutForManager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />

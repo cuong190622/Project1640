@@ -96,17 +96,33 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
             }
 
         }
         public ActionResult TopLike()
         {
             using (var dbCT = new EF.CMSContext())
-            {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+            {  
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
             }
 
         }
@@ -115,8 +131,17 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
             }
         }
 
@@ -124,9 +149,19 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
-                TempData["LastComment"] = _comment.Id;
-                return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
+                
+                try
+                {
+                    var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                    TempData["LastComment"] = _comment.Id;
+                    return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No Comment at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
+                
             }
         }
         public ActionResult ShowUser(string UserId)

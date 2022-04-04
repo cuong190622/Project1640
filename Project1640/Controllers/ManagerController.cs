@@ -492,33 +492,56 @@ namespace Project1640.Controllers
 
             }
         }
-        [HttpGet]
         public ActionResult TopView()
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
             }
 
         }
-        [HttpGet]
         public ActionResult TopLike()
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
             }
 
         }
-        [HttpGet]
+
         public ActionResult LastIdea()
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
             }
         }
         [HttpGet]
@@ -526,9 +549,18 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
-                TempData["LastComment"] = _comment.Id;
-                return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
+                
+                try
+                {
+                    var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                    TempData["LastComment"] = _comment.Id;
+                    return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No Comments at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
             }
         }
         public async Task SendEmail(string email, string comment)

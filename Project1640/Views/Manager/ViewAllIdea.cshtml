@@ -3,7 +3,7 @@
 @{
     TempData["UserEmail"] = TempData["UserEmail"];
     TempData["UserId"] = TempData["UserId"];
-    Layout = "~/Views/Coor/_LayoutCoor.cshtml";
+    Layout = "~/Views/Manager/_LayoutForManager.cshtml";
     int No = Int16.Parse(TempData["PageNo"].ToString());
     int Number = Int16.Parse(TempData["Number"].ToString());
     int first = (No - 1) * Number;
@@ -13,34 +13,17 @@
 }
 
 <div class="container_header">
-    <h1>List Blog</h1>
-    <span>Post ideas to give your opinion or interact with other ideas.</span>
+    <h1>List Ideas</h1>
 </div>
 
 <div class="container_blog">
 
     <div class="blog_all-item">
-
-        <div class="filter">
-            <div class="filter_item">
-                @Html.ActionLink("Top View", "TopView")
-            </div>
-            <div class="filter_item">
-                @Html.ActionLink("Top Like", "TopLike")
-            </div>
-            <div class="filter_item">
-                @Html.ActionLink("Latest Idea", "LastIdea")
-            </div>
-            <div class="filter_item">
-                @Html.ActionLink("Latest Comment", "LastComment")
-            </div>
-        </div>
-
         @foreach (var c in Model)
         {
             if (a >= first && a < last)
             {
-                <div class="blog_item left-to-right">
+                <div class="blog_item">
                     <div class="blog_item-header">
                         <div class="blog_avatar">
                             <i class="fa-solid fa-user"></i>
@@ -64,7 +47,7 @@
                                 <i class="btn btn-secondary fa-solid fa-ellipsis" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 </i>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">Copy Link</a></li>
+                                    <li><a class="dropdown-item" href="@Url.Action("DeleteIdea", new {id = c.Id})">Delete this Idea</a></li>
                                 </ul>
                             </div>
 
@@ -148,7 +131,7 @@
 
     </div>
     <div>
-        @{Html.RenderAction("Filter", "Admin");}
+        @{Html.RenderAction("Filter2", "Admin");}
     </div>
     <div class="blog_all-categories">
         <h2>All Categories</h2>
@@ -159,30 +142,3 @@
     </div>
 
 </div>
-
-
-
-<script>
-
-    var blogItem = document.querySelectorAll('.blog_item')
-
-    function scrollHandleAnimation(e) {
-        var rect = e.getClientRects()[0]
-        var heightScreen = window.innerHeight
-
-        if (!(rect.bottom < 0 || heightScreen.top > heightScreen)) {
-            e.classList.add('start')
-        } else {
-            e.classList.remove('start')
-        }
-    }
-
-    function checkElement() {
-        blogItem.forEach(e => {
-            scrollHandleAnimation(e)
-        })
-    }
-
-    window.onscroll = checkElement
-
-</script>

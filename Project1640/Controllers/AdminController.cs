@@ -39,7 +39,8 @@ namespace Project1640.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Class = getList();
-                return View(staff);
+                TempData["alert"] = $"Create account Fail, data input not allowed! Try again!";
+                return RedirectToAction("Index");
             }
             else
             {
@@ -48,7 +49,7 @@ namespace Project1640.Controllers
                 var manager = new UserManager<UserInfo>(store);
 
                 var user = await manager.FindByEmailAsync(staff.Email);
-
+                
                 if (user == null)
                 {
                     user = new UserInfo
@@ -66,6 +67,11 @@ namespace Project1640.Controllers
                     };
                     await manager.CreateAsync(user, user.PasswordHash);
                     await CreateRole(staff.Email, "staff");
+                    TempData["message"] = $"Account successfully created!";
+                }
+                else
+                {
+                    TempData["alert"] = $"Email already exists, please try again!!";
                 }
                 return RedirectToAction("Index");
             }
@@ -79,11 +85,6 @@ namespace Project1640.Controllers
             {
                 ModelState.AddModelError("Email", "Please input Email");
             }
-            if (string.IsNullOrEmpty(staff.UserName))
-            {
-                ModelState.AddModelError("UserName", "Please input Name");
-            }
-
         }
 
         public ActionResult ViewAccount(string id)
@@ -114,7 +115,8 @@ namespace Project1640.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Class = getList();
-                return View(mana);
+                TempData["alert"] = $"Create account Fail, data input not allowed! Try again!";
+                return RedirectToAction("Index");
             }
             else
             {
@@ -123,7 +125,7 @@ namespace Project1640.Controllers
                 var manager = new UserManager<UserInfo>(store);
 
                 var user = await manager.FindByEmailAsync(mana.Email);
-
+                
                 if (user == null)
                 {
                     user = new UserInfo
@@ -141,7 +143,13 @@ namespace Project1640.Controllers
                     };
                     await manager.CreateAsync(user, user.PasswordHash);
                     await CreateRole(mana.Email, "manager");
+                    TempData["message"] = $"Account successfully created!";
                 }
+                else
+                {
+                    TempData["alert"] = $"Email already exists, please try again!!";
+                }
+
                 return RedirectToAction("Index");
             }
 
@@ -153,10 +161,6 @@ namespace Project1640.Controllers
             if (string.IsNullOrEmpty(mana.Email))
             {
                 ModelState.AddModelError("Email", "Please input Email");
-            }
-            if (string.IsNullOrEmpty(mana.UserName))
-            {
-                ModelState.AddModelError("UserName", "Please input Name");
             }
         }
 
@@ -176,7 +180,8 @@ namespace Project1640.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Class = getList();
-                return View(coor);
+                TempData["alert"] = $"Create account Fail, data input not allowed! Try again!";
+                return RedirectToAction("Index");
             }
             else
             {
@@ -185,7 +190,7 @@ namespace Project1640.Controllers
                 var manager = new UserManager<UserInfo>(store);
 
                 var user = await manager.FindByEmailAsync(coor.Email);
-
+                
                 if (user == null)
                 {
                     user = new UserInfo
@@ -203,7 +208,13 @@ namespace Project1640.Controllers
                     };
                     await manager.CreateAsync(user, user.PasswordHash);
                     await CreateRole(coor.Email, "coor");
+                    TempData["message"] = $"Account successfully created!";
                 }
+                else
+                {
+                    TempData["alert"] = $"Email already exists, please try again!!";
+                }
+                
                 return RedirectToAction("Index");
             }
 
@@ -215,10 +226,6 @@ namespace Project1640.Controllers
             if (string.IsNullOrEmpty(coor.Email))
             {
                 ModelState.AddModelError("Email", "Please input Email");
-            }
-            if (string.IsNullOrEmpty(coor.UserName))
-            {
-                ModelState.AddModelError("UserName", "Please input Name");
             }
         }
 
@@ -301,16 +308,12 @@ namespace Project1640.Controllers
             {
                 ViewBag.Class = getList();
                 var ct = bwCtx.Users.FirstOrDefault(t => t.Id == id);
-                //ef method to select only one or null if not found
-
-                if (ct != null) // if a book is found, show edit view
+                if (ct != null) 
                 {
-                    ViewBag.Class = getList();
                     return View(ct);
                 }
-                else // if no book is found, back to index
+                else 
                 {
-                    ViewBag.Class = getList();
                     return RedirectToAction("Index"); //redirect to action in the same controller
                 }
             }
@@ -329,7 +332,7 @@ namespace Project1640.Controllers
                     = System.Data.Entity.EntityState.Modified;
                 ct.SaveChanges();
             }
-            TempData["message"] = $"Successfully update book with Id:{newUser.Id} ";
+            TempData["message"] = $"Successfully update account :{newUser.Email} ";
             return RedirectToAction("Index");
         }
 
@@ -343,7 +346,7 @@ namespace Project1640.Controllers
                 {
                     ct.Users.Remove(newUser);
                     ct.SaveChanges();
-                    TempData["message"] = $"Successfully delete book with Id: {newUser.Id}";
+                    TempData["message"] = $"Successfully delete Account: {newUser.Email}";
                 }
 
 
@@ -458,7 +461,7 @@ namespace Project1640.Controllers
                 dpm.SaveChanges();
             }
 
-            TempData["message"] = $"Successfully add class {a.Name} to system!";
+            TempData["message"] = $"Successfully add department {a.Name} to system!";
 
             return RedirectToAction("IndexDepartment");
         }
@@ -484,7 +487,7 @@ namespace Project1640.Controllers
 
                 dpm.SaveChanges();
             }
-
+            TempData["message"] = $"Update department {a.Name} Successfully!";
             return RedirectToAction("IndexDepartment");
         }
 
@@ -511,7 +514,7 @@ namespace Project1640.Controllers
                     dpm.Department.Remove(Department);
                     dpm.SaveChanges();
                 }
-                TempData["message"] = $"Successfully delete book with Id: {Department.Id}";
+                TempData["message"] = $"Successfully delete department with Id: {Department.Id}";
                 return RedirectToAction("IndexDepartment");
             }
         }
@@ -537,35 +540,81 @@ namespace Project1640.Controllers
                 }
             }
         }
-    
 
 
-        public ActionResult LastIdea()
-        {
-            using (var dbCT = new EF.CMSContext())
-            {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
-            }
-        }
 
         public ActionResult TopView()
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
             }
+
         }
         public ActionResult TopLike()
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
             }
 
         }
+
+        public ActionResult LastIdea()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
+            }
+        }
+
+/*        public ActionResult LastComment()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+
+                try
+                {
+                    var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                    TempData["LastComment"] = _comment.Id;
+                    return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No Comment at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
+
+            }
+        }*/
 
         public ActionResult Top5Idea(string count = "5")
         {
@@ -649,7 +698,7 @@ namespace Project1640.Controllers
                 cate.SaveChanges();
             }
 
-            TempData["message"] = $"Successfully add class {a.Name} to system!";
+            TempData["message"] = $"Successfully add category {a.Name} to system!";
 
             return RedirectToAction("IndexCategory");
         }
@@ -675,7 +724,7 @@ namespace Project1640.Controllers
 
                 cate.SaveChanges();
             }
-
+            TempData["message"] = $"Update category {a.Name} Successfully!";
             return RedirectToAction("IndexCategory");
         }
 
@@ -700,7 +749,7 @@ namespace Project1640.Controllers
                     cate.Category.Remove(Category);
                     cate.SaveChanges();
                 }
-                TempData["message"] = $"Successfully delete book with Id: {Category.Id}";
+                TempData["message"] = $"Successfully delete Category with Name: {Category.Name}";
                 return RedirectToAction("IndexCategory");
             }
         }
