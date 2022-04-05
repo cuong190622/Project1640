@@ -66,7 +66,7 @@ namespace Project1640.Controllers
                     cate.SaveChanges();
                 }
 
-                TempData["message"] = $"Successfully add class {a.Name} to system!";
+                TempData["message"] = $"Successfully add category {a.Name} to system!";
 
                 return RedirectToAction("Index");
             }
@@ -457,7 +457,6 @@ namespace Project1640.Controllers
                 }
             }
         }
-        [HttpGet]
         public ActionResult ShowAllCategory()
         {
 
@@ -467,7 +466,6 @@ namespace Project1640.Controllers
                 return View(_category);
             }
         }
-        [HttpGet]
         public ActionResult Filter()
         {
             return View();
