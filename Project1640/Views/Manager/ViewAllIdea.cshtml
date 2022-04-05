@@ -14,6 +14,9 @@
 
 <div class="container_header">
     <h1>List Ideas</h1>
+    <div>        
+        @{Html.RenderAction("Filter", "Manager");}
+     </div> 
 </div>
 
 <div class="container_blog">
@@ -130,9 +133,7 @@
         </ul>
 
     </div>
-    <div>
-        @{Html.RenderAction("Filter2", "Admin");}
-    </div>
+    
     <div class="blog_all-categories">
         <h2>All Categories</h2>
 

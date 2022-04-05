@@ -271,6 +271,18 @@ body {
     display: none;
 }
 
+.comment_list-view {
+    height: 430px;
+    overflow: hidden;
+    overflow: auto;
+    -ms-overflow-style: none;
+}
+
+.comment_list-view::-webkit-scrollbar {
+    width: 0 !important;
+    display: none;
+}
+
 .blog_categories ul {
     padding: 0;
     width: 100%;
@@ -680,6 +692,10 @@ body {
     position: relative;
 }
 
+.comment_list-mobile{
+    display: none;
+}
+
 .comment_item {
     display: flex;
     margin: 20px 0;
@@ -907,6 +923,14 @@ container table {
 
     .admin_header {
         padding: 20px 10px 20px 10px;
+    }
+
+    .comment_list-pc {
+        display: none;
+    }
+
+    .comment_list-mobile{
+        display: block;
     }
 }
 
