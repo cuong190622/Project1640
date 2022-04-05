@@ -23,6 +23,7 @@ namespace Project1640.Controllers
 {
     public class ManagerController : Controller
     {
+        [Authorize(Roles = SecurityRoles.Manager)]
         // GET: Manager
         public ActionResult Index()
         {
@@ -36,7 +37,7 @@ namespace Project1640.Controllers
         }
 
 
-
+        [Authorize(Roles = SecurityRoles.Manager)]
         [HttpGet]
         public ActionResult CreateCategory()
         {
@@ -50,8 +51,9 @@ namespace Project1640.Controllers
             CustomValidationCategory(a);
             if (!ModelState.IsValid)
             {
-                return View(a); // return lai Create.cshtml
-                                    //di kem voi data ma user da go vao
+                TempData["alert"] = $"Add category Fail! data input not allowed! try again!!";
+                return RedirectToAction("Index"); // return lai Create.cshtml
+                                  
             }
             else
             {
@@ -82,7 +84,7 @@ namespace Project1640.Controllers
                 ModelState.AddModelError("Description", "Please input Description");
             }
         }
-
+        [Authorize(Roles = SecurityRoles.Manager)]
         [HttpGet]
         public ActionResult EditCategory(int id )
         {
@@ -116,7 +118,7 @@ namespace Project1640.Controllers
 
               
         }
-
+        [Authorize(Roles = SecurityRoles.Manager)]
         [HttpGet]
         public ActionResult DeleteCategory(int id, Category a)
         {
@@ -197,7 +199,7 @@ namespace Project1640.Controllers
 
 
         //}
-
+        [Authorize(Roles = SecurityRoles.Manager)]
         public ActionResult Download()
         {
             FileDownloads obj = new FileDownloads();
@@ -221,7 +223,7 @@ namespace Project1640.Controllers
             }
         }
 
-        
+        [Authorize(Roles = SecurityRoles.Manager)]
         public ActionResult Csvfile()
         {
             CMSContext context = new CMSContext();
@@ -262,7 +264,7 @@ namespace Project1640.Controllers
             return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Grid.csv");
         
         }
-
+        [Authorize(Roles = SecurityRoles.Manager)]
         public ActionResult Chart(string year = "2022")
         {
             int number = 0;
@@ -363,6 +365,7 @@ namespace Project1640.Controllers
         {
             return View();
         }
+        [Authorize(Roles = SecurityRoles.Manager)]
         public ActionResult ViewAllIdea(int id = 1, int categoryId = 0, string count = "a")
         {
             int number = 5;
@@ -438,6 +441,7 @@ namespace Project1640.Controllers
 
 
         }
+        [Authorize(Roles = SecurityRoles.Manager)]
         public ActionResult ViewIdea(int IdeaId)
         {
             using (var FAPCtx = new EF.CMSContext())

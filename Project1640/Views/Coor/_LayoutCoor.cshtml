@@ -31,220 +31,220 @@
 <body>
 
     <div class="blog">
-            @if (TempData["alert"] != null)
-            {
+        @if (TempData["alert"] != null)
+        {
 
-                <div class="alert">
-                    <div class="process"></div>
-                    <ion-icon name="shield-outline"></ion-icon>
-                    <span>@TempData["alert"].ToString()</span>
+            <div class="alert">
+                <div class="process"></div>
+                <ion-icon name="shield-outline"></ion-icon>
+                <span>@TempData["alert"].ToString()</span>
+            </div>
+
+        }
+        @if (TempData["message"] != null)
+        {
+
+            <div class="alert" style="background-color: aqua;">
+                <div class="process"></div>
+                <ion-icon name="shield-outline"></ion-icon>
+                <span>@TempData["message"].ToString()</span>
+            </div>
+
+        }
+        <div class="header">
+
+            <div class="header_item-first">
+                <img src="https://scontent.fhan4-2.fna.fbcdn.net/v/t1.15752-9/273781853_387701592785192_2370446527590513023_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=5t9U-XyL9n0AX8tEXxK&_nc_ht=scontent.fhan4-2.fna&oh=03_AVJkRLxpI0Ki6LzscTR2FROaanmpZfCZTNYFs6-92N4g7Q&oe=62585F2A" alt="">
+                <span>CHAT LTD</span>
+            </div>
+
+            <div class="header_search">
+            </div>
+
+            <div class="header_item-first header_option">
+                <i class="fa-solid fa-align-justify"></i>
+            </div>
+
+            <div class="header_item-second">
+
+
+
+                <div class="dropdown">
+                    <i class="fa-solid fa-user" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>
+                            <p class="dropdown-item">@a.Split('@')[0] </p>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="@Url.Action( "ChangePass", "Coor" )">Change Password</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="@Url.Action( "LogOut", "Login" )">Log Out</a>
+                        </li>
+                    </ul>
                 </div>
+            </div>
+        </div>
 
-            }
-            @if (TempData["message"] != null)
-            {
+        <div class="container_body">
+            @RenderBody()
+        </div>
 
-                <div class="alert" style="background-color: aqua;">
-                    <div class="process"></div>
-                    <ion-icon name="shield-outline"></ion-icon>
-                    <span>@TempData["message"].ToString()</span>
-                </div>
-
-            }
-            <div class="header">
-
-                <div class="header_item-first">
+        <div class="container_footer">
+            <div class="container_footer-item">
+                <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
                     <img src="https://scontent.fhan4-2.fna.fbcdn.net/v/t1.15752-9/273781853_387701592785192_2370446527590513023_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=5t9U-XyL9n0AX8tEXxK&_nc_ht=scontent.fhan4-2.fna&oh=03_AVJkRLxpI0Ki6LzscTR2FROaanmpZfCZTNYFs6-92N4g7Q&oe=62585F2A" alt="">
-                    <span>CHAT LTD</span>
-                </div>
-
-                <div class="header_search">
-                </div>
-
-                <div class="header_item-first header_option">
-                    <i class="fa-solid fa-align-justify"></i>
-                </div>
-
-                <div class="header_item-second">
-
-
-
-                    <div class="dropdown">
-                        <i class="fa-solid fa-user" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                            <li>
-                                <p class="dropdown-item">@a.Split('@')[0] </p>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="@Url.Action( "ChangePass", "Coor" )">Change Password</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item" href="@Url.Action( "LogOut", "Login" )">Log Out</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                </a>
+                <p class="text-muted">&copy; 2022</p>
             </div>
 
-            <div class="container_body">
-                @RenderBody()
-            </div>
-
-            <div class="container_footer">
-                <div class="container_footer-item">
-                    <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
-                        <img src="https://scontent.fhan4-2.fna.fbcdn.net/v/t1.15752-9/273781853_387701592785192_2370446527590513023_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=5t9U-XyL9n0AX8tEXxK&_nc_ht=scontent.fhan4-2.fna&oh=03_AVJkRLxpI0Ki6LzscTR2FROaanmpZfCZTNYFs6-92N4g7Q&oe=62585F2A" alt="">
-                    </a>
-                    <p class="text-muted">&copy; 2022</p>
-                </div>
-
-                <div class="container_footer-item">
-                    <h5>CHAT LTD</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>C</b>uong Nguyen Dinh</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>H</b>uy Tran Quang</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>A</b>nh Le Hoang</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>T</b>hien Le Minh</a></li>
-                    </ul>
-                </div>
-
-                <div class="container_footer-item">
-                    <h5>Group 7</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Facebook</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Instargram</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Email</a></li>
-                    </ul>
-                </div>
-
-                <div class="container_footer-item">
-                    <h5>University of Greenwich</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Email</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Facebook</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Instargram</a></li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="options_layout">
-            <div class="options_content">
-
-                <div class="options_close">
-                    <i class="fa-solid fa-x"></i>
-                </div>
-
-                <ul>
-
-                    <li>
-                        <i class="fa-solid fa-user"></i>
-                        <p class="dropdown-item" style="margin: 0;">@a.Split('@')[0] </p>
-                    </li>
-                    <li>
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <a class="dropdown-item" href="@Url.Action( "LogOut", "Login" )">Log Out</a>
-                    </li>
+            <div class="container_footer-item">
+                <h5>CHAT LTD</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>C</b>uong Nguyen Dinh</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>H</b>uy Tran Quang</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>A</b>nh Le Hoang</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted"><b>T</b>hien Le Minh</a></li>
                 </ul>
+            </div>
 
+            <div class="container_footer-item">
+                <h5>Group 7</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Facebook</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Instargram</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Email</a></li>
+                </ul>
+            </div>
+
+            <div class="container_footer-item">
+                <h5>University of Greenwich</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Email</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Facebook</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Instargram</a></li>
+                </ul>
             </div>
         </div>
-        <script>
 
-            const alert = document.querySelector('.alert')
-            document.addEventListener("DOMContentLoaded", () => {
-                alert.style.right = '20px'
-                let length = 70
-                let process = document.querySelector('.process')
-                const run = setInterval(() => {
-                    process.style.height = length + 'px'
-                    length -= 5
-                    if (length <= -10) {
-                        clearInterval(run)
-                        alert.style.left = '-700px'
-                    }
-                }, 300)
-            })
-        </script>
-        <style>
-            @@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;1,500&display=swap');
+    </div>
 
-            * {
-                font-family: 'Poppins', sans-serif;
-                padding: 0;
-                margin: 0;
-                box-sizing: border-box;
-            }
+    <div class="options_layout">
+        <div class="options_content">
 
+            <div class="options_close">
+                <i class="fa-solid fa-x"></i>
+            </div>
 
-            .alert {
-                width: 400px;
-                height: 70px;
-                display: flex;
-                align-items: center;
-                box-shadow: 0px 0px 5px #0ebaec;
-                position: absolute;
-                background-color: lightcoral;
-                top: 70px;
-                right: -500px;
-                border-radius: 10px;
-                overflow: hidden;
-                transition: all 0.5s;
-            }
+            <ul>
 
-            .process {
-                height: 70px;
-                border-left: 5px solid aqua;
-                top: 0;
-                left: 0;
-                position: absolute;
-                transition: all 0.2s;
-            }
+                <li>
+                    <i class="fa-solid fa-user"></i>
+                    <p class="dropdown-item" style="margin: 0;">@a.Split('@')[0] </p>
+                </li>
+                <li>
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <a class="dropdown-item" href="@Url.Action( "LogOut", "Login" )">Log Out</a>
+                </li>
+            </ul>
 
-            .alert ion-icon {
-                padding: 0px 10px;
-                font-size: 20px;
-                color: #0ebaec;
-            }
-        </style>
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-                crossorigin="anonymous"></script>
+        </div>
+    </div>
+    <script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
-
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                crossorigin="anonymous"></script>
-
-        <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
-
-        <script>
-
-            var headerOptions = document.querySelector('.header_option i')
-            var optionLayout = document.querySelector('.options_layout')
-            var closeBtn = document.querySelector('.options_close')
-
-            headerOptions.addEventListener('click', (e) => {
-                optionLayout.classList.add('show')
-            })
-
-            closeBtn.addEventListener('click', (e) => {
-                optionLayout.classList.remove('show')
-            })
-
-            optionLayout.addEventListener('click', (e) => {
-                if (e.target == e.currentTarget) {
-                    optionLayout.classList.remove('show')
+        const alert = document.querySelector('.alert')
+        document.addEventListener("DOMContentLoaded", () => {
+            alert.style.right = '20px'
+            let length = 70
+            let process = document.querySelector('.process')
+            const run = setInterval(() => {
+                process.style.height = length + 'px'
+                length -= 5
+                if (length <= -10) {
+                    clearInterval(run)
+                    alert.style.left = '-700px'
                 }
-            })
+            }, 300)
+        })
+    </script>
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;1,500&display=swap');
 
-        </script>
+        * {
+            font-family: 'Poppins', sans-serif;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
 
-        @RenderSection("scripts", required: false)
+
+        .alert {
+            width: 400px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0px 0px 5px #0ebaec;
+            position: absolute;
+            background-color: lightcoral;
+            top: 70px;
+            right: -500px;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.5s;
+        }
+
+        .process {
+            height: 70px;
+            border-left: 5px solid aqua;
+            top: 0;
+            left: 0;
+            position: absolute;
+            transition: all 0.2s;
+        }
+
+        .alert ion-icon {
+            padding: 0px 10px;
+            font-size: 20px;
+            color: #0ebaec;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
+
+    <script>
+
+        var headerOptions = document.querySelector('.header_option i')
+        var optionLayout = document.querySelector('.options_layout')
+        var closeBtn = document.querySelector('.options_close')
+
+        headerOptions.addEventListener('click', (e) => {
+            optionLayout.classList.add('show')
+        })
+
+        closeBtn.addEventListener('click', (e) => {
+            optionLayout.classList.remove('show')
+        })
+
+        optionLayout.addEventListener('click', (e) => {
+            if (e.target == e.currentTarget) {
+                optionLayout.classList.remove('show')
+            }
+        })
+
+    </script>
+
+    @RenderSection("scripts", required: false)
 
 </body>
 </html>

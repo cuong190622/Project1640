@@ -17,6 +17,7 @@ namespace Project1640.Controllers
     public class CoorController : Controller
     {
         // GET: Coor
+        [Authorize(Roles = SecurityRoles.Coor)]
         public ActionResult Index(int id = 1, int categoryId = 0, string count = "a")
         {
             int number = 5;
@@ -209,7 +210,7 @@ namespace Project1640.Controllers
             return user.Id.ToString();
 
         }
-
+        [Authorize(Roles = SecurityRoles.Coor)]
         public ActionResult ViewIdea(int IdeaId)
         {
             using (var FAPCtx = new EF.CMSContext())
@@ -229,7 +230,7 @@ namespace Project1640.Controllers
                 }
             }
         }
-
+        [Authorize(Roles = SecurityRoles.Coor)]
         [HttpGet]
         public async Task<ActionResult> ChangePass()
         {

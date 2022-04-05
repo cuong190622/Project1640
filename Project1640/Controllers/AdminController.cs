@@ -15,6 +15,7 @@ namespace Project1640.Controllers
     public class AdminController : Controller
     {
         // GET: Admin
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult Index()
         {
             using (var ct = new EF.CMSContext())
@@ -24,6 +25,7 @@ namespace Project1640.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult Createstaff()
         {
             ViewBag.Class = getList();
@@ -86,7 +88,7 @@ namespace Project1640.Controllers
                 ModelState.AddModelError("Email", "Please input Email");
             }
         }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult ViewAccount(string id)
         {
             CMSContext context = new CMSContext();
@@ -99,7 +101,7 @@ namespace Project1640.Controllers
                 return View(ct);
             }
         }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult CreateManager()
         {
@@ -164,7 +166,7 @@ namespace Project1640.Controllers
             }
         }
 
-        // ###############
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult CreateCoor()
         {
@@ -297,7 +299,7 @@ namespace Project1640.Controllers
                 return stx;
             }
         }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult EditAccount(string id)
         {
@@ -335,7 +337,7 @@ namespace Project1640.Controllers
             TempData["message"] = $"Successfully update account :{newUser.Email} ";
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult deleteAccount(string id)
         {
             using (var ct = new CMSContext())
@@ -432,7 +434,7 @@ namespace Project1640.Controllers
 
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult IndexDepartment()
         {
             using (var dpm = new EF.CMSContext())
@@ -443,7 +445,7 @@ namespace Project1640.Controllers
                 return View(department);
             }
         }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
 
         [HttpGet]
         public ActionResult CreateDepartment()
@@ -457,8 +459,17 @@ namespace Project1640.Controllers
         {
             using (var dpm = new EF.CMSContext())
             {
-                dpm.Department.Add(a);
-                dpm.SaveChanges();
+                try
+                {
+                    dpm.Department.Add(a);
+                    dpm.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"Add Department Fail! data input not allowed! try again!!";
+                    return RedirectToAction("IndexDepartment");
+                }
+               
             }
 
             TempData["message"] = $"Successfully add department {a.Name} to system!";
@@ -466,7 +477,7 @@ namespace Project1640.Controllers
             return RedirectToAction("IndexDepartment");
         }
 
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult EditDepartment(int id)
         {
@@ -483,15 +494,23 @@ namespace Project1640.Controllers
         {
             using (var dpm = new EF.CMSContext())
             {
-                dpm.Entry<Department>(a).State = System.Data.Entity.EntityState.Modified;
-
-                dpm.SaveChanges();
+                try
+                {
+                    dpm.Entry<Department>(a).State = System.Data.Entity.EntityState.Modified;
+                    dpm.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"Edit Department Fail! data input not allowed! try again!!";
+                    return RedirectToAction("IndexDepartment");
+                }
+               
             }
             TempData["message"] = $"Update department {a.Name} Successfully!";
             return RedirectToAction("IndexDepartment");
         }
 
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult DeleteDepartment(int id, Department a)
         {
@@ -520,7 +539,7 @@ namespace Project1640.Controllers
         }
 
         /// ////////////////////////////////////////////////////
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult ViewIdea(int IdeaId)
         {
             using (var FAPCtx = new EF.CMSContext())
@@ -644,6 +663,7 @@ namespace Project1640.Controllers
                 return View(_ideas);
             }
         }
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult EditSetDate(int id = 1)
         {
@@ -669,7 +689,7 @@ namespace Project1640.Controllers
             return RedirectToAction("Index");
 
         }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult IndexCategory()
         {
             using (var ctgrCt = new EF.CMSContext())
@@ -682,7 +702,7 @@ namespace Project1640.Controllers
         }
 
 
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult CreateCategory()
         {
@@ -694,8 +714,17 @@ namespace Project1640.Controllers
         {
             using (var cate = new EF.CMSContext())
             {
-                cate.Category.Add(a);
-                cate.SaveChanges();
+                try
+                {
+                    cate.Category.Add(a);
+                    cate.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"Add category Fail! data input not allowed! try again!!";
+                    return RedirectToAction("IndexCategory");
+                }
+                
             }
 
             TempData["message"] = $"Successfully add category {a.Name} to system!";
@@ -703,7 +732,7 @@ namespace Project1640.Controllers
             return RedirectToAction("IndexCategory");
         }
 
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult EditCategory(int id)
         {
@@ -720,14 +749,22 @@ namespace Project1640.Controllers
         {
             using (var cate = new EF.CMSContext())
             {
-                cate.Entry<Category>(a).State = System.Data.Entity.EntityState.Modified;
+                try
+                {
+                    cate.Entry<Category>(a).State = System.Data.Entity.EntityState.Modified;
+                    cate.SaveChanges();
+                }
+                catch(Exception)
+                {
+                    TempData["alert"] = $"Edit category Fail! data input not allowed! try again!!";
+                    return RedirectToAction("IndexCategory");
+                }
 
-                cate.SaveChanges();
             }
             TempData["message"] = $"Update category {a.Name} Successfully!";
             return RedirectToAction("IndexCategory");
         }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult DeleteCategory(int id, Category a)
         {
@@ -765,6 +802,7 @@ namespace Project1640.Controllers
         {
             return View();
         }
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult ViewAllIdea(int id = 1, int categoryId = 0, string count = "a")
         {
             int number = 5;
@@ -867,6 +905,7 @@ namespace Project1640.Controllers
                 return View(_category);
             }
         }
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult DeleteIdea(int id)
         {

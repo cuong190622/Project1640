@@ -16,10 +16,10 @@ using System.Web.Mvc;
 
 namespace Project1640.Controllers
 {
-   //[Authorize(Roles = SecurityRoles.Staff)]
+   
     public class StaffController : Controller
     {
-
+        [Authorize(Roles = SecurityRoles.Staff)]
         public ActionResult Index(int id = 1, int categoryId = 0, string count = "a")
         {
             int number = 5;
@@ -109,7 +109,7 @@ namespace Project1640.Controllers
             }
         }
 
-
+        [Authorize(Roles = SecurityRoles.Staff)]
         [HttpGet]
         public ActionResult CreateIdea()
         {
@@ -238,6 +238,7 @@ namespace Project1640.Controllers
                    
                 }
         }
+        [Authorize(Roles = SecurityRoles.Staff)]
         [HttpGet]
         public ActionResult CreateComment(int IdeaId)
         {
@@ -295,7 +296,7 @@ namespace Project1640.Controllers
                 return View(_category);
             }
         }
-
+        [Authorize(Roles = SecurityRoles.Staff)]
         [HttpGet]       
         public ActionResult  Like()
         {
@@ -532,6 +533,7 @@ namespace Project1640.Controllers
                 return false;
             }
         }
+        [Authorize(Roles = SecurityRoles.Staff)]
         [HttpGet]
         public async Task<ActionResult>  ChangePass()
         {

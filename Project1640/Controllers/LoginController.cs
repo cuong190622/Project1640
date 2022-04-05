@@ -16,11 +16,19 @@ namespace Project1640.Controllers
 {
     public class LoginController : Controller
     {
-        private Project1640.Controllers.StaffController staffController;
+        
         [HttpGet]
-        public ActionResult LogIn()
+        public async Task<ActionResult> LogIn()
         {
-            CreateDate();
+            using(var data =  new EF.CMSContext())
+            {
+                var check = data.Users.Count();
+                if(check == 0)
+                {
+                    await SeedData();
+                }
+            }
+            
             return View();
         }
 
@@ -47,8 +55,6 @@ namespace Project1640.Controllers
 
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Admin))
                 {
-                    /*SessionLogin(fuser.UserName);*/
-
                     return RedirectToAction("Index", "Admin");
                 }
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Staff))
@@ -60,12 +66,14 @@ namespace Project1640.Controllers
 
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Manager))
                 {
-
+                    TempData["UserEmail"] = finder.Email;
+                    TempData["UserId"] = finder.Id;
                     return RedirectToAction("Index", "Manager");
                 }
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Coor))
                 {
-
+                    TempData["UserEmail"] = finder.Email;
+                    TempData["UserId"] = finder.Id;
                     return RedirectToAction("Index", "Coor");
                 }
                 else return Content($"Comming Soon!!!");
@@ -149,20 +157,13 @@ namespace Project1640.Controllers
         }
         public async Task<ActionResult> CreateAdmin()
         {
-            using (var Database = new EF.CMSContext())
-            {
-                var Department = new Department();
-                Department.Name = "IT";
-                Database.Department.Add(Department);
-                Database.SaveChanges();
-            }
             var context = new CMSContext();
             var store = new UserStore<UserInfo>(context);
             var manager = new UserManager<UserInfo>(store);
 
-            var email = "cuong@gmail.com";
-            var password = "123456@";
-            var phone = "0961119526";
+            var email = "admin@gmail.com";
+            var password = "123qwe123";
+            var phone = "0961119522";
             var role = "admin";
 
             var user = await manager.FindByEmailAsync(email);
@@ -354,12 +355,13 @@ namespace Project1640.Controllers
 
         public async Task<ActionResult> SeedData()
         {
+            CreateDepartment();
             await CreateAdmin();
             await CreateManager();
             await CreateStaff();
             await CreateCoor();
             CreateCategory();
-        
+            CreateDate();
 
             return RedirectToAction("login");
         }
@@ -403,13 +405,6 @@ namespace Project1640.Controllers
 
         private async Task CreateCoor()
         {
-            using (var Database = new EF.CMSContext())
-            {
-                var Department = new Department();
-                Department.Name = "Digital";
-                Database.Department.Add(Department);
-                Database.SaveChanges();
-            }
             var context = new CMSContext();
             var store = new UserStore<UserInfo>(context);
             var manager = new UserManager<UserInfo>(store);
@@ -432,7 +427,7 @@ namespace Project1640.Controllers
                         Age = RandomNumber(10, 100),
                         Name = email + i.ToString(),
                         Role = role,
-                        DepartmentId = 4
+                        DepartmentId = i
                     };
                     var res = await manager.CreateAsync(user, password);
                     if (res.Succeeded)
@@ -448,13 +443,6 @@ namespace Project1640.Controllers
         private async Task CreateStaff()
         {
 
-            using (var Database = new EF.CMSContext())
-            {
-                var Department = new Department();
-                Department.Name = "Business";
-                Database.Department.Add(Department);
-                Database.SaveChanges();
-            }
             var context = new CMSContext();
             var store = new UserStore<UserInfo>(context);
             var manager = new UserManager<UserInfo>(store);
@@ -477,7 +465,7 @@ namespace Project1640.Controllers
                         Age = RandomNumber(10, 100),
                         Name = email + i.ToString(),
                         Role = role,
-                        DepartmentId = 3
+                        DepartmentId = i
                     };
                     var res = await manager.CreateAsync(user, password);
                     if (res.Succeeded)
@@ -494,13 +482,7 @@ namespace Project1640.Controllers
 
         private async Task CreateManager()
         {
-            using (var Database = new EF.CMSContext())
-            {
-                var Department = new Department();
-                Department.Name = "Design";
-                Database.Department.Add(Department);
-                Database.SaveChanges();
-            }
+
             var context = new CMSContext();
             var store = new UserStore<UserInfo>(context);
             var manager = new UserManager<UserInfo>(store);
@@ -523,7 +505,7 @@ namespace Project1640.Controllers
                         Age = RandomNumber(10, 100),
                         Name = email + i.ToString(),                                           
                         Role = role,
-                        DepartmentId = 2
+                        DepartmentId = i
                     };
                     var res = await manager.CreateAsync(user, password);
                     if (res.Succeeded)
@@ -532,6 +514,30 @@ namespace Project1640.Controllers
                     }
                 }
 
+            }
+        }
+        private void CreateDepartment()
+        {
+            using (var Database = new EF.CMSContext())
+            {
+                var Department = new Department();
+                Department.Name = "IT";
+                Database.Department.Add(Department);
+                Database.SaveChanges();
+            }
+            using (var Database = new EF.CMSContext())
+            {
+                var Department = new Department();
+                Department.Name = "Design";
+                Database.Department.Add(Department);
+                Database.SaveChanges();
+            }
+            using (var Database = new EF.CMSContext())
+            {
+                var Department = new Department();
+                Department.Name = "Business";
+                Database.Department.Add(Department);
+                Database.SaveChanges();
             }
         }
     }
