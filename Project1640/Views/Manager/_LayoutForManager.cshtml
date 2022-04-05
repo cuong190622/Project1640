@@ -15,7 +15,29 @@
 <body>
 
     <div class="admin">
+        <div>
+            @if (TempData["alert"] != null)
+            {
 
+                <div class="alert">
+                    <div class="process"></div>
+                    <ion-icon name="shield-outline"></ion-icon>
+                    <span>@TempData["alert"].ToString()</span>
+                </div>
+
+            }
+            @if (TempData["message"] != null)
+            {
+
+                <div class="alert" style="background-color: aqua;">
+                    <div class="process"></div>
+                    <ion-icon name="shield-outline"></ion-icon>
+                    <span>@TempData["message"].ToString()</span>
+                </div>
+
+            }
+
+        </div>
         <header class="admin_header w3-sidebar w3-bar-block w3-border-right" style="display: none;" id="mySidebar">
 
             <div onclick="w3_close()" class="w3-bar-item">
@@ -59,7 +81,7 @@
                 <a href="@Url.Action( "ViewAllIdea", "Manager" )">
                 <li>
                     <i class="fa-solid fa-house-user"></i>
-                    View Ideas Statistic
+                    View All Ideas
                 </li>
 
                 </a>
@@ -83,29 +105,7 @@
             @RenderBody()
         </container>
 
-        <div>
-            @if (TempData["alert"] != null)
-            {
 
-                <div class="alert">
-                    <div class="process"></div>
-                    <ion-icon name="shield-outline"></ion-icon>
-                    <span>@TempData["alert"].ToString()</span>
-                </div>
-
-            }
-            @if (TempData["message"] != null)
-            {
-
-                <div class="alert" style="background-color: aqua;">
-                    <div class="process"></div>
-                    <ion-icon name="shield-outline"></ion-icon>
-                    <span>@TempData["message"].ToString()</span>
-                </div>
-
-            }
-
-        </div>
 
     </div>
 

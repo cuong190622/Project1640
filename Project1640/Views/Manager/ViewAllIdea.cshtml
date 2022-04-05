@@ -12,16 +12,29 @@
     string Anonymously = "Anonymously";
 }
 
-<div class="container_header">
-    <h1>List Ideas</h1>
-    <div>        
-        @{Html.RenderAction("Filter", "Manager");}
-     </div> 
+<h1>List Ideas</h1>
+
+<div class="header_item-admin" onclick="w3_open()">
+    <i class="fa-solid fa-align-justify"></i>
 </div>
 
 <div class="container_blog">
 
     <div class="blog_all-item">
+        <div class="filter">
+            <div class="filter_item">
+                @Html.ActionLink("Top View", "TopView")
+            </div>
+            <div class="filter_item">
+                @Html.ActionLink("Top Like", "TopLike")
+            </div>
+            <div class="filter_item">
+                @Html.ActionLink("Latest Idea", "LastIdea")
+            </div>
+            <div class="filter_item">
+                @Html.ActionLink("Latest Comment", "LastComment")
+            </div>
+        </div>
         @foreach (var c in Model)
         {
             if (a >= first && a < last)
@@ -133,13 +146,24 @@
         </ul>
 
     </div>
-    
+
     <div class="blog_all-categories">
         <h2>All Categories</h2>
 
         <div class="blog_categories">
-            @{Html.RenderAction("ShowAllCategory", "Admin");}
+            @{Html.RenderAction("ShowAllCategory", "Manager");}
         </div>
     </div>
 
 </div>
+<script>
+
+    function w3_open() {
+        document.getElementById("mySidebar").style.display = "block";
+    }
+
+    function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+    }
+
+</script>
