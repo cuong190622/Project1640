@@ -164,6 +164,17 @@ namespace Project1640.EF
                 .Index(t => t.RoleId);
             
             CreateTable(
+                "dbo.VerifyCodes",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Code = c.Int(nullable: false),
+                        UserId = c.String(),
+                        Date = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.AspNetRoles",
                 c => new
                     {
@@ -217,6 +228,7 @@ namespace Project1640.EF
             DropIndex("dbo.Ideas", new[] { "CategoryId" });
             DropTable("dbo.SetDates");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.VerifyCodes");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.FileUploads");

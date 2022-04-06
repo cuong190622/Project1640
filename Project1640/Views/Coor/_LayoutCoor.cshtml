@@ -45,9 +45,7 @@
             </div>
 
             <div class="header_item-second">
-                <div class="dropdown">
-                    <p class="post_btn">@Html.ActionLink("Post Idea", "CreateIdea")</p>
-                </div>
+               
 
 
                 <div class="dropdown">
@@ -57,7 +55,7 @@
                             <p class="dropdown-item">@a.Split('@')[0] </p>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="@Url.Action( "ChangePass", "Staff" )">Change Password</a>
+                            <a class="dropdown-item" href="@Url.Action( "ChangePass", "Coor" )">Change Password</a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="@Url.Action( "LogOut", "Login" )">Log Out</a>
@@ -118,10 +116,7 @@
             </div>
 
             <ul>
-                <li>
-                    <i class="fa-solid fa-file-export"></i>
-                    <p class="post_btn" style="margin: 0;">@Html.ActionLink("Post Idea", "CreateIdea")</p>
-                </li>
+                
                 <li>
                     <i class="fa-solid fa-user"></i>
                     <p class="dropdown-item" style="margin: 0;">@a.Split('@')[0] </p>
@@ -177,8 +172,5 @@
 </html>
 
 <style>
-
-
-
 </style>
 

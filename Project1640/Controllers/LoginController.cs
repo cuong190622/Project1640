@@ -6,6 +6,8 @@ using Project1640.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -14,15 +16,22 @@ namespace Project1640.Controllers
 {
     public class LoginController : Controller
     {
+        private Project1640.Controllers.StaffController staffController;
         [HttpGet]
         public ActionResult LogIn()
         {
+            CreateDate();
             return View();
         }
 
         [HttpPost]
         public async Task<ActionResult> LogIn(UserInfo user)
         {
+            if(user.Email == null || user.PasswordHash == null)
+            {
+                ModelState.AddModelError("PasswordHash", "Please input username and password!");
+                return View();
+            }
             var context = new CMSContext();
             var store = new UserStore<UserInfo>(context);
             var manager = new UserManager<UserInfo>(store);
@@ -44,8 +53,8 @@ namespace Project1640.Controllers
                 }
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Staff))
                 {
-                    TempData["UserEmail"] = user.Email;
-                    TempData["UserId"] = user.Id;
+                    TempData["UserEmail"] = finder.Email;
+                    TempData["UserId"] = finder.Id;
                     return RedirectToAction("Index", "Staff");
                 }
 
@@ -121,8 +130,32 @@ namespace Project1640.Controllers
             return Content("done!");
         }
 
+        public void CreateDate()
+        {
+            var start = DateTime.Now.ToString("MM/dd/yyyy");
+            var end = DateTime.Now.ToString("MM/dd/yyyy");
+            using (var Database = new EF.CMSContext())
+            {
+                var FirstDate = Database.SetDate.Where(p => p.Id == 1).FirstOrDefault();
+                if(FirstDate == null)
+                {
+                    var Date = new SetDate();
+                    Date.StartDate = start;
+                    Date.EndDate = end;
+                    Database.SetDate.Add(Date);
+                    Database.SaveChanges();
+                }
+            }
+        }
         public async Task<ActionResult> CreateAdmin()
         {
+            using (var Database = new EF.CMSContext())
+            {
+                var Department = new Department();
+                Department.Name = "IT";
+                Database.Department.Add(Department);
+                Database.SaveChanges();
+            }
             var context = new CMSContext();
             var store = new UserStore<UserInfo>(context);
             var manager = new UserManager<UserInfo>(store);
@@ -143,10 +176,10 @@ namespace Project1640.Controllers
                     PhoneNumber = phone,
                     Name = email.Split('@')[0],
                     Role = role,
-                    DepartmentId = 7
+                    DepartmentId = 1
                 };
                 await manager.CreateAsync(user, password);
-                await CreateRole(user.Email, "admin");
+                await CreateRole(user.Email, "admin"); 
                 return Content($"Create Admin account Succsess");
             }
             return RedirectToAction("LogIn");
@@ -161,7 +194,154 @@ namespace Project1640.Controllers
             }
             return RedirectToAction("LogIn", "Login"); // Redirect user to login page
         }
+        [HttpGet]
+        public ActionResult RSPEmail() 
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<ActionResult>  RSPEmail(UserInfo a)
+        {
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+            var user = await manager.FindByEmailAsync(a.Email);
+            if (user!= null)
+            {
+               await CreateCode(user.Id);
+                TempData["UserId"] = user.Id;
+                return RedirectToAction("RSPConfirm");
+            }
+            else
+            {
+                ModelState.AddModelError("Email", "Email not found!");
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public ActionResult RSPConfirm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult>  RSPConfirm(string id, string newpass, string confirmpass, string verifycode)
+        {
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+
+            var user = await manager.FindByIdAsync(id);
+            CustomValidationPass(newpass, confirmpass, verifycode, id);
+            if (!ModelState.IsValid)
+            {
+                TempData["UserId"] = id;
+                return View();
+            }
+            else
+            {
+
+                if (user != null)
+                {
+                    String newPassword = newpass;
+                    String hashedNewPassword = manager.PasswordHasher.HashPassword(newPassword);
+                    user.PasswordHash = hashedNewPassword;
+                    await store.UpdateAsync(user);
+                    @TempData["alert"] = "Change PassWord successful";
+                    return RedirectToAction("LogOut", "Login");
+
+                }
+            }
+            TempData["UserId"] = id;
+            return View();
+        }
+        public void CustomValidationPass(string newpass, string confirmpass, string verifycode, string userid)
+        {
+            if (string.IsNullOrEmpty(newpass))
+            {
+                ModelState.AddModelError("NewPass", "Please input new Password");
+            }
+
+            if (string.IsNullOrEmpty(confirmpass))
+            {
+                ModelState.AddModelError("PassConfirm", "Please input Confirm Password");
+            }
+            if (!string.IsNullOrEmpty(confirmpass) && !string.IsNullOrEmpty(newpass) && (confirmpass != newpass))
+            {
+                ModelState.AddModelError("PassConfirm", "New password and Confirm password not match");
+            }
+            if (!string.IsNullOrEmpty(confirmpass) && !string.IsNullOrEmpty(newpass) && (newpass.Length < 6))
+            {
+                ModelState.AddModelError("PassConfirm", "New password must longer than 5 character");
+            }
+            using (var database = new EF.CMSContext())
+            {
+                var code = database.FCode.Where(c => c.Code.ToString() == verifycode).FirstOrDefault();
+                if (code == null)
+                {
+                    ModelState.AddModelError("VerifyCode", "Verify code not correct!");
+
+                }
+                if (code != null && code.UserId != userid)
+                {
+                    ModelState.AddModelError("VerifyCode", "Verify code not correct!");
+
+                }
+            }
+        }
+
+        public async Task CreateCode(string userid)
+        {
+            Random rnd = new Random();
+            int Newcode = rnd.Next(100000, 999999);
+            using (var database = new EF.CMSContext())
+            {
+                var code = database.FCode.Where(c => c.Code == Newcode).FirstOrDefault();
+                if (code == null)
+                {
+                    var context = new CMSContext();
+                    var store = new UserStore<UserInfo>(context);
+                    var manager = new UserManager<UserInfo>(store);
+                    var user = await manager.FindByIdAsync(userid);
+                    var newcode = new VerifyCode();
+                    newcode.Code = Newcode;
+                    newcode.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
+                    newcode.UserId = userid;
+                    database.FCode.Add(newcode);
+                    database.SaveChanges();
+                    await SendEmail(user.Email, "Your confirmation code is: " + newcode.Code.ToString() + "<p>This code available in 60 minute!</p>");
+                }
+                else { await CreateCode(userid); }
+
+            }
+        }
+
+        public async Task SendEmail(string email, string comment)
+        {
+            var body = "<p>Email From: {0} </p><p>Message: {1}</p>";
+            var message = new MailMessage();
+            message.To.Add(new MailAddress(email));
+            message.From = new MailAddress("ASPxyz123ab@gmail.com");
+            message.Subject = "New email form CHAT.com.vn";
+            message.Body = string.Format(body, "Admin", comment);
+            message.IsBodyHtml = true;
+
+            using (var smtp = new SmtpClient())
+            {
+                var credential = new NetworkCredential
+                {
+                    UserName = "ASPxyz123ab@gmail.com",
+                    Password = "123456789awds"
+                };
+                smtp.Credentials = credential;
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                await smtp.SendMailAsync(message);
+            }
+        }
 
     }
 

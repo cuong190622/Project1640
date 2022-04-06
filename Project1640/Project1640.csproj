@@ -163,20 +163,19 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\CoorController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
-    <Compile Include="EF\202203250234150_InitialCreate.cs" />
-    <Compile Include="EF\202203250234150_InitialCreate.Designer.cs">
-      <DependentUpon>202203250234150_InitialCreate.cs</DependentUpon>
+    <Compile Include="EF\202203310915371_InitialCreate.cs" />
+    <Compile Include="EF\202203310915371_InitialCreate.Designer.cs">
+      <DependentUpon>202203310915371_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="EF\CMSContext.cs" />
     <Compile Include="EF\Configuration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Department.cs" />
@@ -189,6 +188,7 @@
     <Compile Include="Models\SetDate.cs" />
     <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Models\UserInRole.cs" />
+    <Compile Include="Models\VerifyCode.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.8.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -203,7 +203,6 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
-    <Content Include="FileUpload\authors.txt" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
@@ -230,9 +229,6 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="FileUpload\ASM1.docx" />
-    <Content Include="FileUpload\ASM1Slide %282%29.pptx" />
-    <Content Include="FileUpload\ASM2_1641.pdf" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -327,11 +323,8 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Home.cshtml" />
     <Content Include="Views\Staff\_LayoutStaff.cshtml" />
     <Content Include="Views\Staff\CreateIdea.cshtml" />
-    <Content Include="Views\Staff\TestAddUser.cshtml" />
     <Content Include="Views\Staff\ViewIdea.cshtml" />
     <Content Include="Views\Staff\ShowComment.cshtml" />
     <Content Include="Views\Staff\CreateComment.cshtml" />
@@ -357,10 +350,23 @@
     <Content Include="Views\Admin\Indexx.cshtml" />
     <Content Include="Views\Admin\ViewIdea.cshtml" />
     <Content Include="Views\Admin\ViewAccount.cshtml" />
-    <Content Include="Views\Admin\IndexSetDate.cshtml" />
-    <Content Include="Views\Admin\CreateDate.cshtml" />
     <Content Include="Views\Admin\EditSetDate.cshtml" />
     <Content Include="Views\Admin\ViewAcc.cshtml" />
+    <Content Include="Views\Staff\ChangePass.cshtml" />
+    <Content Include="Views\Staff\BlockTime.cshtml" />
+    <Content Include="Views\Login\RSPEmail.cshtml" />
+    <Content Include="Views\Login\RSPConfirm.cshtml" />
+    <Content Include="Views\Staff\ShowAllCategory.cshtml" />
+    <Content Include="Views\Coor\Index.cshtml" />
+    <Content Include="Views\Coor\_LayoutCoor.cshtml" />
+    <Content Include="Views\Coor\ShowAllCategory.cshtml" />
+    <Content Include="Views\Coor\ViewIdea.cshtml" />
+    <Content Include="Views\Coor\ChangePass.cshtml" />
+    <Content Include="Views\Coor\ShowUser.cshtml" />
+    <Content Include="Views\Admin\IndexCategory.cshtml" />
+    <Content Include="Views\Admin\CreateCategory.cshtml" />
+    <Content Include="Views\Admin\EditCategory.cshtml" />
+    <Content Include="Views\Admin\DeleteCategory.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -378,6 +384,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="FileUpload\" />
     <Folder Include="obj\Debug\TempPE\" />
   </ItemGroup>
   <ItemGroup>
@@ -392,8 +399,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EF\202203250234150_InitialCreate.resx">
-      <DependentUpon>202203250234150_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="EF\202203310915371_InitialCreate.resx">
+      <DependentUpon>202203310915371_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
