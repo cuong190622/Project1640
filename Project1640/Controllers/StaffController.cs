@@ -95,7 +95,7 @@ namespace Project1640.Controllers
         }
 
      
-        private List<SelectListItem> getList()
+        public List<SelectListItem> getList()
         {
             using (var abc = new EF.CMSContext()) //create a new value abc is an object of CMSContext
             {
