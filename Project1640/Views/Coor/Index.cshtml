@@ -19,6 +19,18 @@
 
 <div class="container_blog">
 
+    <div class="blog_all-categories container_blog-mobile">
+        <div>
+            @{Html.RenderAction("Filter", "Coor");}
+        </div>
+        <br /> <br />
+        <h2>All Categories</h2>
+
+        <div class="blog_categories">
+            @{Html.RenderAction("ShowAllCategory", "Coor");}
+        </div>
+    </div>
+
     <div class="blog_all-item">
 
         <div class="filter">
@@ -40,7 +52,7 @@
         {
             if (a >= first && a < last)
             {
-                <div class="blog_item left-to-right">
+                <div class="blog_item left-to-right start">
                     <div class="blog_item-header">
                         <div class="blog_avatar">
                             <i class="fa-solid fa-user"></i>
@@ -135,10 +147,11 @@
         </ul>
 
     </div>
-    <div>
-        @{Html.RenderAction("Filter", "Coor");}
-    </div>
     <div class="blog_all-categories">
+        <div>
+            @{Html.RenderAction("Filter", "Coor");}
+        </div>
+        <br /> <br />
         <h2>All Categories</h2>
 
         <div class="blog_categories">

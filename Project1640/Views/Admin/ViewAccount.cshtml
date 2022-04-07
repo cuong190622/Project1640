@@ -40,57 +40,58 @@
 
             @using (Html.BeginForm(FormMethod.Post))
             {
-                <h2 style="font-weight: bold;">Edit Account</h2>
+                <h2 style="font-weight: bold;">View Account</h2>
                 @Html.HiddenFor(m => m.Role)
 
                 <div class="form-group">
-                    @Html.DropDownListFor(m => m.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.Class, htmlAttributes: new { @class = "form_title-acc" })
+                    @Html.DropDownListFor(m => m.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.Class, htmlAttributes: new { @class = "form_title-acc", disabled = "disabled" })
                 </div>
 
                 <div class="form-group">
 
-                    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                </div>
-
-                <div class="form-group">
-
-                    @Html.EditorFor(m => m.Age, new { htmlAttributes = new { @class = "form_title-acc" } })
+                    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form_title-acc", disabled = "disabled" } })
 
                 </div>
 
                 <div class="form-group">
 
-                    @Html.EditorFor(m => m.WorkingPlace, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                </div>
-
-
-                <div class="form-group">
-
-                    @Html.EditorFor(m => m.DoB, new { htmlAttributes = new { @class = "form_title-acc" } })
+                    @Html.EditorFor(m => m.Age, new { htmlAttributes = new { @class = "form_title-acc", disabled = "disabled" } })
 
                 </div>
 
                 <div class="form-group">
 
-                    @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                </div>
-
-                <div class="form-group">
-
-                    @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form_title-acc" } })
+                    @Html.EditorFor(m => m.WorkingPlace, new { htmlAttributes = new { @class = "form_title-acc", disabled = "disabled" } })
 
                 </div>
 
 
                 <div class="form-group">
 
-                    @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form_title-acc" } })
+                    @Html.EditorFor(m => m.DoB, new { htmlAttributes = new { @class = "form_title-acc", disabled = "disabled" } })
 
                 </div>
 
+                <div class="form-group">
+
+                    @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form_title-acc", disabled = "disabled" } })
+
+                </div>
+
+                <div class="form-group">
+
+                    @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form_title-acc", disabled = "disabled" } })
+
+                </div>
+
+
+                <div class="form-group">
+
+                    @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form_title-acc", disabled = "disabled" } })
+
+                </div>
+
+                <br />
                 <p>
                     @Html.ActionLink("Back to List", "Index")
                 </p>
@@ -102,6 +103,3 @@
 
 </body>
 </html>
-
-<style>
-</style>

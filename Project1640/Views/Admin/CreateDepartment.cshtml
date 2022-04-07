@@ -1,7 +1,4 @@
 ﻿@model Project1640.Models.Department
-@{
-    Layout = "~/Views/Admin/_LayoutAdmin.cshtml";
-}
 
 @if (!ViewData.ModelState.IsValid)
 {
@@ -10,6 +7,8 @@
 
 @using (Html.BeginForm("CreateDepartment", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
+    <h1>Create Department</h1>
+
     <div class="form-group form_title">
 
         @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form_title-input", @placeholder = "Title" } })

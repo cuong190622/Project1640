@@ -95,7 +95,10 @@
                         </h3>
                     </div>
 
-                   
+                    <div class="comment_list">
+                        <h3>List Comments</h3>
+                        @{Html.RenderAction("ShowComment", "Coor");}
+                    </div>
                 </div>
 
                 <div class="blog_post">
@@ -117,7 +120,7 @@
                                 }
                             </span>
                         </div>
-                 
+
                     </div>
 
                     <div class="blog_time">
@@ -134,7 +137,7 @@
                         </p>
                     </div>
 
-                    <div class="blog_post-content">
+                    <div class="blog_post-content blog_post-content-file">
                         <p>
                             File Upload: @{Html.RenderAction("ShowFile", "Staff", new { IdeaId = Model.Id });}
                         </p>
@@ -146,35 +149,12 @@
                 </div>
             </div>
 
-        </div>
-
-    </div>
-
-    <div class="comment_layout">
-        <div class="comment_content">
-
-            <div class="comment_close">
-                <i class="fa-solid fa-x"></i>
-            </div>
-
-            <div class="comment_amount">
-                <span>Comment</span>
-            </div>
-
-            <div class="comment_write">
-                <div class="blog_avatar">
-                    <i class="fa-solid fa-user img-avatar" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                </div>
-                <!--<input type="text" placeholder="Text your comment..." class="comment_write-input">-->
-                <div class="form_input-comment">
-                    
-                </div>
-            </div>
-
-            <div class="comment_list">
-                @{Html.RenderAction("ShowComment", "Coor");}
+            <div class="comment_list comment_list-view comment_list-mobile">
+                <h3>List Comments</h3>
+                @{Html.RenderAction("ShowComment", "Staff");}
             </div>
         </div>
+
     </div>
 
     <div class="options_layout">
@@ -202,57 +182,9 @@
     <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
 
     <script>
-        var classLike = document.querySelector('.react_like')
-        var classDisLike = document.querySelector('.react_dislike')
-        var reactLike = document.querySelector('.react_like input')
-        var reatcDisLike = document.querySelector('.react_dislike input')
-        var amountLike = document.querySelector('.react_like span')
-        var amountDisLike = document.querySelector('.react_dislike span')
-        var reactCmt = document.querySelector('.react_commment')
-        var cmtLayout = document.querySelector('.comment_layout')
-        var closeBtn = document.querySelector('.comment_close i')
         var headerOptions = document.querySelector('.header_option i')
         var optionLayout = document.querySelector('.options_layout')
         var closeBtnOption = document.querySelector('.options_close')
-
-        reactLike.addEventListener('click', (e) => {
-            var like = document.querySelector('.blog_react-item .like')
-            var dislike = document.querySelector('.blog_react-item .dislike')
-
-            if (like) {
-                classLike.classList.remove('like')
-            } else {
-                classDisLike.classList.remove('dislike')
-                classLike.classList.add('like')
-            }
-        })
-
-        reatcDisLike.addEventListener('click', (e) => {
-            var like = document.querySelector('.blog_react-item .like')
-            var dislike = document.querySelector('.blog_react-item .dislike')
-
-            if (dislike) {
-                classDisLike.classList.remove('dislike')
-            } else {
-                classLike.classList.remove('like')
-                classDisLike.classList.add('dislike')
-            }
-        })
-
-        closeBtn.addEventListener('click', (e) => {
-            cmtLayout.classList.remove('show')
-        })
-
-        // Giai thich
-        cmtLayout.addEventListener('click', function (e) {
-            if (e.target == e.currentTarget) {
-                cmtLayout.classList.remove('show')
-            }
-        })
-
-        reactCmt.addEventListener('click', (e) => {
-            cmtLayout.classList.add('show')
-        })
 
         headerOptions.addEventListener('click', (e) => {
             optionLayout.classList.add('show')

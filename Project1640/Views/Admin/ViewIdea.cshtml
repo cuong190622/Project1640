@@ -1,7 +1,6 @@
 ﻿@model Project1640.Models.Idea
 
 @{
-    Layout = "~/Views/Admin/_LayoutAdmin.cshtml";
     TempData["UserEmail"] = TempData["UserEmail"];
     TempData["UserId"] = TempData["UserId"];
     TempData["IdeaId"] = TempData["IdeaId"];
@@ -23,6 +22,31 @@
 <body>
     <div class="blog_detail">
 
+        <div class="header_detail">
+            <div class="header_item-first">
+                <img src="https://scontent.fhan4-2.fna.fbcdn.net/v/t1.15752-9/273781853_387701592785192_2370446527590513023_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=5t9U-XyL9n0AX8tEXxK&_nc_ht=scontent.fhan4-2.fna&oh=03_AVJkRLxpI0Ki6LzscTR2FROaanmpZfCZTNYFs6-92N4g7Q&oe=62585F2A" alt="">
+                <span>
+                    <i class="fa-solid fa-caret-left"></i>
+                    @Html.ActionLink("Back", "ViewAllIdea")
+                </span>
+            </div>
+
+            <div class="header_name">
+                <span>Blog Detail</span>
+            </div>
+
+            <div class="header_item-first header_option">
+                <i class="fa-solid fa-align-justify"></i>
+            </div>
+
+            <div class="header_item-second">
+
+                <div class="dropdown">
+                    
+                </div>
+            </div>
+        </div>
+
         <div class="container_body_blog">
 
             <div class="container_blog-view">
@@ -43,12 +67,8 @@
                         </h3>
                     </div>
 
-                    <div class="blog_react-item">
-
-                        <div class="react_commment">
-                            <i class="fa-solid fa-comment"></i>
-                            <!--<span>11</span>-->
-                        </div>
+                    <div class="comment_list comment_list-view comment_list-pc">
+                        @{Html.RenderAction("ShowComment", "Staff");}
                     </div>
                 </div>
 
@@ -100,7 +120,7 @@
                         </p>
                     </div>
 
-                    <div class="blog_post-content">
+                    <div class="blog_post-content-file">
                         <p>
                             File Upload: @{Html.RenderAction("ShowFile", "Staff", new { IdeaId = Model.Id });}
                         </p>
@@ -112,86 +132,18 @@
                 </div>
             </div>
 
-        </div>
-
-    </div>
-
-    <div class="comment_layout">
-        <div class="comment_content">
-
-            <div class="comment_close">
-                <i class="fa-solid fa-x"></i>
-            </div>
-
-            <div class="comment_amount">
-                <span>Comment</span>
-            </div>
-
-            <div class="comment_write">
-                <div class="blog_avatar">
-                    <i class="fa-solid fa-user img-avatar" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                </div>
-            </div>
-
-            <div class="comment_list">
-                @{Html.RenderAction("ShowComment", "Admin");}
+            <div class="comment_list comment_list-view comment_list-mobile">
+                @{Html.RenderAction("ShowComment", "Staff");}
             </div>
         </div>
+
     </div>
 
 
     <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
 
     <script>
-        var classLike = document.querySelector('.react_like')
-        var classDisLike = document.querySelector('.react_dislike')
-        var reactLike = document.querySelector('.react_like input')
-        var reatcDisLike = document.querySelector('.react_dislike input')
-        var amountLike = document.querySelector('.react_like span')
-        var amountDisLike = document.querySelector('.react_dislike span')
-        var reactCmt = document.querySelector('.react_commment')
-        var cmtLayout = document.querySelector('.comment_layout')
-        var closeBtn = document.querySelector('.comment_close i')
-
-        reactLike.addEventListener('click', (e) => {
-            var like = document.querySelector('.blog_react-item .like')
-            var dislike = document.querySelector('.blog_react-item .dislike')
-
-            if (like) {
-                classLike.classList.remove('like')
-            } else {
-                classDisLike.classList.remove('dislike')
-                classLike.classList.add('like')
-            }
-        })
-
-        reatcDisLike.addEventListener('click', (e) => {
-            var like = document.querySelector('.blog_react-item .like')
-            var dislike = document.querySelector('.blog_react-item .dislike')
-
-            if (dislike) {
-                classDisLike.classList.remove('dislike')
-            } else {
-                classLike.classList.remove('like')
-                classDisLike.classList.add('dislike')
-            }
-        })
-
-        closeBtn.addEventListener('click', (e) => {
-            cmtLayout.classList.remove('show')
-        })
-
-        // Giai thich
-        cmtLayout.addEventListener('click', function (e) {
-            if (e.target == e.currentTarget) {
-                cmtLayout.classList.remove('show')
-            }
-        })
-
-        reactCmt.addEventListener('click', (e) => {
-            cmtLayout.classList.add('show')
-        })
-
+        
     </script>
 
     <script src="https://kit.fontawesome.com/9128df8004.js" crossorigin="anonymous"></script>
