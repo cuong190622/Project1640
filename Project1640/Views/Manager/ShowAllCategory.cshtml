@@ -5,28 +5,28 @@
 }
 <link rel="stylesheet" href="~/Content/Site.css" />
 <table class="table">
-    <ul>
-        <li>
-            <a href="@Url.Action("ViewAllIdea", new {categoryId = 0})">All</a>
-        </li>
-    </ul>
+
+    <li>
+        <a href="@Url.Action("ViewAllIdea", new {categoryId = 0})">All</a>
+    </li>
+
     @foreach (var item in Model)
     {
         if (TempData["CategoryId"] != null && Int32.Parse(TempData["CategoryId"].ToString()) == item.Id)
         {
-            <ul>
-                <li>
-                    <a style="background-color: darkturquoise" href="@Url.Action("ViewAllIdea", new {categoryId = item.Id})">@Html.DisplayFor(modelItem => item.Name)</a>
-                </li>
-            </ul>
+
+            <li>
+                <a style="background-color: darkturquoise" href="@Url.Action("ViewAllIdea", new {categoryId = item.Id})">@Html.DisplayFor(modelItem => item.Name)</a>
+            </li>
+
         }
         else
         {
-            <ul>
-                <li>
-                    <a href="@Url.Action("ViewAllIdea", new {categoryId = item.Id})">@Html.DisplayFor(modelItem => item.Name)</a>
-                </li>
-            </ul>
+
+            <li>
+                <a href="@Url.Action("ViewAllIdea", new {categoryId = item.Id})">@Html.DisplayFor(modelItem => item.Name)</a>
+            </li>
+
         }
     }
 

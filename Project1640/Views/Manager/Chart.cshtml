@@ -1,33 +1,31 @@
-﻿
-@{
-    Layout = "~/Views/Manager/_LayoutForManager.cshtml";
+﻿@model IEnumerable<Project1640.Models.Category>
 
+@{
 
 }
 
-@model IEnumerable<Project1640.Models.Category>
 
 <!DOCTYPE html>
 <html>
 <head>
     <script>
-window.onload = function () {
+        window.onload = function () {
 
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-	theme: "light2", // "light1", "dark1", "dark2"
-	exportEnabled: true,
-	title: {
-		text: "@TempData["Sub"].ToString()"
-	},
-	data: [{
-		type: "column",
-		dataPoints:  @Html.Raw(ViewBag.DataPoints)
-	}]
-});
-chart.render();
+        var chart = new CanvasJS.Chart("chartContainer", {
+	        animationEnabled: true,
+	        theme: "light2", // "light1", "dark1", "dark2"
+	        exportEnabled: true,
+	        title: {
+		        text: "@TempData["Sub"].ToString()"
+	        },
+	        data: [{
+		        type: "column",
+		        dataPoints:  @Html.Raw(ViewBag.DataPoints)
+	        }]
+        });
+        chart.render();
 
-}
+        }
     </script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -41,128 +39,18 @@ chart.render();
 </head>
 
 <body>
-
-    <div class="admin">
-
-        <header class="admin_header w3-sidebar w3-bar-block w3-border-right" style="display: none;" id="mySidebar">
-
-            <div onclick="w3_close()" class="w3-bar-item">
-                <i class="fa-solid fa-x"></i>
-            </div>
-
-            <h2>Manager Page</h2>
-            <ul>
-                <a href="~/Manager/Index.cshtml">
-                <li>
-                    <i class="fa-solid fa-house-user"></i>
-                    @Html.ActionLink("Home", "Index")
-                </li>
-                </a>
-
-                <a href="" class="add_btn">
-                <li>
-                    <i class="fa-solid fa-user-plus"></i>
-                    Add Category
-                </li>
-                </a>
-
-                <a href="Download" target="_blank">
-                <li>
-                    <i class="fa-solid fa-download"></i>
-                    Download all file
-                </li>
-                <a href="@Url.Action( "Csvfile", "Manager" )" target="_blank">
-                <li>
-                    <i class="fa-solid fa-download"></i>
-                    Download csv file
-                </li>
-
-                </a>
-                <a href="@Url.Action( "Chart", "Manager" )">
-                <li>
-                    <i class="fa-solid fa-house-user"></i>
-                    View Ideas Statistic
-                </li>
-
-                </a>
-                <a href="@Url.Action( "LogOut", "Login" )">
-                <li>
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    Log out
-                </li>
-                </a>
-            </ul>
-        </header>
-
-        <container>
-            <div class="header_item-admin" onclick="w3_open()">
-                <i class="fa-solid fa-align-justify"></i>
-            </div>
-
-
-            <div>
-                @{Html.RenderAction("FliterYear", "Manager");}
-            </div>
-            <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-            <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-            <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-        </container>
+    <div style="margin: 50px;">
+        <h2 class="btn btn-add" style="width: 14%; border-radius: 25px;">
+            @Html.ActionLink("Back to Home", "Index")
+        </h2>
+        <div style="width: 15%;">
+            @{Html.RenderAction("FliterYear", "Manager");}
+        </div>
+        <div id="chartContainer" style="height: 370px; width: 100%;"></div>
         <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
         <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+        <div id="chartContainer" style="height: 370px; width: 100%;"></div>
     </div>
-
-    <div class="overlay">
-        <div class="add">
-            <div class="comment_close">
-                <i class="fa-solid fa-x"></i>
-            </div>
-
-            <div class="comment_amount">
-                <span>Add Category</span>
-            </div>
-
-            <div class="mt-4">
-
-                @{Html.RenderAction("CreateCategory", "Manager");}
-
-            </div>
-        </div>
-    </div>
-
-    <script>
-
-        var overlay = document.querySelector('.overlay');
-        var overlayEdit = document.querySelector('.overlay_edit');
-        var close = document.querySelector('.comment_close i')
-        var addBtn = document.querySelector('.add_btn')
-
-
-        close.addEventListener('click', (e) => {
-            overlay.classList.remove('show')
-        })
-
-        // Giai thich
-        overlay.addEventListener('click', (e) => {
-            if (e.target == e.currentTarget) {
-                overlay.classList.remove('show')
-            }
-        })
-
-        addBtn.addEventListener('click', (e) => {
-            e.preventDefault()
-            overlay.classList.add('show')
-        })
-
-        function w3_open() {
-            document.getElementById("mySidebar").style.display = "block";
-        }
-
-        function w3_close() {
-            document.getElementById("mySidebar").style.display = "none";
-        }
-
-    </script>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

@@ -1,9 +1,9 @@
 ﻿﻿@model Project1640.Models.UserInfo
 
-@{ Layout = "~/Views/Admin/_LayoutAdmin.cshtml"; }
 @if (!ViewData.ModelState.IsValid)
 {
-    @Html.ValidationSummary(false, "Error Summary", new { @class = "text-danger" })}
+    @Html.ValidationSummary(false, "Error Summary", new { @class = "text-danger" })
+}
 
 
 <!DOCTYPE html>
@@ -16,94 +16,103 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/Content/Site.css" />
-
-    <style>
-        .form_title-acc {
-            font-size: 1.7rem;
-            font-weight: bold;
-            border: none;
-            outline: none;
-            overflow: visible;
-            width: 100%;
-            border-bottom: 2px solid rgba(0, 0, 0, 0.2);
-            margin-top: 10px;
-            background-color: #c2d9e1;
-        }
-    </style>
 </head>
-
 <body>
+    <div class="idea blue">
 
-    <div class="idea">
+        <div class="header_detail blue">
+            <div class="header_item-first">
+                <img src="https://scontent.fhan4-2.fna.fbcdn.net/v/t1.15752-9/273781853_387701592785192_2370446527590513023_n.png?_nc_cat=102&ccb=1-5&_nc_sid=ae9488&_nc_ohc=5t9U-XyL9n0AX8tEXxK&_nc_ht=scontent.fhan4-2.fna&oh=03_AVJkRLxpI0Ki6LzscTR2FROaanmpZfCZTNYFs6-92N4g7Q&oe=62585F2A" alt="">
+                <span>
+                    <i class="fa-solid fa-caret-left"></i>
+                    @Html.ActionLink("Back", "Index")
+                </span>
+            </div>
 
-        <div class="add_container" style="margin: 0;">
+            <div class="header_name">
+                <span>Edit Account</span>
+            </div>
 
-            @using (Html.BeginForm(FormMethod.Post))
-            {
-                <h2 style="font-weight: bold;">Edit Account</h2>
-                @Html.HiddenFor(m => m.Role)
+            <div class="header_item-second">
 
-                <div class="form-group">
-                    @Html.DropDownListFor(m => m.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.Class, htmlAttributes: new { @class = "form_title-acc" })
-                </div>
-
-                <div class="form-group">
-
-                    @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                </div>
-
-                <div class="form-group">
-
-                    @Html.EditorFor(m => m.Age, new { htmlAttributes = new { @class = "form_title-acc" } })
+                <div class="dropdown">
 
                 </div>
+            </div>
+        </div>
 
-                <div class="form-group">
+        <div class="add_container">
 
-                    @Html.EditorFor(m => m.WorkingPlace, new { htmlAttributes = new { @class = "form_title-acc" } })
+            <div class="mt-4">
 
-                </div>
+                @using (Html.BeginForm(FormMethod.Post))
+                {
+                    <h2 style="font-weight: bold;">Edit Account</h2>
+                    @Html.HiddenFor(m => m.Role)
+
+                    <br />
+                    <div class="form-group">
+                        <label>Department</label>
+                        @Html.DropDownListFor(m => m.DepartmentId, (IEnumerable<SelectListItem>)ViewBag.Class, htmlAttributes: new { @class = "form_title-acc" })
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label>Name</label>
+                        @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form_title-acc" } })
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label>Age</label>
+                        @Html.EditorFor(m => m.Age, new { htmlAttributes = new { @class = "form_title-acc" } })
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label>Working Place</label>
+                        @Html.EditorFor(m => m.WorkingPlace, new { htmlAttributes = new { @class = "form_title-acc" } })
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label>DoB</label>
+                        @Html.EditorFor(m => m.DoB, new { htmlAttributes = new { @class = "form_title-acc" } })
+
+                    </div>
+                    <br />
+                    <div class="form-group">
+
+                        <label>Email</label>
+                        @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form_title-acc" } })
+
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form_title-acc" } })
+
+                    </div>
+
+                    <br />
+                    <div class="form-group">
+                        <label>UserName</label>
+                        @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form_title-acc" } })
+
+                    </div>
+
+                    <div class="form-group" style="display: none;">
+                        <label>Password Hash</label>
+                        @Html.EditorFor(m => m.PasswordHash, new { htmlAttributes = new { @class = "form_title-acc" } })
+
+                    </div>
+                    <div class="form-group" style="display: none;">
+
+                        @Html.EditorFor(m => m.SecurityStamp, new { htmlAttributes = new { @class = "form_title-acc" } })
+
+                    </div>
 
 
-                <div class="form-group">
-
-                    @Html.EditorFor(m => m.DoB, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                </div>
-
-                <div class="form-group">
-
-                    @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                </div>
-
-                <div class="form-group">
-
-                    @Html.EditorFor(m => m.PhoneNumber, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                </div>
-
-
-                <div class="form-group">
-
-                    @Html.EditorFor(m => m.UserName, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                </div>
-                <div class="form-group" style="display: none;">
-
-                    @Html.EditorFor(m => m.PasswordHash, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                </div>
-                <div class="form-group" style="display: none;">
-
-                    @Html.EditorFor(m => m.SecurityStamp, new { htmlAttributes = new { @class = "form_title-acc" } })
-
-                </div>
-
-
-                <button type="submit" class="btn btn-add">Update</button>
-            }
+                    <button type="submit" class="btn btn-add">Update</button>
+                }
+                <br />
+            </div>
         </div>
     </div>
 
@@ -111,6 +120,3 @@
 
 </body>
 </html>
-
-<style>
-</style>

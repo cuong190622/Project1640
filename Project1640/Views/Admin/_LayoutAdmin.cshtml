@@ -89,12 +89,12 @@
                         <i class="fa-solid fa-align-justify"></i>
                         Department
                     </a>
-                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px;">
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px; color: white" ">
                         <div class="hover" style="padding: 5px;">
                             @Html.ActionLink("View Department", "IndexDepartment")
                         </div>
-                        <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Create Department", "CreateDepartment")
+                        <div class="new_dep hover" style="padding: 5px;">
+                            Create Department
                         </div>
 
                     </div>
@@ -106,12 +106,12 @@
                         <i class="fa-solid fa-align-justify"></i>
                         Category
                     </a>
-                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px;">
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px; color: white" ">
                         <div class="hover" style="padding: 5px;">
                             @Html.ActionLink("View Category", "IndexCategory")
                         </div>
-                        <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Create Category", "CreateCategory")
+                        <div class="new_cat hover" style="padding: 5px;">
+                            Create Category
                         </div>
 
                     </div>
@@ -209,6 +209,34 @@
         </div>
     </div>
 
+    <div class="overlay_department">
+        <div class="add">
+            <div class="close_department">
+                <i class="fa-solid fa-x"></i>
+            </div>
+
+            <div class="mt-4">
+
+                @{Html.RenderAction("CreateDepartment", "Admin");}
+
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay_category">
+        <div class="add">
+            <div class="close_category">
+                <i class="fa-solid fa-x"></i>
+            </div>
+
+            <div class="mt-4">
+
+                @{Html.RenderAction("CreateCategory", "Admin");}
+
+            </div>
+        </div>
+    </div>
+
 
     <script>
 
@@ -227,6 +255,7 @@
             }, 300)
         })
     </script>
+
     <style>
         @@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;1,500&display=swap');
 
@@ -252,6 +281,7 @@
             overflow: hidden;
             transition: all 0.5s;
         }
+
         .process {
             height: 70px;
             border-left: 5px solid aqua;
@@ -273,13 +303,18 @@
         var overlayAcc = document.querySelector('.overlay_acc');
         var overlayStaff = document.querySelector('.overlay_staff');
         var overlayCoor = document.querySelector('.overlay_coor');
+        var overlayDep = document.querySelector('.overlay_department');
+        var overlayCat = document.querySelector('.overlay_category');
         var close = document.querySelector('.comment_close i')
         var closeStaff = document.querySelector('.close_staff i')
         var closeCoor = document.querySelector('.close_coor i')
-        var closeDep = document.querySelector('.comment_close-dep i')
+        var closeDep = document.querySelector('.close_department i')
+        var closeCat = document.querySelector('.close_category i')
         var addAccBtn = document.querySelector('.new_acc')
         var addStaffBtn = document.querySelector('.new_staff')
         var addCoorBtn = document.querySelector('.new_coor')
+        var addDepBtn = document.querySelector('.new_dep')
+        var addCatBtn = document.querySelector('.new_cat')
 
         // Manager
         close.addEventListener('click', (e) => {
@@ -328,6 +363,40 @@
             e.preventDefault()
             overlayCoor.classList.add('show')
         })
+
+        // Department
+        closeDep.addEventListener('click', (e) => {
+            overlayDep.classList.remove('show')
+        })
+
+        overlayDep.addEventListener('click', (e) => {
+            if (e.target == e.currentTarget) {
+                overlayDep.classList.remove('show')
+            }
+        })
+
+        addDepBtn.addEventListener('click', (e) => {
+            e.preventDefault()
+            overlayDep.classList.add('show')
+        })
+
+        // Category
+        closeCat.addEventListener('click', (e) => {
+            overlayCat.classList.remove('show')
+        })
+
+        overlayCat.addEventListener('click', (e) => {
+            if (e.target == e.currentTarget) {
+                overlayCat.classList.remove('show')
+            }
+        })
+
+        addCatBtn.addEventListener('click', (e) => {
+            e.preventDefault()
+            overlayCat.classList.add('show')
+        })
+
+        // Open Sidebar
         function w3_open() {
             document.getElementById("mySidebar").style.display = "block";
         }

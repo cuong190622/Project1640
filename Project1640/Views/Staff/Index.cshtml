@@ -13,16 +13,24 @@
 }
 
 <div class="container_header">
-    <h1>List Blog</h1>
+    <h1>List Ideas</h1>
     <span>Post ideas to give your opinion or interact with other ideas.</span>
-    <div>
-        @{Html.RenderAction("Fiter", "Staff");}
-    </div>
+
 </div>
 
 
 <div class="container_blog">
 
+    <div class="blog_all-categories container_blog-mobile">
+        <div>
+            @{Html.RenderAction("Fiter", "Staff");}
+        </div>
+        <h2>All Categories</h2>
+
+        <div class="blog_categories">
+            @{Html.RenderAction("ShowAllCategory", "Staff");}
+        </div>
+    </div>
 
     <div class="blog_all-item">
 
@@ -61,18 +69,6 @@
                                     }
                                 }
                             </span>
-                        </div>
-
-                        <div class="blog_item-option">
-
-                            <div class="dropdown">
-                                <i class="btn btn-secondary fa-solid fa-ellipsis" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                </i>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">Copy Link</a></li>
-                                </ul>
-                            </div>
-
                         </div>
                     </div>
 
@@ -156,6 +152,9 @@
     </div>
 
     <div class="blog_all-categories">
+        <div>
+            @{Html.RenderAction("Fiter", "Staff");}
+        </div>
         <h2>All Categories</h2>
 
         <div class="blog_categories">
