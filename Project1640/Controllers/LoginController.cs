@@ -16,18 +16,26 @@ namespace Project1640.Controllers
 {
     public class LoginController : Controller
     {
-        private Project1640.Controllers.StaffController staffController;
+        
         [HttpGet]
-        public ActionResult LogIn()
+        public async Task<ActionResult> LogIn()
         {
-            CreateDate();
+            using(var data =  new EF.CMSContext())
+            {
+                var check = data.Users.Count();
+                if(check == 0)
+                {
+                    await SeedData();
+                }
+            }
+            
             return View();
         }
 
         [HttpPost]
         public async Task<ActionResult> LogIn(UserInfo user)
         {
-            if(user.Email == null || user.PasswordHash == null)
+            if (user.Email == null || user.PasswordHash == null)
             {
                 ModelState.AddModelError("PasswordHash", "Please input username and password!");
                 return View();
@@ -47,8 +55,6 @@ namespace Project1640.Controllers
 
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Admin))
                 {
-                    /*SessionLogin(fuser.UserName);*/
-                    
                     return RedirectToAction("Index", "Admin");
                 }
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Staff))
@@ -60,17 +66,19 @@ namespace Project1640.Controllers
 
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Manager))
                 {
-                   
+                    TempData["UserEmail"] = finder.Email;
+                    TempData["UserId"] = finder.Id;
                     return RedirectToAction("Index", "Manager");
                 }
                 if (await userManager.IsInRoleAsync(finder.Id, SecurityRoles.Coor))
                 {
-                    
+                    TempData["UserEmail"] = finder.Email;
+                    TempData["UserId"] = finder.Id;
                     return RedirectToAction("Index", "Coor");
                 }
                 else return Content($"Comming Soon!!!");
 
-                
+
             }
             else
             {
@@ -132,12 +140,12 @@ namespace Project1640.Controllers
 
         public void CreateDate()
         {
-            var start = DateTime.Now.ToString("MM/dd/yyyy");
-            var end = DateTime.Now.ToString("MM/dd/yyyy");
+            var start = DateTime.Now.ToString("MM-dd-yyyy");
+            var end = DateTime.Now.ToString("MM-dd-yyyy");
             using (var Database = new EF.CMSContext())
             {
                 var FirstDate = Database.SetDate.Where(p => p.Id == 1).FirstOrDefault();
-                if(FirstDate == null)
+                if (FirstDate == null)
                 {
                     var Date = new SetDate();
                     Date.StartDate = start;
@@ -149,20 +157,13 @@ namespace Project1640.Controllers
         }
         public async Task<ActionResult> CreateAdmin()
         {
-            using (var Database = new EF.CMSContext())
-            {
-                var Department = new Department();
-                Department.Name = "IT";
-                Database.Department.Add(Department);
-                Database.SaveChanges();
-            }
             var context = new CMSContext();
             var store = new UserStore<UserInfo>(context);
             var manager = new UserManager<UserInfo>(store);
 
-            var email = "cuong@gmail.com";
-            var password = "123456@";
-            var phone = "0961119526";
+            var email = "admin@gmail.com";
+            var password = "123qwe123";
+            var phone = "0961119522";
             var role = "admin";
 
             var user = await manager.FindByEmailAsync(email);
@@ -179,7 +180,7 @@ namespace Project1640.Controllers
                     DepartmentId = 1
                 };
                 await manager.CreateAsync(user, password);
-                await CreateRole(user.Email, "admin"); 
+                await CreateRole(user.Email, "admin");
                 return Content($"Create Admin account Succsess");
             }
             return RedirectToAction("LogIn");
@@ -195,21 +196,21 @@ namespace Project1640.Controllers
             return RedirectToAction("LogIn", "Login"); // Redirect user to login page
         }
         [HttpGet]
-        public ActionResult RSPEmail() 
+        public ActionResult RSPEmail()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult>  RSPEmail(UserInfo a)
+        public async Task<ActionResult> RSPEmail(UserInfo a)
         {
             var context = new CMSContext();
             var store = new UserStore<UserInfo>(context);
             var manager = new UserManager<UserInfo>(store);
             var user = await manager.FindByEmailAsync(a.Email);
-            if (user!= null)
+            if (user != null)
             {
-               await CreateCode(user.Id);
+                await CreateCode(user.Id);
                 TempData["UserId"] = user.Id;
                 return RedirectToAction("RSPConfirm");
             }
@@ -227,7 +228,7 @@ namespace Project1640.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult>  RSPConfirm(string id, string newpass, string confirmpass, string verifycode)
+        public async Task<ActionResult> RSPConfirm(string id, string newpass, string confirmpass, string verifycode)
         {
             var context = new CMSContext();
             var store = new UserStore<UserInfo>(context);
@@ -342,7 +343,203 @@ namespace Project1640.Controllers
                 await smtp.SendMailAsync(message);
             }
         }
+        public ActionResult NotAuth()
+        {
+            return View();
+        }
+        public ActionResult NotFound()
+        {
+            return View();
+        }
 
+
+        public async Task<ActionResult> SeedData()
+        {
+            CreateDepartment();
+            await CreateAdmin();
+            await CreateManager();
+            await CreateStaff();
+            await CreateCoor();
+            CreateCategory();
+            CreateDate();
+
+            return RedirectToAction("login");
+        }
+
+        private readonly Random _random = new Random();
+        public int RandomNumber(int min, int max)
+        {
+            return _random.Next(min, max);
+        }
+
+
+   
+        private void CreateCategory()
+        {
+            using (var cate = new EF.CMSContext())
+            {
+                for (int i = 1; i <= 3; i++)
+                {
+                    Category category = new Category();
+                    if (i == 1)
+                    {
+                        category.Name = "Security";
+                    }
+                    else if (i == 2)
+                    {
+                        category.Name = "WebApp";
+                    }
+
+                    else if (i == 3) 
+                    { 
+                        category.Name = "Networking"; 
+                    }
+                    category.Description = "None!";
+
+                    cate.Category.Add(category);
+                    cate.SaveChanges();
+                }
+
+            }
+        }
+
+        private async Task CreateCoor()
+        {
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+
+            var email = "coor";
+            var password = "123qwe123";
+            var phone = "09";
+            var role = "coor";
+            for (int i = 1; i <= 3; i++)
+            {
+                var user = await manager.FindByEmailAsync(email + i.ToString() + "@gmail.com");
+
+                if (user == null)
+                {
+                    user = new UserInfo
+                    {
+                        UserName = email + i.ToString(),
+                        Email = email + i.ToString() + "@gmail.com",
+                        PhoneNumber = phone + RandomNumber(100000000, 999999999).ToString(),
+                        Age = RandomNumber(10, 100),
+                        Name = email + i.ToString(),
+                        Role = role,
+                        DepartmentId = i
+                    };
+                    var res = await manager.CreateAsync(user, password);
+                    if (res.Succeeded)
+                    {
+                        await CreateRole(user.Email, "coor");
+                    }
+                }
+
+            }
+        }
+    
+
+        private async Task CreateStaff()
+        {
+
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+
+            var email = "staff";
+            var password = "123qwe123";
+            var phone = "09";
+            var role = "staff";
+            for (int i = 1; i <= 3; i++)
+            {
+                var user = await manager.FindByEmailAsync(email + i.ToString() + "@gmail.com");
+
+                if (user == null)
+                {
+                    user = new UserInfo
+                    {
+                        UserName = email + i.ToString(),
+                        Email = email + i.ToString() + "@gmail.com",
+                        PhoneNumber = phone + RandomNumber(100000000, 999999999).ToString(),
+                        Age = RandomNumber(10, 100),
+                        Name = email + i.ToString(),
+                        Role = role,
+                        DepartmentId = i
+                    };
+                    var res = await manager.CreateAsync(user, password);
+                    if (res.Succeeded)
+                    {
+                        await CreateRole(user.Email, "staff");
+                    }
+                }
+
+            }
+        }
+
+
+
+
+        private async Task CreateManager()
+        {
+
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+
+            var email = "manager";
+            var password = "123qwe123";
+            var phone = "09";
+            var role = "manager";
+            for (int i = 1; i <= 3; i++)
+            {
+                var user = await manager.FindByEmailAsync(email + i.ToString() + "@gmail.com");
+
+                if (user == null)
+                {
+                    user = new UserInfo
+                    {
+                        UserName = email + i.ToString(),
+                        Email = email + i.ToString() + "@gmail.com",
+                        PhoneNumber = phone + RandomNumber(100000000, 999999999).ToString(),
+                        Age = RandomNumber(10, 100),
+                        Name = email + i.ToString(),                                           
+                        Role = role,
+                        DepartmentId = i
+                    };
+                    var res = await manager.CreateAsync(user, password);
+                    if (res.Succeeded)
+                    {
+                        await CreateRole(user.Email, "manager");
+                    }
+                }
+
+            }
+        }
+        private void CreateDepartment()
+        {
+            using (var Database = new EF.CMSContext())
+            {
+                var Department = new Department();
+                Department.Name = "IT";
+                Database.Department.Add(Department);
+                Database.SaveChanges();
+            }
+            using (var Database = new EF.CMSContext())
+            {
+                var Department = new Department();
+                Department.Name = "Design";
+                Database.Department.Add(Department);
+                Database.SaveChanges();
+            }
+            using (var Database = new EF.CMSContext())
+            {
+                var Department = new Department();
+                Department.Name = "Business";
+                Database.Department.Add(Department);
+                Database.SaveChanges();
+            }
+        }
     }
 
 }

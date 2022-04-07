@@ -17,6 +17,7 @@ namespace Project1640
             var authOptions = new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                LoginPath = new PathString("/Login/NotAuth"),
                 ExpireTimeSpan = TimeSpan.FromMinutes(8),
             };
             app.UseCookieAuthentication(authOptions);

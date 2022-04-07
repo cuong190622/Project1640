@@ -1,0 +1,110 @@
+﻿<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<div>
+    <div class="notfound fadeIn first">
+        <h1>E<span style="color: aqua">R</span>R<span style="color: orangered; font-size: 190px">⨂</span>R</h1>
+
+        <h2>YOU DON'T HAVE PERMISSION TO ACCESS THIS PAGE</h2>
+        <a class="btn btn-primary" href="@Url.Action("LogOut", "Login")" role="button">Back to login</a>
+    </div>
+
+</div>
+
+
+<style>
+    .notfound {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 767px;
+        width: 100%;
+        line-height: 1.4;
+        padding: 110px 40px;
+        text-align: center;
+        background: #fff;
+    }
+
+    h1 {
+        font-family: 'Roboto', sans-serif;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -110%);
+        font-size: 165px;
+        font-weight: 700;
+        margin: 0px;
+        color: #262626;
+        text-transform: uppercase;
+    }
+
+    h2 {
+        font-family: 'Roboto', sans-serif;
+        font-size: 22px;
+        font-weight: 400;
+        text-transform: uppercase;
+        color: #151515;
+        margin-top: 0px;
+        margin-bottom: 25px;
+        max-width: 767px;
+        width: 100%;
+        line-height: 1.4;
+        padding: 110px 40px;
+        text-align: center;
+        background: #fff;
+        margin-block-start: 0.83em;
+        margin-block-end: 0.83em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        box-sizing: border-box;
+    }
+
+    /* Simple CSS3 Fade-in Animation */
+    @@-webkit-keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @@-moz-keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    .fadeIn {
+        opacity: 0;
+        -webkit-animation: fadeIn ease-in 1;
+        -moz-animation: fadeIn ease-in 1;
+        animation: fadeIn ease-in 1;
+        -webkit-animation-fill-mode: forwards;
+        -moz-animation-fill-mode: forwards;
+        animation-fill-mode: forwards;
+        -webkit-animation-duration: 1s;
+        -moz-animation-duration: 1s;
+        animation-duration: 1s;
+    }
+
+        .fadeIn.first {
+            -webkit-animation-delay: 0.4s;
+            -moz-animation-delay: 0.4s;
+            animation-delay: 0.4s;
+        }
+</style>

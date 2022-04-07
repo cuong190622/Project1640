@@ -23,7 +23,7 @@ namespace Project1640.EF
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Title = c.String(nullable: false),
-                        Content = c.String(),
+                        Content = c.String(nullable: false),
                         Status = c.Boolean(nullable: false),
                         Rank = c.Int(nullable: false),
                         Views = c.Int(nullable: false),
@@ -43,7 +43,7 @@ namespace Project1640.EF
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Content = c.String(),
+                        Content = c.String(nullable: false),
                         Status = c.Boolean(nullable: false),
                         Date = c.String(),
                         UserId = c.String(maxLength: 128),

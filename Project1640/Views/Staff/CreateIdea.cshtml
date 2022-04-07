@@ -62,21 +62,20 @@
                     </div>
                     <br>
                     <div class="form-group form_description">
-                        @Html.TextAreaFor(model => model.Content, new { @class = "form_description-textarea", @placeholder = "Description", @cols = "10", @rows = "8" })
+                        @Html.TextAreaFor(model => model.Content, new { @class = "form_description-textarea", @placeholder = "Content", @cols = "10", @rows = "8" })
                         @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
                     </div>
 
                     <br>
                     <div class="form-group">
                         <label>Upload File:</label>
-                        <input type="file" name="postedFile" onclick="return confirm('By click OK you accept with our Terms and Conditions!');" /> 
+                        <input type="file" name="postedFile" onclick="return confirm('By click OK you accept with our Terms and Conditions!');" />
                         <a href="#">Terms and Conditions</a>
                     </div>
 
                     <div>
                         @Html.CheckBoxFor(model => model.Status)  Anonymously
-                    </div>
-
+                    </div>                  
                     <br>
                     <button type="submit" class="btn btn-add">Submit</button>
 

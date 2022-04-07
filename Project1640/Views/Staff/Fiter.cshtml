@@ -1,0 +1,7 @@
+﻿@using (Html.BeginForm("Index", "Staff", FormMethod.Post, new { @class = "form-horizontal", role = "form", _lpchecked = "1" }))
+{
+    <p>Show top Ideas</p>
+    <input type="text" id="count" name="count" placeholder="Number Ideas" value="@TempData["Number"].ToString()">
+    <input style="display: none;" type="text" id="categoryId" name="categoryId" value="@TempData["CategoryId"].ToString()">
+    <button class="btn btn-primary d-block" type="submit">Confirm</button>
+}

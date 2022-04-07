@@ -117,19 +117,7 @@
                                 }
                             </span>
                         </div>
-
-                        <div class="blog_item-option">
-
-                            <div class="dropdown">
-                                <i class="btn btn-secondary fa-solid fa-ellipsis" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                </i>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">Copy Link</a></li>
-                                    <li><a class="dropdown-item" href="#">Download</a></li>
-                                </ul>
-                            </div>
-
-                        </div>
+                 
                     </div>
 
                     <div class="blog_time">
@@ -179,12 +167,12 @@
                 </div>
                 <!--<input type="text" placeholder="Text your comment..." class="comment_write-input">-->
                 <div class="form_input-comment">
-                    @{Html.RenderAction("CreateComment", "Staff", new { IdeaId = Model.Id });}
+                    
                 </div>
             </div>
 
             <div class="comment_list">
-                @{Html.RenderAction("ShowComment", "Staff");}
+                @{Html.RenderAction("ShowComment", "Coor");}
             </div>
         </div>
     </div>
@@ -197,10 +185,6 @@
             </div>
 
             <ul>
-                <li>
-                    <i class="fa-solid fa-file-export"></i>
-                    <p class="post_btn" style="margin: 0;">@Html.ActionLink("Post Idea", "CreateIdea")</p>
-                </li>
                 <li>
                     <i class="fa-solid fa-user"></i>
                     <p class="dropdown-item" style="margin: 0;">@a.Split('@')[0] </p>

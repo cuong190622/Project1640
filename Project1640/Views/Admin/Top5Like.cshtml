@@ -1,0 +1,48 @@
+﻿
+@model IEnumerable<Project1640.Models.Idea>
+
+@{
+    Layout = "~/Views/Admin/_LayoutAdmin.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        @{Html.RenderAction("Filter3", "Admin");}
+    </div>
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">@Html.DisplayNameFor(model => model.Title)</th>
+                <th scope="col">@Html.Display("Rank")</th>
+                <th scope="col">Action</th>
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(model => c.Title)</td>
+                    <td>@Html.DisplayFor(model => c.Rank)</td>
+                    <td>
+                        <a type="button" class="btn btn-success btn-sm"
+                           href="@Url.Action("ViewIdea", new {IdeaId = c.Id, CategoryId = c.CategoryId})">View</a>
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</body>
+</html>
+
+

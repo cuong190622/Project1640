@@ -9,40 +9,50 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Project1640.Controllers
 {
+   
     public class StaffController : Controller
     {
-
-        public ActionResult Index(int id = 1, int categoryId = 0)
+        [Authorize(Roles = SecurityRoles.Staff)]
+        public ActionResult Index(int id = 1, int categoryId = 0, string count = "a")
         {
+            int number = 5;
+            if(Regex.IsMatch(count, @"^\d+$") && Int32.Parse(count) >0)
+            {
+                number = Int32.Parse(count);
+            }
             if(categoryId == 0)
             {
                 using (var dbCT = new EF.CMSContext())
                 {
+                    TempData["CategoryId"] = 0;
                     int Count = dbCT.Idea.Count();
-                    if (Count <= 5)
+                    if (Count <= number)
                     {
                         TempData["PageNo"] = 1;
                         TempData["PageMax"] = 1;
+                        TempData["Number"] = number;
                         var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
                         return View(ideas);
                     }
                     else
                     {
                         var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
-                        if (Count % 5 != 0)
+                        if (Count % number != 0)
                         {
-                            TempData["PageMax"] = (Count / 5) + 1;
+                            TempData["PageMax"] = (Count / number) + 1;
                         }
                         else
                         {
-                            TempData["PageMax"] = (Count / 5);
+                            TempData["PageMax"] = (Count / number);
                         }
+                        TempData["Number"] = number;
                         TempData["PageNo"] = id;
                         return View(ideas);
                     }
@@ -55,24 +65,26 @@ namespace Project1640.Controllers
                 {
                     TempData["CategoryId"] = categoryId;
                     int Count = dbCT.Idea.Where(p => p.CategoryId == categoryId).Count();
-                    if (Count <= 5)
+                    if (Count <= number)
                     {
                         TempData["PageNo"] = 1;
                         TempData["PageMax"] = 1;
+                        TempData["Number"] = number;
                         var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
                         return View(ideas);
                     }
                     else
                     {
                         var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
-                        if (Count % 5 != 0)
+                        if (Count % number != 0)
                         {
-                            TempData["PageMax"] = (Count / 5) + 1;
+                            TempData["PageMax"] = (Count / number) + 1;
                         }
                         else
                         {
-                            TempData["PageMax"] = (Count / 5);
+                            TempData["PageMax"] = (Count / number);
                         }
+                        TempData["Number"] = number;
                         TempData["PageNo"] = id;
                         return View(ideas);
                     }
@@ -97,7 +109,7 @@ namespace Project1640.Controllers
             }
         }
 
-
+        [Authorize(Roles = SecurityRoles.Staff)]
         [HttpGet]
         public ActionResult CreateIdea()
         {
@@ -137,10 +149,12 @@ namespace Project1640.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateIdea(Idea a, FormCollection f, HttpPostedFileBase postedFile)
         {
+            
             if (!ModelState.IsValid)//if user input wrong
             {
                 TempData["abc"] = f["formatIds[]"];
-                SetViewBag();// call function get viewbag to return the data when the user input wrong
+                //SetViewBag();
+                ViewBag.Class = getList();
                 return View(a);
             }
             else
@@ -160,7 +174,7 @@ namespace Project1640.Controllers
 
                 }
             }
-
+            TempData["message"] = $"Create new idea Successfully!";
             return RedirectToAction("Index");
         }
         [HttpPost]
@@ -224,6 +238,7 @@ namespace Project1640.Controllers
                    
                 }
         }
+        [Authorize(Roles = SecurityRoles.Staff)]
         [HttpGet]
         public ActionResult CreateComment(int IdeaId)
         {
@@ -234,6 +249,10 @@ namespace Project1640.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateComment(Comment a)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("ViewIdea", new { IdeaId = a.IdeaId });
+            }
             if (!CheckDate())
             {
                 return RedirectToAction("BlockTime");
@@ -252,6 +271,7 @@ namespace Project1640.Controllers
                 await SendEmail(FindEmailUserByCommentId(a.Id), "New user comment on your post! <p>Comment: " + a.Content + " </p>");
                 TempData["IdeaId"] = a.IdeaId;
             }
+            TempData["message"] = $"Create new comment Successfully!";
             return RedirectToAction("ViewIdea", new { IdeaId = a.IdeaId });
         }
         public ActionResult ShowCategory(int CategoryId)
@@ -276,7 +296,7 @@ namespace Project1640.Controllers
                 return View(_category);
             }
         }
-
+        [Authorize(Roles = SecurityRoles.Staff)]
         [HttpGet]       
         public ActionResult  Like()
         {
@@ -344,8 +364,16 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
             }
 
         }
@@ -353,8 +381,16 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
             }
 
         }
@@ -363,8 +399,17 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
             }
         }
 
@@ -372,11 +417,20 @@ namespace Project1640.Controllers
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
-                TempData["LastComment"] = _comment.Id;
-                return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });               
-            }
 
+                try
+                {
+                    var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                    TempData["LastComment"] = _comment.Id;
+                    return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No Comment at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
+
+            }
         }
         public async Task SendEmail(string email, string comment)
         {
@@ -435,7 +489,14 @@ namespace Project1640.Controllers
                 var _files = dbCT.File
                                         .Where(c => c.IdeaId == IdeaId)
                                         .ToList();
-                return View(_files);
+                if(_files.Count != 0)
+                {
+                    return View(_files);
+                }
+                else
+                {
+                    return Content($"No File uploaded!");
+                }
             }
         }
 
@@ -455,6 +516,13 @@ namespace Project1640.Controllers
                                 return true;
                             }
                         }
+                        if (Int32.Parse(FirstDate.StartDate.Split('-')[1]) < Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) <= Int32.Parse(FirstDate.EndDate.Split('-')[1]))
+                        {
+                            if (Int32.Parse(DateTime.Now.ToString("dd")) <= Int32.Parse(FirstDate.EndDate.Split('-')[2]))
+                            {
+                                return true;
+                            }
+                        }
                         if (Int32.Parse(FirstDate.StartDate.Split('-')[1]) <= Int32.Parse(DateTime.Now.ToString("MM")) && Int32.Parse(DateTime.Now.ToString("MM")) < Int32.Parse(FirstDate.EndDate.Split('-')[1]))
                         {
                             return true;
@@ -465,6 +533,7 @@ namespace Project1640.Controllers
                 return false;
             }
         }
+        [Authorize(Roles = SecurityRoles.Staff)]
         [HttpGet]
         public async Task<ActionResult>  ChangePass()
         {
@@ -486,7 +555,7 @@ namespace Project1640.Controllers
             var manager = new UserManager<UserInfo>(store);
 
             var user = await manager.FindByIdAsync(User.Identity.GetUserId());
-            CustomValidationTrainee(oldpass, newpass, confirmpass, verifycode, user.Id);
+            CustomValidationForPassword(oldpass, newpass, confirmpass, verifycode, user.Id);
             if (!ModelState.IsValid)
             {
                 return View();
@@ -522,7 +591,7 @@ namespace Project1640.Controllers
             }
         }
 
-        public void CustomValidationTrainee(string ollpass, string newpass, string confirmpass, string verifycode, string userid)
+        public void CustomValidationForPassword(string ollpass, string newpass, string confirmpass, string verifycode, string userid)
         {
             if (string.IsNullOrEmpty(ollpass))
             {
@@ -560,7 +629,6 @@ namespace Project1640.Controllers
                 }
             }
         }
-
         public async Task CreateCode(string userid)
         {
             Random rnd = new Random();
@@ -598,6 +666,10 @@ namespace Project1640.Controllers
                 var _category = dbCT.Category.ToList();
                 return View(_category);
             }
+        }
+        public ActionResult Fiter()
+        {
+            return View();
         }
     }
 }

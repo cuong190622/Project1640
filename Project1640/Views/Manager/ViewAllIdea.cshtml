@@ -1,0 +1,158 @@
+﻿@model IEnumerable<Project1640.Models.Idea>
+
+@{
+    TempData["UserEmail"] = TempData["UserEmail"];
+    TempData["UserId"] = TempData["UserId"];
+    Layout = "~/Views/Manager/_LayoutForManager.cshtml";
+    int No = Int16.Parse(TempData["PageNo"].ToString());
+    int Number = Int16.Parse(TempData["Number"].ToString());
+    int first = (No - 1) * Number;
+    int last = No * Number;
+    int a = 0;
+    string Anonymously = "Anonymously";
+}
+
+<h1>List Ideas</h1>
+
+<div class="header_item-admin" onclick="w3_open()">
+    <i class="fa-solid fa-align-justify"></i>
+</div>
+
+<div class="container_blog">
+
+    <div class="blog_all-item">
+        <div class="filter">
+            <div class="filter_item">
+                @Html.ActionLink("Top View", "TopView")
+            </div>
+            <div class="filter_item">
+                @Html.ActionLink("Top Like", "TopLike")
+            </div>
+            <div class="filter_item">
+                @Html.ActionLink("Latest Idea", "LastIdea")
+            </div>
+            <div class="filter_item">
+                @Html.ActionLink("Latest Comment", "LastComment")
+            </div>
+        </div>
+        @foreach (var c in Model)
+        {
+            if (a >= first && a < last)
+            {
+                <div class="blog_item">
+                    <div class="blog_item-header">
+                        <div class="blog_avatar">
+                            <i class="fa-solid fa-user"></i>
+                            <span>
+                                @{
+                                    if (c.Status == true)
+                                    {
+                                        { Html.RenderAction("ShowUser", "Staff", new { UserId = c.UserId }); }
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayName(Anonymously)
+                                    }
+                                }
+                            </span>
+                        </div>
+                    
+                    </div>
+
+                    <div class="blog_content">
+
+                        <a href="@Url.Action("ViewIdea", new {IdeaId = c.Id, CategoryId = c.CategoryId})">
+                            <h1>@Html.DisplayFor(model => c.Title)</h1>
+                        </a>
+
+                        <span>@Html.DisplayFor(model => c.Content)</span>
+
+                    </div>
+
+                    <div class="blog_time">
+                        <span>@Html.DisplayFor(model => c.Date)</span>
+                    </div>
+                </div>
+            }
+            a++;
+        }
+        <ul class="pagination">
+
+            @for (int i = 1; i <= Int16.Parse(TempData["PageMax"].ToString()); i++)
+            {
+                if (i == 1)
+                {
+                    <li>
+                        <a href="@Url.Action("ViewAllIdea", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">
+                            <i class="fa-solid fa-caret-left"></i>
+                        </a>
+                    </li>
+                }
+                if (TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) - 2) <= i
+                    && TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) + 2) >= i)
+                {
+                    if (TempData["CategoryId"] != null)
+                    {
+                        if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
+                        {
+                            <li>
+                                <a href="@Url.Action("ViewAllIdea", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})" style="color: red;">@i</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="@Url.Action("ViewAllIdea", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">@i</a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
+                        {
+                            <li>
+                                <a href="@Url.Action("ViewAllIdea", new {id = i, count = TempData["Number"].ToString()})" style="color: red;">@i</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="@Url.Action("ViewAllIdea", new {id = i, count = TempData["Number"].ToString()})">@i</a>
+                            </li>
+                        }
+                    }
+
+                }
+
+            }
+            <li>
+
+                <a href="@Url.Action("ViewAllIdea", new {id = Int16.Parse(TempData["PageMax"].ToString()), categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">
+                    <i class="fa-solid fa-caret-right"></i>
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <div class="blog_all-categories">
+        <h2>All Categories</h2>
+
+        <div class="blog_categories">
+            @{Html.RenderAction("ShowAllCategory", "Manager");}
+        </div>
+    </div>
+
+</div>
+<script>
+
+    function w3_open() {
+        document.getElementById("mySidebar").style.display = "block";
+    }
+
+    function w3_close() {
+        document.getElementById("mySidebar").style.display = "none";
+    }
+
+</script>

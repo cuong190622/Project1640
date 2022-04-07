@@ -27,13 +27,34 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/Content/Site.css" />
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
 
     <div class="admin">
+        @if (TempData["alert"] != null)
+        {
 
+            <div class="alert">
+                <div class="process"></div>
+                <ion-icon name="shield-outline"></ion-icon>
+                <span>@TempData["alert"].ToString()</span>
+            </div>
+
+        }
+        @if (TempData["message"] != null)
+        {
+
+            <div class="alert" style="background-color: aqua;">
+                <div class="process"></div>
+                <ion-icon name="shield-outline"></ion-icon>
+                <span>@TempData["message"].ToString()</span>
+            </div>
+
+        }
         <header class="admin_header w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
-            
+
             <div onclick="w3_close()" class="w3-bar-item">
                 <i class="fa-solid fa-x"></i>
             </div>
@@ -63,48 +84,61 @@
                         </div>
                     </div>
                 </li>
-
-                <li class="new_dep">
-                    <i class="fa-solid fa-building"></i>
-                    New Department
-
-                </li>
-
                 <li>
-                    <i class="fa-solid fa-building-circle-arrow-right"></i>
-                    @Html.ActionLink("View Department", "IndexDepartment")
-                </li>
-
-
-
-                <li>
-                    <i class="fa-solid fa-building-circle-arrow-right"></i>
-                    @Html.ActionLink("View Category", "IndexCategory")
-                </li>
-
-                <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-align-justify"></i>
-                        Options
+                        Department
                     </a>
                     <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px;">
                         <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Top View", "TopView")
+                            @Html.ActionLink("View Department", "IndexDepartment")
                         </div>
                         <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Top Like", "TopLike")
+                            @Html.ActionLink("Create Department", "CreateDepartment")
+                        </div>
+
+                    </div>
+                </li>
+
+
+                <li>
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-align-justify"></i>
+                        Category
+                    </a>
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px;">
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("View Category", "IndexCategory")
+                        </div>
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("Create Category", "CreateCategory")
+                        </div>
+
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-align-justify"></i>
+                        Ideas
+                    </a>
+                    <div class="dropdown-menu dropdown-primary" aria-labelledby="navbarDropdownMenuLink" style="background-color: #494ca2; padding: 5px;">
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("All Ideas", "ViewAllIdea")
+                        </div>
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("Most Viewed Ideas", "TopView")
+                        </div>
+                        <div class="hover" style="padding: 5px;">
+                            @Html.ActionLink("Most Liked Ideas", "TopLike")
                         </div>
                         <div class="hover" style="padding: 5px;">
                             @Html.ActionLink("Latest Idea", "LastIdea")
                         </div>
                         <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Latest Comment", "LastComment")
+                            @Html.ActionLink("Top Viewed Ideas ", "Top5Idea")
                         </div>
                         <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Top 5 View", "Top5Idea")
-                        </div>
-                        <div class="hover" style="padding: 5px;">
-                            @Html.ActionLink("Top 5 Like", "Top5Like")
+                            @Html.ActionLink("Top Liked Ideas", "Top5Like")
                         </div>
                     </div>
                 </li>
@@ -175,28 +209,70 @@
         </div>
     </div>
 
-    <div class="overlay_dep">
-        <div class="add">
-            <div class="comment_close-dep">
-                <i class="fa-solid fa-x"></i>
-            </div>
 
-            <div class="mt-4">
+    <script>
 
-                @{Html.RenderAction("CreateDepartment", "Admin");}
+        const alert = document.querySelector('.alert')
+        document.addEventListener("DOMContentLoaded", () => {
+            alert.style.right = '20px'
+            let length = 70
+            let process = document.querySelector('.process')
+            const run = setInterval(() => {
+                process.style.height = length + 'px'
+                length -= 5
+                if (length <= -10) {
+                    clearInterval(run)
+                    alert.style.left = '-700px'
+                }
+            }, 300)
+        })
+    </script>
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;1,500&display=swap');
 
-            </div>
-        </div>
-    </div>
+        * {
+            font-family: 'Poppins', sans-serif;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
 
-    
+
+        .alert {
+            width: 400px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0px 0px 5px #0ebaec;
+            position: absolute;
+            background-color: lightcoral;
+            top: 20px;
+            right: -500px;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.5s;
+        }
+        .process {
+            height: 70px;
+            border-left: 5px solid aqua;
+            top: 0;
+            left: 0;
+            position: absolute;
+            transition: all 0.2s;
+        }
+
+        .alert ion-icon {
+            padding: 0px 10px;
+            font-size: 20px;
+            color: #0ebaec;
+        }
+    </style>
 
     <script>
 
         var overlayAcc = document.querySelector('.overlay_acc');
         var overlayStaff = document.querySelector('.overlay_staff');
         var overlayCoor = document.querySelector('.overlay_coor');
-        var overlayDep = document.querySelector('.overlay_dep');
         var close = document.querySelector('.comment_close i')
         var closeStaff = document.querySelector('.close_staff i')
         var closeCoor = document.querySelector('.close_coor i')
@@ -204,7 +280,6 @@
         var addAccBtn = document.querySelector('.new_acc')
         var addStaffBtn = document.querySelector('.new_staff')
         var addCoorBtn = document.querySelector('.new_coor')
-        var addDepBtn = document.querySelector('.new_dep')
 
         // Manager
         close.addEventListener('click', (e) => {
@@ -253,23 +328,6 @@
             e.preventDefault()
             overlayCoor.classList.add('show')
         })
-
-        //Add department
-        closeDep.addEventListener('click', (e) => {
-            overlayDep.classList.remove('show')
-        })
-
-        overlayDep.addEventListener('click', (e) => {
-            if (e.target == e.currentTarget) {
-                overlayDep.classList.remove('show')
-            }
-        })
-
-        addDepBtn.addEventListener('click', (e) => {
-            e.preventDefault()
-            overlayDep.classList.add('show')
-        })
-
         function w3_open() {
             document.getElementById("mySidebar").style.display = "block";
         }

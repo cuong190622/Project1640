@@ -1,4 +1,7 @@
 ﻿using ICSharpCode.SharpZipLib.Zip;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Newtonsoft.Json;
 using Project1640.EF;
 using Project1640.Models;
 using System;
@@ -6,7 +9,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -16,6 +23,7 @@ namespace Project1640.Controllers
 {
     public class ManagerController : Controller
     {
+        [Authorize(Roles = SecurityRoles.Manager)]
         // GET: Manager
         public ActionResult Index()
         {
@@ -29,7 +37,7 @@ namespace Project1640.Controllers
         }
 
 
-
+        [Authorize(Roles = SecurityRoles.Manager)]
         [HttpGet]
         public ActionResult CreateCategory()
         {
@@ -43,19 +51,24 @@ namespace Project1640.Controllers
             CustomValidationCategory(a);
             if (!ModelState.IsValid)
             {
-                return View(a); // return lai Create.cshtml
-                                    //di kem voi data ma user da go vao
+                TempData["alert"] = $"Add category Fail! data input not allowed! try again!!";
+                return RedirectToAction("Index"); // return lai Create.cshtml
+                                  
             }
             else
             {
 
                 using (var cate = new EF.CMSContext())
                 {
+                    if(a.Description == null)
+                    {
+                        a.Description = "No Description!";
+                    }
                     cate.Category.Add(a);
                     cate.SaveChanges();
                 }
 
-                TempData["message"] = $"Successfully add class {a.Name} to system!";
+                TempData["message"] = $"Successfully add category {a.Name} to system!";
 
                 return RedirectToAction("Index");
             }
@@ -71,7 +84,7 @@ namespace Project1640.Controllers
                 ModelState.AddModelError("Description", "Please input Description");
             }
         }
-
+        [Authorize(Roles = SecurityRoles.Manager)]
         [HttpGet]
         public ActionResult EditCategory(int id )
         {
@@ -105,7 +118,7 @@ namespace Project1640.Controllers
 
               
         }
-
+        [Authorize(Roles = SecurityRoles.Manager)]
         [HttpGet]
         public ActionResult DeleteCategory(int id, Category a)
         {
@@ -127,7 +140,7 @@ namespace Project1640.Controllers
                     cate.Category.Remove(Category);
                     cate.SaveChanges();
                 }
-                TempData["message"] = $"Successfully delete book with Id: {Category.Id}";
+                TempData["message"] = $"Successfully delete category with Id: {Category.Id}";
                 return RedirectToAction("Index");
             }
         }
@@ -186,7 +199,7 @@ namespace Project1640.Controllers
 
 
         //}
-
+        [Authorize(Roles = SecurityRoles.Manager)]
         public ActionResult Download()
         {
             FileDownloads obj = new FileDownloads();
@@ -210,7 +223,7 @@ namespace Project1640.Controllers
             }
         }
 
-        
+        [Authorize(Roles = SecurityRoles.Manager)]
         public ActionResult Csvfile()
         {
             CMSContext context = new CMSContext();
@@ -251,10 +264,452 @@ namespace Project1640.Controllers
             return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Grid.csv");
         
         }
+        [Authorize(Roles = SecurityRoles.Manager)]
+        public ActionResult Chart(string year = "2022")
+        {
+            int number = 0;
+            if (Regex.IsMatch(year, @"^\d+$") && Int32.Parse(year) > 0)
+            {
+                number = Int32.Parse(year);
+            }
+            using (CMSContext context = new CMSContext()) //create a connection with the database
+            {
+                var ideaDepartment = (
+                   from d in context.Department
+                   join u in context.Users on d.Id equals u.DepartmentId
+                   join i in context.Idea on u.Id equals i.UserId
+                   select new
+                   {
+                       name = d.Name,
+                       year = i.Date 
+                   }).Where(p => p.year.Contains(year)).ToList();
+                if(ideaDepartment.Count() == 0)
+                {
+                    List<DataPoint> dataPoints = new List<DataPoint>();
+                    foreach (var a in ListDepartment())
+                    {
+                        dataPoints.Add(new DataPoint(a.Name, CountIdeaPerDepartment(a.Name, 0)));
+                    }
+                    ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
+                    TempData["Sub"] = "No data Idea per department in year" + year + "|| All data will be shown!";
+                    return View();
+                }
+                else
+                {
+                    List<DataPoint> dataPoints = new List<DataPoint>();
+                    foreach (var a in ListDepartment())
+                    {
+                        dataPoints.Add(new DataPoint(a.Name, CountIdeaPerDepartment(a.Name, number)));
+                    }
+                    ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
+                    TempData["Sub"] = "Idea per department in year" + year;
+                    return View();
+                }
+            }
+            
+        }
+        public List<ListDepartment> ListDepartment()
+        {
+            using (CMSContext context = new CMSContext()) //create a connection with the database
+            {
+                var Department = (from d in context.Department select new ListDepartment { Name = d.Name }).ToList();
+                return Department;
+            }
+        }
 
-        
+        public int CountIdeaPerDepartment(string department, int year)
+        {
+            if (year !=0 )
+            {
+                using (CMSContext context = new CMSContext()) //create a connection with the database
+                {
+                    var ideaDepartment = (
+                       from d in context.Department
+                       join u in context.Users on d.Id equals u.DepartmentId
+                       join i in context.Idea on u.Id equals i.UserId
+                       select new
+                       {
+                           name = d.Name,
+                           year = i.Date
+                       }).Where(p => p.name == department).Where(p => p.year.Contains(year.ToString())).ToList();
+                    return ideaDepartment.Count();
+                }
+            }
+            else
+            {
+                using (CMSContext context = new CMSContext()) //create a connection with the database
+                {
+                    var ideaDepartment = (
+                       from d in context.Department
+                       join u in context.Users on d.Id equals u.DepartmentId
+                       join i in context.Idea on u.Id equals i.UserId
+                       select new
+                       {
+                           name = d.Name,
+                           year = i.Date
+                       }).Where(p => p.name == department).ToList();
+                    return ideaDepartment.Count();
+                }
+            }
+            
+        }
+
+        public void Statitisc()
+        {
+            using(var database =  new EF.CMSContext())
+            {
+              //  var 
+            }
+        }
+        public ActionResult FliterYear()
+        {
+            return View();
+        }
+        [Authorize(Roles = SecurityRoles.Manager)]
+        public ActionResult ViewAllIdea(int id = 1, int categoryId = 0, string count = "a")
+        {
+            int number = 5;
+            if (Regex.IsMatch(count, @"^\d+$") && Int32.Parse(count) > 0)
+            {
+                number = Int32.Parse(count);
+            }
+            if (categoryId == 0)
+            {
+                using (var dbCT = new EF.CMSContext())
+                {
+                    TempData["CategoryId"] = 0;
+                    int Count = dbCT.Idea.Count();
+                    if (Count <= number)
+                    {
+                        TempData["PageNo"] = 1;
+                        TempData["PageMax"] = 1;
+                        TempData["Number"] = number;
+                        var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                        return View(ideas);
+                    }
+                    else
+                    {
+                        var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                        if (Count % number != 0)
+                        {
+                            TempData["PageMax"] = (Count / number) + 1;
+                        }
+                        else
+                        {
+                            TempData["PageMax"] = (Count / number);
+                        }
+                        TempData["Number"] = number;
+                        TempData["PageNo"] = id;
+                        return View(ideas);
+                    }
+
+                }
+            }
+            else
+            {
+                using (var dbCT = new EF.CMSContext())
+                {
+                    TempData["CategoryId"] = categoryId;
+                    int Count = dbCT.Idea.Where(p => p.CategoryId == categoryId).Count();
+                    if (Count <= number)
+                    {
+                        TempData["PageNo"] = 1;
+                        TempData["PageMax"] = 1;
+                        TempData["Number"] = number;
+                        var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
+                        return View(ideas);
+                    }
+                    else
+                    {
+                        var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
+                        if (Count % number != 0)
+                        {
+                            TempData["PageMax"] = (Count / number) + 1;
+                        }
+                        else
+                        {
+                            TempData["PageMax"] = (Count / number);
+                        }
+                        TempData["Number"] = number;
+                        TempData["PageNo"] = id;
+                        return View(ideas);
+                    }
+
+                }
+            }
 
 
+
+        }
+        [Authorize(Roles = SecurityRoles.Manager)]
+        public ActionResult ViewIdea(int IdeaId)
+        {
+            using (var FAPCtx = new EF.CMSContext())
+            {
+                var _idea = FAPCtx.Idea.FirstOrDefault(c => c.Id == IdeaId);
+
+                if (_idea != null)
+                {
+                    _idea.Views++;
+                    FAPCtx.SaveChanges();
+                    TempData["IdeaId"] = IdeaId;
+                    return View(_idea);
+                }
+                else
+                {
+                    return RedirectToAction("ViewAllIdea");
+                }
+            }
+        }
+        public ActionResult ShowAllCategory()
+        {
+
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _category = dbCT.Category.ToList();
+                return View(_category);
+            }
+        }
+        public ActionResult Filter()
+        {
+            return View();
+        }
+        [HttpGet]
+        public ActionResult ShowComment(int IdeaId)
+        {
+
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _comment = dbCT.Comment
+                                        .Where(c => c.IdeaId == IdeaId)
+                                        .ToList();
+                if (_comment.Count != 0)
+                {
+                    return View(_comment);
+                }
+                else
+                {
+                    return Content($"No Comment yet!");
+                }
+
+            }
+        }
+        public ActionResult TopView()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
+            }
+
+        }
+        public ActionResult TopLike()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
+            }
+
+        }
+
+        public ActionResult LastIdea()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
+            }
+        }
+        [HttpGet]
+        public ActionResult LastComment()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                
+                try
+                {
+                    var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                    TempData["LastComment"] = _comment.Id;
+                    return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No Comments at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
+            }
+        }
+        public async Task SendEmail(string email, string comment)
+        {
+            var body = "<p>Email From: {0} </p><p>Message: {1}</p>";
+            var message = new MailMessage();
+            message.To.Add(new MailAddress(email));
+            message.From = new MailAddress("ASPxyz123ab@gmail.com");
+            message.Subject = "New email form CHAT.com.vn";
+            message.Body = string.Format(body, "Admin", comment);
+            message.IsBodyHtml = true;
+
+            using (var smtp = new SmtpClient())
+            {
+                var credential = new NetworkCredential
+                {
+                    UserName = "ASPxyz123ab@gmail.com",
+                    Password = "123456789awds"
+                };
+                smtp.Credentials = credential;
+                smtp.Host = "smtp.gmail.com";
+                smtp.Port = 587;
+                smtp.EnableSsl = true;
+                await smtp.SendMailAsync(message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> ChangePass()
+        {
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+            var user = await manager.FindByIdAsync(User.Identity.GetUserId());
+            TempData["UserEmail"] = TempData["UserEmail"];
+            TempData["UserId"] = TempData["UserId"];
+            await CreateCode(user.Id);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ChangePass(string oldpass, string newpass, string confirmpass, string verifycode)
+        {
+            var context = new CMSContext();
+            var store = new UserStore<UserInfo>(context);
+            var manager = new UserManager<UserInfo>(store);
+
+            var user = await manager.FindByIdAsync(User.Identity.GetUserId());
+            CustomValidationTrainee(oldpass, newpass, confirmpass, verifycode, user.Id);
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+            else
+            {
+
+                if (user != null)
+                {
+                    var result = manager.PasswordHasher.VerifyHashedPassword(user.PasswordHash, oldpass);
+                    if (result == PasswordVerificationResult.Success)
+                    {
+                        String newPassword = newpass;
+                        String hashedNewPassword = manager.PasswordHasher.HashPassword(newPassword);
+                        user.PasswordHash = hashedNewPassword;
+                        await store.UpdateAsync(user);
+                        @TempData["alert"] = "Change PassWord successful";
+                        return RedirectToAction("LogOut", "Login");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("PasswordHash", " Old Password incorrect!");
+                        TempData["UserEmail"] = TempData["UserEmail"];
+                        TempData["UserId"] = user.Id;
+                        return View();
+                    }
+
+                }
+                TempData["UserEmail"] = TempData["UserEmail"];
+                TempData["UserId"] = user.Id;
+
+                return RedirectToAction("Index", "Coor");
+            }
+        }
+        public async Task CreateCode(string userid)
+        {
+            Random rnd = new Random();
+            int Newcode = rnd.Next(100000, 999999);
+            using (var database = new EF.CMSContext())
+            {
+                var code = database.FCode.Where(c => c.Code == Newcode).FirstOrDefault();
+                if (code == null)
+                {
+                    var context = new CMSContext();
+                    var store = new UserStore<UserInfo>(context);
+                    var manager = new UserManager<UserInfo>(store);
+                    var user = await manager.FindByIdAsync(User.Identity.GetUserId());
+                    var newcode = new VerifyCode();
+                    newcode.Code = Newcode;
+                    newcode.Date = DateTime.Now.ToString("MM/dd/yyyy HH:mm");
+                    newcode.UserId = userid;
+                    database.FCode.Add(newcode);
+                    database.SaveChanges();
+                    await SendEmail(user.Email, "Your confirmation code is: " + newcode.Code.ToString() + "<p>This code available in 60 minute!</p>");
+                }
+                else { await CreateCode(userid); }
+
+            }
+        }
+
+        public void CustomValidationTrainee(string ollpass, string newpass, string confirmpass, string verifycode, string userid)
+        {
+            if (string.IsNullOrEmpty(ollpass))
+            {
+                ModelState.AddModelError("PasswordHash", "Please input old Password");
+            }
+            if (string.IsNullOrEmpty(newpass))
+            {
+                ModelState.AddModelError("NewPass", "Please input new Password");
+            }
+
+            if (string.IsNullOrEmpty(confirmpass))
+            {
+                ModelState.AddModelError("PassConfirm", "Please input Confirm Password");
+            }
+            if (!string.IsNullOrEmpty(confirmpass) && !string.IsNullOrEmpty(newpass) && (confirmpass != newpass))
+            {
+                ModelState.AddModelError("PassConfirm", "New password and Confirm password not match");
+            }
+            if (!string.IsNullOrEmpty(confirmpass) && !string.IsNullOrEmpty(newpass) && (newpass.Length < 6))
+            {
+                ModelState.AddModelError("PassConfirm", "New password must longer than 5 character");
+            }
+            using (var database = new EF.CMSContext())
+            {
+                var code = database.FCode.Where(c => c.Code.ToString() == verifycode).FirstOrDefault();
+                if (code == null)
+                {
+                    ModelState.AddModelError("VerifyCode", "Verify code not correct!");
+
+                }
+                if (code != null && code.UserId != userid)
+                {
+                    ModelState.AddModelError("VerifyCode", "Verify code not correct!");
+
+                }
+            }
+        }
     }
 
 }

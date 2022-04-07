@@ -5,8 +5,9 @@
     TempData["UserId"] = TempData["UserId"];
     Layout = "~/Views/Coor/_LayoutCoor.cshtml";
     int No = Int16.Parse(TempData["PageNo"].ToString());
-    int first = (No - 1) * 5;
-    int last = No * 5;
+    int Number = Int16.Parse(TempData["Number"].ToString());
+    int first = (No - 1) * Number;
+    int last = No * Number;
     int a = 0;
     string Anonymously = "Anonymously";
 }
@@ -23,7 +24,16 @@
         <div class="filter">
             <div class="filter_item">
                 @Html.ActionLink("Top View", "TopView")
-            </div>        
+            </div>
+            <div class="filter_item">
+                @Html.ActionLink("Top Like", "TopLike")
+            </div>
+            <div class="filter_item">
+                @Html.ActionLink("Latest Idea", "LastIdea")
+            </div>
+            <div class="filter_item">
+                @Html.ActionLink("Latest Comment", "LastComment")
+            </div>
         </div>
 
         @foreach (var c in Model)
@@ -38,7 +48,7 @@
                                 @{
                                     if (c.Status == true)
                                     {
-                                        { Html.RenderAction("ShowUser", "Coor", new { UserId = c.UserId }); }
+                                        { Html.RenderAction("ShowUser", "Staff", new { UserId = c.UserId }); }
                                     }
                                     else
                                     {
@@ -46,18 +56,6 @@
                                     }
                                 }
                             </span>
-                        </div>
-
-                        <div class="blog_item-option">
-
-                            <div class="dropdown">
-                                <i class="btn btn-secondary fa-solid fa-ellipsis" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                </i>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">Copy Link</a></li>
-                                </ul>
-                            </div>
-
                         </div>
                     </div>
 
@@ -78,7 +76,6 @@
             }
             a++;
         }
-
         <ul class="pagination">
 
             @for (int i = 1; i <= Int16.Parse(TempData["PageMax"].ToString()); i++)
@@ -86,7 +83,7 @@
                 if (i == 1)
                 {
                     <li>
-                        <a href="@Url.Action("Index", new {id = i})">
+                        <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">
                             <i class="fa-solid fa-caret-left"></i>
                         </a>
                     </li>
@@ -99,13 +96,13 @@
                         if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
                         {
                             <li>
-                                <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString())})" style="color: red;">@i</a>
+                                <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})" style="color: red;">@i</a>
                             </li>
                         }
                         else
                         {
                             <li>
-                                <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString())})">@i</a>
+                                <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">@i</a>
                             </li>
                         }
                     }
@@ -114,13 +111,13 @@
                         if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
                         {
                             <li>
-                                <a href="@Url.Action("Index", new {id = i})" style="color: red;">@i</a>
+                                <a href="@Url.Action("Index", new {id = i, count = TempData["Number"].ToString()})" style="color: red;">@i</a>
                             </li>
                         }
                         else
                         {
                             <li>
-                                <a href="@Url.Action("Index", new {id = i})">@i</a>
+                                <a href="@Url.Action("Index", new {id = i, count = TempData["Number"].ToString()})">@i</a>
                             </li>
                         }
                     }
@@ -128,10 +125,9 @@
                 }
 
             }
-
             <li>
 
-                <a href="@Url.Action("Index", new {id = Int16.Parse(TempData["PageMax"].ToString())})">
+                <a href="@Url.Action("Index", new {id = Int16.Parse(TempData["PageMax"].ToString()), categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">
                     <i class="fa-solid fa-caret-right"></i>
                 </a>
             </li>
@@ -139,7 +135,9 @@
         </ul>
 
     </div>
-
+    <div>
+        @{Html.RenderAction("Filter", "Coor");}
+    </div>
     <div class="blog_all-categories">
         <h2>All Categories</h2>
 

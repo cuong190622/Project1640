@@ -10,37 +10,47 @@ using System.Web;
 using System.Web.Mvc;
 using System.Net.Mail;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace Project1640.Controllers
 {
     public class CoorController : Controller
     {
         // GET: Coor
-        public ActionResult Index(int id = 1, int categoryId = 0)
+        [Authorize(Roles = SecurityRoles.Coor)]
+        public ActionResult Index(int id = 1, int categoryId = 0, string count = "a")
         {
+            int number = 5;
+            if (Regex.IsMatch(count, @"^\d+$"))
+            {
+                number = Int32.Parse(count);
+            }
             if (categoryId == 0)
             {
                 using (var dbCT = new EF.CMSContext())
                 {
+                    TempData["CategoryId"] = 0;
                     int Count = dbCT.Idea.Count();
-                    if (Count <= 5)
+                    if (Count <= number)
                     {
                         TempData["PageNo"] = 1;
                         TempData["PageMax"] = 1;
+                        TempData["Number"] = number;
                         var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
                         return View(ideas);
                     }
                     else
                     {
                         var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
-                        if (Count % 5 != 0)
+                        if (Count % number != 0)
                         {
-                            TempData["PageMax"] = (Count / 5) + 1;
+                            TempData["PageMax"] = (Count / number) + 1;
                         }
                         else
                         {
-                            TempData["PageMax"] = (Count / 5);
+                            TempData["PageMax"] = (Count / number);
                         }
+                        TempData["Number"] = number;
                         TempData["PageNo"] = id;
                         return View(ideas);
                     }
@@ -53,24 +63,26 @@ namespace Project1640.Controllers
                 {
                     TempData["CategoryId"] = categoryId;
                     int Count = dbCT.Idea.Where(p => p.CategoryId == categoryId).Count();
-                    if (Count <= 5)
+                    if (Count <= number)
                     {
                         TempData["PageNo"] = 1;
                         TempData["PageMax"] = 1;
+                        TempData["Number"] = number;
                         var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
                         return View(ideas);
                     }
                     else
                     {
                         var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
-                        if (Count % 5 != 0)
+                        if (Count % number != 0)
                         {
-                            TempData["PageMax"] = (Count / 5) + 1;
+                            TempData["PageMax"] = (Count / number) + 1;
                         }
                         else
                         {
-                            TempData["PageMax"] = (Count / 5);
+                            TempData["PageMax"] = (Count / number);
                         }
+                        TempData["Number"] = number;
                         TempData["PageNo"] = id;
                         return View(ideas);
                     }
@@ -79,18 +91,80 @@ namespace Project1640.Controllers
             }
 
         }
-    
+
 
         public ActionResult TopView()
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
+            }
+
+        }
+        public ActionResult TopLike()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {  
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
             }
 
         }
 
+        public ActionResult LastIdea()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
+            }
+        }
+
+        public ActionResult LastComment()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+                
+                try
+                {
+                    var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                    TempData["LastComment"] = _comment.Id;
+                    return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No Comment at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
+                
+            }
+        }
         public ActionResult ShowUser(string UserId)
         {
 
@@ -136,7 +210,7 @@ namespace Project1640.Controllers
             return user.Id.ToString();
 
         }
-
+        [Authorize(Roles = SecurityRoles.Coor)]
         public ActionResult ViewIdea(int IdeaId)
         {
             using (var FAPCtx = new EF.CMSContext())
@@ -156,7 +230,7 @@ namespace Project1640.Controllers
                 }
             }
         }
-
+        [Authorize(Roles = SecurityRoles.Coor)]
         [HttpGet]
         public async Task<ActionResult> ChangePass()
         {
@@ -287,6 +361,28 @@ namespace Project1640.Controllers
                 return View(_category);
             }
         }
+        public ActionResult Filter()
+        {
+            return View();
+        }
+        public ActionResult ShowComment(int IdeaId)
+        {
 
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _comment = dbCT.Comment
+                                        .Where(c => c.IdeaId == IdeaId)
+                                        .ToList();
+                if (_comment.Count != 0)
+                {
+                    return View(_comment);
+                }
+                else
+                {
+                    return Content($"No Comment yet!");
+                }
+
+            }
+        }
     }
 }

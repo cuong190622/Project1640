@@ -5,6 +5,7 @@ using Project1640.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -14,6 +15,7 @@ namespace Project1640.Controllers
     public class AdminController : Controller
     {
         // GET: Admin
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult Index()
         {
             using (var ct = new EF.CMSContext())
@@ -23,6 +25,7 @@ namespace Project1640.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult Createstaff()
         {
             ViewBag.Class = getList();
@@ -38,7 +41,8 @@ namespace Project1640.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Class = getList();
-                return View(staff);
+                TempData["alert"] = $"Create account Fail, data input not allowed! Try again!";
+                return RedirectToAction("Index");
             }
             else
             {
@@ -47,29 +51,34 @@ namespace Project1640.Controllers
                 var manager = new UserManager<UserInfo>(store);
 
                 var user = await manager.FindByEmailAsync(staff.Email);
-
-            if (user == null)
-            {
-                user = new UserInfo
+                
+                if (user == null)
                 {
-                    UserName = staff.Email.Split('@')[0],
-                    Email = staff.Email,
-                    Age = staff.Age,
-                    WorkingPlace = staff.WorkingPlace,
-                    DoB = staff.DoB,
-                    DepartmentId = staff.DepartmentId,
-                    Role = "staff",
-                    PhoneNumber=staff.PhoneNumber,
-                    PasswordHash = "123qwe123",
-                    Name = staff.Name
-                };
-                await manager.CreateAsync(user, user.PasswordHash);
-                await CreateRole(staff.Email, "staff");
+                    user = new UserInfo
+                    {
+                        UserName = staff.Email.Split('@')[0],
+                        Email = staff.Email,
+                        Age = staff.Age,
+                        WorkingPlace = staff.WorkingPlace,
+                        DoB = staff.DoB,
+                        DepartmentId = staff.DepartmentId,
+                        Role = "staff",
+                        PhoneNumber = staff.PhoneNumber,
+                        PasswordHash = "123qwe123",
+                        Name = staff.Name
+                    };
+                    await manager.CreateAsync(user, user.PasswordHash);
+                    await CreateRole(staff.Email, "staff");
+                    TempData["message"] = $"Account successfully created!";
+                }
+                else
+                {
+                    TempData["alert"] = $"Email already exists, please try again!!";
+                }
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
-        }
 
-            
+
         }
 
         private void CustomValidationStaff(UserInfo staff)
@@ -78,13 +87,8 @@ namespace Project1640.Controllers
             {
                 ModelState.AddModelError("Email", "Please input Email");
             }
-            if (string.IsNullOrEmpty(staff.UserName))
-            {
-                ModelState.AddModelError("UserName", "Please input Name");
-            }
-           
         }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult ViewAccount(string id)
         {
             CMSContext context = new CMSContext();
@@ -95,20 +99,9 @@ namespace Project1640.Controllers
                 ViewBag.Class = getList();
                 var ct = bwCtx.Users.FirstOrDefault(t => t.Id == id);
                 return View(ct);
-            }   
+            }
         }
-
-        [HttpPost]
-        public ActionResult ViewAccount(string id, UserInfo newUser)
-        {
-            CMSContext context = new CMSContext();
-            var roleManager = new Microsoft.AspNet.Identity.RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            var userManager = new Microsoft.AspNet.Identity.UserManager<UserInfo>(new UserStore<UserInfo>(context));
-            return RedirectToAction("ViewAccount");
-
-            // ########################################################
-        }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult CreateManager()
         {
@@ -124,7 +117,8 @@ namespace Project1640.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Class = getList();
-                return View(mana);
+                TempData["alert"] = $"Create account Fail, data input not allowed! Try again!";
+                return RedirectToAction("Index");
             }
             else
             {
@@ -133,7 +127,7 @@ namespace Project1640.Controllers
                 var manager = new UserManager<UserInfo>(store);
 
                 var user = await manager.FindByEmailAsync(mana.Email);
-
+                
                 if (user == null)
                 {
                     user = new UserInfo
@@ -151,11 +145,17 @@ namespace Project1640.Controllers
                     };
                     await manager.CreateAsync(user, user.PasswordHash);
                     await CreateRole(mana.Email, "manager");
+                    TempData["message"] = $"Account successfully created!";
                 }
+                else
+                {
+                    TempData["alert"] = $"Email already exists, please try again!!";
+                }
+
                 return RedirectToAction("Index");
             }
 
-                
+
         }
 
         private void CustomValidationManager(UserInfo mana)
@@ -164,13 +164,9 @@ namespace Project1640.Controllers
             {
                 ModelState.AddModelError("Email", "Please input Email");
             }
-            if (string.IsNullOrEmpty(mana.UserName))
-            {
-                ModelState.AddModelError("UserName", "Please input Name");
-            }
         }
 
-        // ###############
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult CreateCoor()
         {
@@ -186,7 +182,8 @@ namespace Project1640.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Class = getList();
-                return View(coor);
+                TempData["alert"] = $"Create account Fail, data input not allowed! Try again!";
+                return RedirectToAction("Index");
             }
             else
             {
@@ -195,7 +192,7 @@ namespace Project1640.Controllers
                 var manager = new UserManager<UserInfo>(store);
 
                 var user = await manager.FindByEmailAsync(coor.Email);
-
+                
                 if (user == null)
                 {
                     user = new UserInfo
@@ -213,11 +210,17 @@ namespace Project1640.Controllers
                     };
                     await manager.CreateAsync(user, user.PasswordHash);
                     await CreateRole(coor.Email, "coor");
+                    TempData["message"] = $"Account successfully created!";
                 }
+                else
+                {
+                    TempData["alert"] = $"Email already exists, please try again!!";
+                }
+                
                 return RedirectToAction("Index");
             }
 
-               
+
         }
 
         private void CustomValidationCoor(UserInfo coor)
@@ -225,10 +228,6 @@ namespace Project1640.Controllers
             if (string.IsNullOrEmpty(coor.Email))
             {
                 ModelState.AddModelError("Email", "Please input Email");
-            }
-            if (string.IsNullOrEmpty(coor.UserName))
-            {
-                ModelState.AddModelError("UserName", "Please input Name");
             }
         }
 
@@ -300,7 +299,7 @@ namespace Project1640.Controllers
                 return stx;
             }
         }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult EditAccount(string id)
         {
@@ -311,16 +310,12 @@ namespace Project1640.Controllers
             {
                 ViewBag.Class = getList();
                 var ct = bwCtx.Users.FirstOrDefault(t => t.Id == id);
-                //ef method to select only one or null if not found
-
-                if (ct != null) // if a book is found, show edit view
+                if (ct != null) 
                 {
-                    ViewBag.Class = getList();
                     return View(ct);
                 }
-                else // if no book is found, back to index
+                else 
                 {
-                    ViewBag.Class = getList();  
                     return RedirectToAction("Index"); //redirect to action in the same controller
                 }
             }
@@ -339,10 +334,10 @@ namespace Project1640.Controllers
                     = System.Data.Entity.EntityState.Modified;
                 ct.SaveChanges();
             }
-            TempData["message"] = $"Successfully update book with Id:{newUser.Id} ";
+            TempData["message"] = $"Successfully update account :{newUser.Email} ";
             return RedirectToAction("Index");
         }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult deleteAccount(string id)
         {
             using (var ct = new CMSContext())
@@ -353,7 +348,7 @@ namespace Project1640.Controllers
                 {
                     ct.Users.Remove(newUser);
                     ct.SaveChanges();
-                    TempData["message"] = $"Successfully delete book with Id: {newUser.Id}";
+                    TempData["message"] = $"Successfully delete Account: {newUser.Email}";
                 }
 
 
@@ -439,7 +434,7 @@ namespace Project1640.Controllers
 
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult IndexDepartment()
         {
             using (var dpm = new EF.CMSContext())
@@ -450,11 +445,11 @@ namespace Project1640.Controllers
                 return View(department);
             }
         }
-        // create Department and view
+        [Authorize(Roles = SecurityRoles.Admin)]
+
         [HttpGet]
         public ActionResult CreateDepartment()
         {
-            ViewBag.Class = getList();
             return View();
         }
 
@@ -464,16 +459,25 @@ namespace Project1640.Controllers
         {
             using (var dpm = new EF.CMSContext())
             {
-                dpm.Department.Add(a);
-                dpm.SaveChanges();
+                try
+                {
+                    dpm.Department.Add(a);
+                    dpm.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"Add Department Fail! data input not allowed! try again!!";
+                    return RedirectToAction("IndexDepartment");
+                }
+               
             }
 
-            TempData["message"] = $"Successfully add class {a.Name} to system!";
+            TempData["message"] = $"Successfully add department {a.Name} to system!";
 
             return RedirectToAction("IndexDepartment");
         }
 
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult EditDepartment(int id)
         {
@@ -490,15 +494,23 @@ namespace Project1640.Controllers
         {
             using (var dpm = new EF.CMSContext())
             {
-                dpm.Entry<Department>(a).State = System.Data.Entity.EntityState.Modified;
-
-                dpm.SaveChanges();
+                try
+                {
+                    dpm.Entry<Department>(a).State = System.Data.Entity.EntityState.Modified;
+                    dpm.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"Edit Department Fail! data input not allowed! try again!!";
+                    return RedirectToAction("IndexDepartment");
+                }
+               
             }
-
+            TempData["message"] = $"Update department {a.Name} Successfully!";
             return RedirectToAction("IndexDepartment");
         }
 
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult DeleteDepartment(int id, Department a)
         {
@@ -521,13 +533,13 @@ namespace Project1640.Controllers
                     dpm.Department.Remove(Department);
                     dpm.SaveChanges();
                 }
-                TempData["message"] = $"Successfully delete book with Id: {Department.Id}";
+                TempData["message"] = $"Successfully delete department with Id: {Department.Id}";
                 return RedirectToAction("IndexDepartment");
             }
         }
 
         /// ////////////////////////////////////////////////////
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult ViewIdea(int IdeaId)
         {
             using (var FAPCtx = new EF.CMSContext())
@@ -548,80 +560,116 @@ namespace Project1640.Controllers
             }
         }
 
-        public ActionResult Indexx(int id = 1)
-        {
-            using (var dbCT = new EF.CMSContext())
-            {
-                int Count = dbCT.Idea.Count();
-                if (Count <= 5)
-                {
-                    TempData["PageNo"] = 1;
-                    TempData["PageMax"] = 1;
-                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
-                    return View(ideas);
-                }
-                else
-                {
-                    var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
-                    if (Count % 5 != 0)
-                    {
-                        TempData["PageMax"] = (Count / 5) + 1;
-                    }
-                    else
-                    {
-                        TempData["PageMax"] = (Count / 5);
-                    }
-                    TempData["PageNo"] = id;
-                    return View(ideas);
-                }
 
-            }
-        }
-
-
-        public ActionResult LastIdea()
-        {
-            using (var dbCT = new EF.CMSContext())
-            {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
-            }
-        }
-
-        public ActionResult LastComment()
-        {
-            using (var dbCT = new EF.CMSContext())
-            {
-                var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
-                TempData["LastComment"] = _comment.Id;
-                return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
-            }
-        }
 
         public ActionResult TopView()
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
-                return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Views).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
             }
-        }
 
-        public ActionResult Top5Idea()
+        }
+        public ActionResult TopLike()
         {
             using (var dbCT = new EF.CMSContext())
             {
-                var _ideas = dbCT.Idea.OrderByDescending(c => c.Views).Take(5).ToList();
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Rank).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
+            }
+
+        }
+
+        public ActionResult LastIdea()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+
+                try
+                {
+                    var _idea = dbCT.Idea.OrderByDescending(c => c.Id).First();
+                    return RedirectToAction("ViewIdea", new { IdeaId = _idea.Id });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No ideas at the moment, please try again later!!";
+                    return RedirectToAction("ViewAllIdea");
+                }
+            }
+        }
+
+/*        public ActionResult LastComment()
+        {
+            using (var dbCT = new EF.CMSContext())
+            {
+
+                try
+                {
+                    var _comment = dbCT.Comment.OrderByDescending(c => c.Id).First();
+                    TempData["LastComment"] = _comment.Id;
+                    return RedirectToAction("ViewIdea", new { IdeaId = _comment.IdeaId });
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"No Comment at the moment, please try again later!!";
+                    return RedirectToAction("Index");
+                }
+
+            }
+        }*/
+
+        public ActionResult Top5Idea(string count = "5")
+        {
+            int number = 5;
+            if (Regex.IsMatch(count, @"^\d+$") && Int32.Parse(count) > 0)
+            {
+                number = Int32.Parse(count);
+            }
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _ideas = dbCT.Idea.OrderByDescending(c => c.Views).Take(number).ToList();
+                TempData["Number"] = number;
                 return View(_ideas);
             }
         }
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //HTTPGET create EDITSETDATE
+        public ActionResult Top5Like(string count = "5")
+        {
+            int number = 5;
+            if (Regex.IsMatch(count, @"^\d+$") && Int32.Parse(count) > 0)
+            {
+                number = Int32.Parse(count);
+            }
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _ideas = dbCT.Idea.OrderByDescending(c => c.Rank).Take(number).ToList();
+                TempData["Number"] = number;
+                return View(_ideas);
+            }
+        }
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
-        public ActionResult EditSetDate(int id=1)
+        public ActionResult EditSetDate(int id = 1)
         {
             using (var sd = new EF.CMSContext())
             {
+
                 var setdate = sd.SetDate.FirstOrDefault(c => c.Id == id);
                 return View(setdate);
             }
@@ -629,20 +677,19 @@ namespace Project1640.Controllers
 
         //HTTPOST CREATE EDITSETDATE
         [HttpPost]
-        public ActionResult EditSetDate(int id, SetDate a, DateTime startdate, DateTime enddate)
+        public ActionResult EditSetDate(SetDate a)
         {
-            if (startdate < enddate)
+            using (var sd = new EF.CMSContext())
             {
-                using (var sd = new EF.CMSContext())
-                {
-                    sd.Entry<SetDate>(a).State = System.Data.Entity.EntityState.Modified;
-                    sd.SaveChanges();
-                }              
+                var setdate = sd.SetDate.FirstOrDefault(c => c.Id == 1);
+                setdate.StartDate = a.StartDate;
+                setdate.EndDate = a.EndDate;
+                sd.SaveChanges();
             }
             return RedirectToAction("Index");
 
         }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         public ActionResult IndexCategory()
         {
             using (var ctgrCt = new EF.CMSContext())
@@ -655,7 +702,7 @@ namespace Project1640.Controllers
         }
 
 
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult CreateCategory()
         {
@@ -667,16 +714,25 @@ namespace Project1640.Controllers
         {
             using (var cate = new EF.CMSContext())
             {
-                cate.Category.Add(a);
-                cate.SaveChanges();
+                try
+                {
+                    cate.Category.Add(a);
+                    cate.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    TempData["alert"] = $"Add category Fail! data input not allowed! try again!!";
+                    return RedirectToAction("IndexCategory");
+                }
+                
             }
 
-            TempData["message"] = $"Successfully add class {a.Name} to system!";
+            TempData["message"] = $"Successfully add category {a.Name} to system!";
 
             return RedirectToAction("IndexCategory");
         }
 
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult EditCategory(int id)
         {
@@ -693,14 +749,22 @@ namespace Project1640.Controllers
         {
             using (var cate = new EF.CMSContext())
             {
-                cate.Entry<Category>(a).State = System.Data.Entity.EntityState.Modified;
+                try
+                {
+                    cate.Entry<Category>(a).State = System.Data.Entity.EntityState.Modified;
+                    cate.SaveChanges();
+                }
+                catch(Exception)
+                {
+                    TempData["alert"] = $"Edit category Fail! data input not allowed! try again!!";
+                    return RedirectToAction("IndexCategory");
+                }
 
-                cate.SaveChanges();
             }
-
+            TempData["message"] = $"Update category {a.Name} Successfully!";
             return RedirectToAction("IndexCategory");
         }
-
+        [Authorize(Roles = SecurityRoles.Admin)]
         [HttpGet]
         public ActionResult DeleteCategory(int id, Category a)
         {
@@ -722,8 +786,142 @@ namespace Project1640.Controllers
                     cate.Category.Remove(Category);
                     cate.SaveChanges();
                 }
-                TempData["message"] = $"Successfully delete book with Id: {Category.Id}";
+                TempData["message"] = $"Successfully delete Category with Name: {Category.Name}";
                 return RedirectToAction("IndexCategory");
+            }
+        }
+        public ActionResult Filter()
+        {
+            return View();
+        }
+        public ActionResult Filter2()
+        {
+            return View();
+        }
+        public ActionResult Filter3()
+        {
+            return View();
+        }
+        [Authorize(Roles = SecurityRoles.Admin)]
+        public ActionResult ViewAllIdea(int id = 1, int categoryId = 0, string count = "a")
+        {
+            int number = 5;
+            if (Regex.IsMatch(count, @"^\d+$") && Int32.Parse(count) > 0)
+            {
+                number = Int32.Parse(count);
+            }
+            if (categoryId == 0)
+            {
+                using (var dbCT = new EF.CMSContext())
+                {
+                    TempData["CategoryId"] = 0;
+                    int Count = dbCT.Idea.Count();
+                    if (Count <= number)
+                    {
+                        TempData["PageNo"] = 1;
+                        TempData["PageMax"] = 1;
+                        TempData["Number"] = number;
+                        var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                        return View(ideas);
+                    }
+                    else
+                    {
+                        var ideas = dbCT.Idea.OrderBy(c => c.Id).ToList();
+                        if (Count % number != 0)
+                        {
+                            TempData["PageMax"] = (Count / number) + 1;
+                        }
+                        else
+                        {
+                            TempData["PageMax"] = (Count / number);
+                        }
+                        TempData["Number"] = number;
+                        TempData["PageNo"] = id;
+                        return View(ideas);
+                    }
+
+                }
+            }
+            else
+            {
+                using (var dbCT = new EF.CMSContext())
+                {
+                    TempData["CategoryId"] = categoryId;
+                    int Count = dbCT.Idea.Where(p => p.CategoryId == categoryId).Count();
+                    if (Count <= number)
+                    {
+                        TempData["PageNo"] = 1;
+                        TempData["PageMax"] = 1;
+                        TempData["Number"] = number;
+                        var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
+                        return View(ideas);
+                    }
+                    else
+                    {
+                        var ideas = dbCT.Idea.Where(p => p.CategoryId == categoryId).OrderBy(c => c.Id).ToList();
+                        if (Count % number != 0)
+                        {
+                            TempData["PageMax"] = (Count / number) + 1;
+                        }
+                        else
+                        {
+                            TempData["PageMax"] = (Count / number);
+                        }
+                        TempData["Number"] = number;
+                        TempData["PageNo"] = id;
+                        return View(ideas);
+                    }
+
+                }
+            }
+        }
+        [HttpGet]
+        public ActionResult ShowComment(int IdeaId)
+        {
+
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _comment = dbCT.Comment
+                                        .Where(c => c.IdeaId == IdeaId)
+                                        .ToList();
+                if (_comment.Count != 0)
+                {
+                    return View(_comment);
+                }
+                else
+                {
+                    return Content($"No Comment yet!");
+                }
+
+            }
+        }
+
+        public ActionResult ShowAllCategory()
+        {
+
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _category = dbCT.Category.ToList();
+                return View(_category);
+            }
+        }
+        [Authorize(Roles = SecurityRoles.Admin)]
+        [HttpGet]
+        public ActionResult DeleteIdea(int id)
+        {
+            using (var ct = new CMSContext())
+            {
+                var idea = ct.Idea.FirstOrDefault(b => b.Id == id);
+
+                if (idea != null)
+                {
+                    ct.Idea.Remove(idea);
+                    ct.SaveChanges();
+                    TempData["message"] = $"Successfully delete idea with name: {idea.Title}";
+                }
+
+
+                return RedirectToAction("ViewAllIdea");
             }
         }
     }

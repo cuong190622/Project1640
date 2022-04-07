@@ -135,7 +135,6 @@
                                 <i class="btn btn-secondary fa-solid fa-ellipsis" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                 </i>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="#">Copy Link</a></li>
                                     <li><a class="dropdown-item" href="#">Download</a></li>
                                 </ul>
                             </div>
@@ -159,7 +158,7 @@
 
                     <div class="blog_post-content">
                         <p>
-                            File Upload: @{Html.RenderAction("ShowFile", "Staff", new { IdeaId = Model.Id });}
+                            @{Html.RenderAction("ShowFile", "Staff", new { IdeaId = Model.Id });}
                         </p>
                     </div>
                 </div>

@@ -91,6 +91,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -167,9 +168,9 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManagerController.cs" />
     <Compile Include="Controllers\StaffController.cs" />
-    <Compile Include="EF\202203310915371_InitialCreate.cs" />
-    <Compile Include="EF\202203310915371_InitialCreate.Designer.cs">
-      <DependentUpon>202203310915371_InitialCreate.cs</DependentUpon>
+    <Compile Include="EF\202204030557034_InitialCreate.cs" />
+    <Compile Include="EF\202204030557034_InitialCreate.Designer.cs">
+      <DependentUpon>202204030557034_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="EF\CMSContext.cs" />
     <Compile Include="EF\Configuration.cs" />
@@ -178,11 +179,13 @@
     </Compile>
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\DataPoint.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\FileDownloads.cs" />
     <Compile Include="Models\FileInfo.cs" />
     <Compile Include="Models\FileUpload.cs" />
     <Compile Include="Models\Idea.cs" />
+    <Compile Include="Models\ListDepartment.cs" />
     <Compile Include="Models\React.cs" />
     <Compile Include="Models\SecurityRoles.cs" />
     <Compile Include="Models\SetDate.cs" />
@@ -347,11 +350,9 @@
     <Content Include="Views\Staff\ShowFile.cshtml" />
     <Content Include="Views\Manager\DeleteCategory.cshtml" />
     <Content Include="Views\Manager\Csvfile.cshtml" />
-    <Content Include="Views\Admin\Indexx.cshtml" />
     <Content Include="Views\Admin\ViewIdea.cshtml" />
     <Content Include="Views\Admin\ViewAccount.cshtml" />
     <Content Include="Views\Admin\EditSetDate.cshtml" />
-    <Content Include="Views\Admin\ViewAcc.cshtml" />
     <Content Include="Views\Staff\ChangePass.cshtml" />
     <Content Include="Views\Staff\BlockTime.cshtml" />
     <Content Include="Views\Login\RSPEmail.cshtml" />
@@ -367,6 +368,27 @@
     <Content Include="Views\Admin\CreateCategory.cshtml" />
     <Content Include="Views\Admin\EditCategory.cshtml" />
     <Content Include="Views\Admin\DeleteCategory.cshtml" />
+    <Content Include="Views\Login\NotAuth.cshtml" />
+    <Content Include="Views\Login\NotFound.cshtml" />
+    <Content Include="Views\Staff\Fiter.cshtml" />
+    <Content Include="Views\Coor\Filter.cshtml" />
+    <Content Include="Views\Manager\Chart.cshtml" />
+    <Content Include="Views\Manager\FliterYear.cshtml" />
+    <Content Include="Views\Coor\ShowComment.cshtml" />
+    <Content Include="Views\Manager\ViewAllIdea.cshtml" />
+    <Content Include="Views\Manager\ViewIdea.cshtml" />
+    <Content Include="Views\Manager\ShowAllCategory.cshtml" />
+    <Content Include="Views\Manager\Filter.cshtml" />
+    <Content Include="Views\Manager\ShowComment.cshtml" />
+    <Content Include="Views\Manager\ChangePass.cshtml" />
+    <Content Include="Views\Admin\Filter.cshtml" />
+    <Content Include="Views\Admin\ViewAllIdea.cshtml" />
+    <Content Include="Views\Admin\ShowComment.cshtml" />
+    <Content Include="Views\Admin\ShowAllCategory.cshtml" />
+    <Content Include="Views\Admin\Filter2.cshtml" />
+    <Content Include="Views\Admin\Top5Like.cshtml" />
+    <Content Include="Views\Admin\Filter3.cshtml" />
+    <Content Include="Views\Manager\_LayoutForManager.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\umd\popper.min.js.map" />
@@ -399,8 +421,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EF\202203310915371_InitialCreate.resx">
-      <DependentUpon>202203310915371_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="EF\202204030557034_InitialCreate.resx">
+      <DependentUpon>202204030557034_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

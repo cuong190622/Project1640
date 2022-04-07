@@ -5,8 +5,9 @@
     TempData["UserId"] = TempData["UserId"];
     Layout = "~/Views/Staff/_LayoutStaff.cshtml";
     int No = Int16.Parse(TempData["PageNo"].ToString());
-    int first = (No - 1) * 5;
-    int last = No * 5;
+    int Number = Int16.Parse(TempData["Number"].ToString()); 
+    int first = (No - 1) * Number;
+    int last = No * Number;
     int a = 0;
     string Anonymously = "Anonymously";
 }
@@ -14,9 +15,14 @@
 <div class="container_header">
     <h1>List Blog</h1>
     <span>Post ideas to give your opinion or interact with other ideas.</span>
+    <div>
+        @{Html.RenderAction("Fiter", "Staff");}
+    </div>
 </div>
 
+
 <div class="container_blog">
+
 
     <div class="blog_all-item">
 
@@ -39,7 +45,7 @@
         {
             if (a >= first && a < last)
             {
-                <div class="blog_item left-to-right">
+                <div class="blog_item left-to-right start">
                     <div class="blog_item-header">
                         <div class="blog_avatar">
                             <i class="fa-solid fa-user"></i>
@@ -88,64 +94,64 @@
             a++;
         }
 
-    <ul class="pagination">
+        <ul class="pagination">
 
-        @for (int i = 1; i <= Int16.Parse(TempData["PageMax"].ToString()); i++)
-        {
-            if (i == 1)
+            @for (int i = 1; i <= Int16.Parse(TempData["PageMax"].ToString()); i++)
             {
-                <li>
-                    <a href="@Url.Action("Index", new {id = i})">
-                        <i class="fa-solid fa-caret-left"></i>
-                    </a>
-                </li>
-            }
-            if (TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) - 2) <= i
-                && TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) + 2) >= i)
-            {
-                if (TempData["CategoryId"] != null)
+                if (i == 1)
                 {
-                    if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
+                    <li>
+                        <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">
+                            <i class="fa-solid fa-caret-left"></i>
+                        </a>
+                    </li>
+                }
+                if (TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) - 2) <= i
+                    && TempData["PageNo"] != null && (Int16.Parse(TempData["PageNo"].ToString()) + 2) >= i)
+                {
+                    if (TempData["CategoryId"] != null)
                     {
-                        <li>
-                            <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString())})" style="color: red;">@i</a>
-                        </li>
+                        if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})" style="color: red;">@i</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">@i</a>
+                            </li>
+                        }
                     }
                     else
                     {
-                        <li>
-                            <a href="@Url.Action("Index", new {id = i, categoryId = Int16.Parse(TempData["CategoryId"].ToString())})">@i</a>
-                        </li>
+                        if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", new {id = i,categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})" style="color: red;">@i</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="@Url.Action("Index", new {id = i,categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">@i</a>
+                            </li>
+                        }
                     }
-                }
-                else
-                {
-                    if (TempData["PageNo"] != null && Int16.Parse(TempData["PageNo"].ToString()) == i)
-                    {
-                        <li>
-                            <a href="@Url.Action("Index", new {id = i})" style="color: red;">@i</a>
-                        </li>
-                    }
-                    else
-                    {
-                        <li>
-                            <a href="@Url.Action("Index", new {id = i})">@i</a>
-                        </li>
-                    }
+
                 }
 
             }
 
-        }
+            <li>
 
-        <li>
+                <a href="@Url.Action("Index", new {id = Int16.Parse(TempData["PageMax"].ToString()), categoryId = Int16.Parse(TempData["CategoryId"].ToString()), count = TempData["Number"].ToString()})">
+                    <i class="fa-solid fa-caret-right"></i>
+                </a>
+            </li>
 
-            <a href="@Url.Action("Index", new {id = Int16.Parse(TempData["PageMax"].ToString())})">
-                <i class="fa-solid fa-caret-right"></i>
-            </a>
-        </li>
-
-    </ul>
+        </ul>
 
     </div>
 
@@ -153,7 +159,7 @@
         <h2>All Categories</h2>
 
         <div class="blog_categories">
-            @{Html.RenderAction("ShowAllCategory", "Staff");}        
+            @{Html.RenderAction("ShowAllCategory", "Staff");}
         </div>
     </div>
 
@@ -169,7 +175,7 @@
         var rect = e.getClientRects()[0]
         var heightScreen = window.innerHeight
 
-        if (!(rect.bottom < 0 || heightScreen.top > heightScreen)) {
+        if (!(rect.bottom < 0 || rect.top > heightScreen)) {
             e.classList.add('start')
         } else {
             e.classList.remove('start')

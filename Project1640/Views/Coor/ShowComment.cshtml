@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Project1640.Models.Comment>
+@{
+    string Anonymously = "Anonymously";
+}
+
+@foreach (var item in Model)
+{
+    if (TempData["LastComment"] != null && TempData["LastComment"].ToString() == item.Id.ToString())
+    {
+        <div class="comment_item">
+            <div class="blog_avatar">
+                <i class="fa-solid fa-user img-avatar" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+            </div>
+            <div class="comment_item-content">
+                <span>
+                    @{
+                        if (item.Status == true)
+                        {
+                            { Html.RenderAction("ShowUser", "Staff", new { UserId = item.UserId }); }
+                        }
+                        else
+                        {
+                            @Html.DisplayName(Anonymously)
+                        }
+                    }
+                </span>
+                <p>@Html.DisplayFor(modelItem => item.Content)</p>
+                <div class="blog_time-comment">
+                    <span>@Html.DisplayFor(modelItem => item.Date)</span>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="comment_item">
+            <div class="blog_avatar">
+                <i class="fa-solid fa-user img-avatar" alt="" type="i" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
+            </div>
+            <div class="comment_item-content">
+                <span>
+                    @{
+                        if (item.Status == true)
+                        {
+                            { Html.RenderAction("ShowUser", "Staff", new { UserId = item.UserId }); }
+                        }
+                        else
+                        {
+                            @Html.DisplayName(Anonymously)
+                        }
+                    }
+                </span>
+                <p>@Html.DisplayFor(modelItem => item.Content)</p>
+                <div class="blog_time-comment">
+                    <span>@Html.DisplayFor(modelItem => item.Date)</span>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+
