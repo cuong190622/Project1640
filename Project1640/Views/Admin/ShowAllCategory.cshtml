@@ -17,7 +17,7 @@
         {
 
             <li>
-                <a style="background-color: darkturquoise" href="@Url.Action("ViewAllIdea", new {categoryId = item.Id})">@Html.DisplayFor(modelItem => item.Name)</a>
+                <a style="background-color: darkturquoise" href="@Url.Action("ViewAllIdea", new {categoryId = item.Id, count = TempData["Number"].ToString()})">@Html.DisplayFor(modelItem => item.Name)</a>
             </li>
 
         }
@@ -25,7 +25,7 @@
         {
 
             <li>
-                <a href="@Url.Action("ViewAllIdea", new {categoryId = item.Id})">@Html.DisplayFor(modelItem => item.Name)</a>
+                <a href="@Url.Action("ViewAllIdea", new {categoryId = item.Id, count = TempData["Number"].ToString()})">@Html.DisplayFor(modelItem => item.Name)</a>
             </li>
 
         }

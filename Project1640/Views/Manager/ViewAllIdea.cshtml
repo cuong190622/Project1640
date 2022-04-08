@@ -178,8 +178,11 @@
                     </ul>
 
                 </div>
-
                 <div class="blog_all-categories">
+                    <div>
+                        @{Html.RenderAction("Filter", "Manager");}
+                    </div>
+                    <br /> <br />
                     <h2>All Categories</h2>
 
                     <div class="blog_categories">

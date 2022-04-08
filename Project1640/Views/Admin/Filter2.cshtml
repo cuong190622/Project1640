@@ -2,6 +2,7 @@
 {
     <p>Show top @TempData["Number"].ToString() Ideas</p>
     <input type="text" class="form_title-input" style="border-radius: 20px; border: none; padding: 5px;" id="count" name="count" placeholder="Number Ideas" value="@TempData["Number"].ToString()">
+    <input style="display: none;" type="text" id="categoryId" name="categoryId" value="@TempData["CategoryId"].ToString()">
     <button class="btn btn-add" style="border-radius: 20px; border: none;" type="submit">Confirm</button>
 }
 
