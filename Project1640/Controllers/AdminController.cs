@@ -81,7 +81,7 @@ namespace Project1640.Controllers
 
         }
 
-        private void CustomValidationStaff(UserInfo staff)
+        public void CustomValidationStaff(UserInfo staff)
         {
             if (string.IsNullOrEmpty(staff.Email))
             {
@@ -158,7 +158,7 @@ namespace Project1640.Controllers
 
         }
 
-        private void CustomValidationManager(UserInfo mana)
+        public void CustomValidationManager(UserInfo mana)
         {
             if (string.IsNullOrEmpty(mana.Email))
             {
@@ -223,7 +223,7 @@ namespace Project1640.Controllers
 
         }
 
-        private void CustomValidationCoor(UserInfo coor)
+        public void CustomValidationCoor(UserInfo coor)
         {
             if (string.IsNullOrEmpty(coor.Email))
             {
@@ -286,7 +286,7 @@ namespace Project1640.Controllers
         //    return RedirectToAction("Index");
         //}
 
-        private List<SelectListItem> getList()
+        public List<SelectListItem> getList()
         {
             using (var abc = new EF.CMSContext()) //create a new value abc is an object of CMSContext
             {
@@ -356,7 +356,7 @@ namespace Project1640.Controllers
             }
         }
 
-        private List<Department> Convert(EF.CMSContext database, string formatIds)
+        public List<Department> Convert(EF.CMSContext database, string formatIds)
         {
             if (formatIds != null)
             {
@@ -368,7 +368,7 @@ namespace Project1640.Controllers
                 return database.Department.Where(c => c.Id == 0).ToList();
             }
         }
-        private void SetViewBag()
+        public void SetViewBag()
         {
             using (var bwCtx = new EF.CMSContext())// use a variable named bwCtx of CMSContext 
             {
