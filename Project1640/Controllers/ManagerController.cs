@@ -33,7 +33,7 @@ namespace Project1640.Controllers
                                         .OrderBy(c => c.Id)
                                         .ToList();
                 return View(categories);
-            }
+            } 
         }
 
 

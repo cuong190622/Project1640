@@ -59,6 +59,18 @@
 
         <div class="container_body">
 
+            <div class="blog_all-categories container_blog-mobile">
+                <div>
+                    @{Html.RenderAction("Filter", "Manager");}
+                </div>
+                <br /> <br />
+                <h2>All Categories</h2>
+
+                <div class="blog_categories">
+                    @{Html.RenderAction("ShowAllCategory", "Manager");}
+                </div>
+            </div>
+
             <h1>List Ideas</h1>
 
             <div class="container_blog">

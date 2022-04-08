@@ -2,7 +2,7 @@
 @using (Html.BeginForm("ViewAllIdea", "Manager", FormMethod.Post, new { @class = "form-horizontal", role = "form", _lpchecked = "1" }))
 {
     <p>Show top Ideas</p>
-    <input type="text" id="count" class="form_title-input" style="width: 10%; padding: 3px;" name="count" placeholder="Number Ideas" value="@TempData["Number"].ToString()">
+    <input type="text" id="count" class="form_title-input" style="border-radius: 20px; border: none; margin-bottom: 10px; padding: 5px;" name="count" placeholder="Number Ideas" value="@TempData["Number"].ToString()">
     <input style="display: none;" type="text" id="categoryId" name="categoryId" value="@TempData["CategoryId"].ToString()">
-    <button class="btn btn-add" style="width: 10%; margin-top: 0; margin-bottom: 7px;" type="submit">Confirm</button>
+    <button class="btn btn-add" style="border-radius: 20px; border: none;" type="submit">Confirm</button>
 }
