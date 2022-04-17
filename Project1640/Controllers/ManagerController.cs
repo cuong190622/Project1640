@@ -264,7 +264,7 @@ namespace Project1640.Controllers
             return File(Encoding.UTF8.GetBytes(sb.ToString()), "text/csv", "Grid.csv");
         
         }
-        [Authorize(Roles = SecurityRoles.Manager)]
+        //[Authorize(Roles = SecurityRoles.Manager)]
         public ActionResult Chart(string year = "2022")
         {
             int number = 0;
@@ -285,13 +285,102 @@ namespace Project1640.Controllers
                    }).Where(p => p.year.Contains(year)).ToList();
                 if(ideaDepartment.Count() == 0)
                 {
+                    List<DataPoint> dataPoints1 = new List<DataPoint>();
+                    List<DataPoint> dataPoints2 = new List<DataPoint>();
+                    foreach (var a in ListDepartment())
+                    {
+                        dataPoints1.Add(new DataPoint(a.Name, CountIdeaPerDepartment(a.Name, 0)));
+                        dataPoints2.Add(new DataPoint(a.Name, CountContributorPerDepartment(a.Name, 0)));
+                    }
+                    ViewBag.DataPoints1 = JsonConvert.SerializeObject(dataPoints1);
+                    ViewBag.DataPoints2 = JsonConvert.SerializeObject(dataPoints2);
+                    TempData["Sub"] = "No data Idea per department in year " + year + "|| All data will be shown!";
+                    return View();
+                }
+                else
+                {
+                    List<DataPoint> dataPoints1 = new List<DataPoint>();
+                    List<DataPoint> dataPoints2 = new List<DataPoint>();
+                    foreach (var a in ListDepartment())
+                    {
+                        dataPoints1.Add(new DataPoint(a.Name, CountIdeaPerDepartment(a.Name, number)));
+                        dataPoints2.Add(new DataPoint(a.Name, CountContributorPerDepartment(a.Name, number)));
+                    }
+                    ViewBag.DataPoints1 = JsonConvert.SerializeObject(dataPoints1);
+                    ViewBag.DataPoints2 = JsonConvert.SerializeObject(dataPoints2);
+                    TempData["Sub"] = "Idea per department in year " + year;
+                    return View();
+                }
+            }
+            
+        }
+
+        public int CountContributorPerDepartment(string department, int year)
+        {
+            if (year != 0)
+            {
+                using (CMSContext context = new CMSContext()) //create a connection with the database
+                {
+                    var ideaDepartment = (
+                       from d in context.Department
+                       join u in context.Users on d.Id equals u.DepartmentId
+                       join i in context.Idea on u.Id equals i.UserId
+                       select new
+                       {
+                           username = u.UserName,
+                           name = d.Name,
+                           year = i.Date
+                       }).Where(p => p.name == department).Where(p => p.year.Contains(year.ToString())).GroupBy(p => p.username).ToList();
+                    return ideaDepartment.Count();
+                }
+            }
+            else
+            {
+                using (CMSContext context = new CMSContext()) //create a connection with the database
+                {
+                    var ideaDepartment = (
+                       from d in context.Department
+                       join u in context.Users on d.Id equals u.DepartmentId
+                       join i in context.Idea on u.Id equals i.UserId
+                       select new
+                       {
+                           username = u.UserName,
+                           name = d.Name,
+                           year = i.Date
+                       }).Where(p => p.name == department).GroupBy(p => p.username).ToList();
+                    return ideaDepartment.Count();
+                }
+            }
+
+        }
+        /*
+        public ActionResult ChartPie(string year = "2022")
+        {
+            int number = 0;
+            if (Regex.IsMatch(year, @"^\d+$") && Int32.Parse(year) > 0)
+            {
+                number = Int32.Parse(year);
+            }
+            using (CMSContext context = new CMSContext()) //create a connection with the database
+            {
+                var ideaDepartment = (
+                   from d in context.Department
+                   join u in context.Users on d.Id equals u.DepartmentId
+                   join i in context.Idea on u.Id equals i.UserId
+                   select new
+                   {
+                       name = d.Name,
+                       year = i.Date
+                   }).Where(p => p.year.Contains(year)).ToList();
+                if (ideaDepartment.Count() == 0)
+                {
                     List<DataPoint> dataPoints = new List<DataPoint>();
                     foreach (var a in ListDepartment())
                     {
-                        dataPoints.Add(new DataPoint(a.Name, CountIdeaPerDepartment(a.Name, 0)));
+                        dataPoints.Add(new DataPoint(a.Name, PercentIdeaPerDepartment(a.Name, 0)));
                     }
                     ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
-                    TempData["Sub"] = "No data Idea per department in year" + year + "|| All data will be shown!";
+                    TempData["Sub"] = "No data Idea per department in year " + year + "|| All data will be shown!";
                     return View();
                 }
                 else
@@ -299,15 +388,53 @@ namespace Project1640.Controllers
                     List<DataPoint> dataPoints = new List<DataPoint>();
                     foreach (var a in ListDepartment())
                     {
-                        dataPoints.Add(new DataPoint(a.Name, CountIdeaPerDepartment(a.Name, number)));
+                        dataPoints.Add(new DataPoint(a.Name, PercentIdeaPerDepartment(a.Name, number)));
                     }
-                    ViewBag.DataPoints = JsonConvert.SerializeObject(dataPoints);
-                    TempData["Sub"] = "Idea per department in year" + year;
+                    ViewBag.DataPointsPie = JsonConvert.SerializeObject(dataPoints);
+                    TempData["Sub"] = "Percentage of ideas by each Department in " + year;
                     return View();
                 }
             }
-            
+
         }
+        public double PercentIdeaPerDepartment(string department, int year)
+        {
+            if (year != 0)
+            {
+                using (CMSContext context = new CMSContext()) //create a connection with the database
+                {
+                    var ideaDepartment = (
+                       from d in context.Department
+                       join u in context.Users on d.Id equals u.DepartmentId
+                       join i in context.Idea on u.Id equals i.UserId
+                       select new
+                       {
+                           name = d.Name,
+                           year = i.Date
+                       }).Where(p => p.name == department).Where(p => p.year.Contains(year.ToString())).ToList();
+                    var allIdeaDepartment = context.Idea.Count();
+                    return ((double)ideaDepartment.Count() / allIdeaDepartment) * 100;
+                }
+            }
+            else
+            {
+                using (CMSContext context = new CMSContext()) //create a connection with the database
+                {
+                    var ideaDepartment = (
+                       from d in context.Department
+                       join u in context.Users on d.Id equals u.DepartmentId
+                       join i in context.Idea on u.Id equals i.UserId
+                       select new
+                       {
+                           name = d.Name,
+                           year = i.Date
+                       }).Where(p => p.name == department).ToList();
+                    return 0;
+                }
+            }
+
+        }
+        */
         public List<ListDepartment> ListDepartment()
         {
             using (CMSContext context = new CMSContext()) //create a connection with the database
@@ -353,6 +480,7 @@ namespace Project1640.Controllers
             }
             
         }
+    
 
         public void Statitisc()
         {

@@ -525,6 +525,21 @@ namespace Project1640.Controllers
         [HttpPost]
         public ActionResult DeleteDepartment(int id)
         {
+            string a = User.Identity.GetUserId();
+            using (var data = new EF.CMSContext())
+            {
+                var ex = (from c in data.Department
+                          join i in data.Users on c.Id equals i.DepartmentId
+                          select new
+                          {
+                              id = i.Id
+                          }).Where(p => p.id == a).Count();
+                if (ex != 0)
+                {
+                    TempData["alert"] = $"Can not delete this Department!";
+                    return RedirectToAction("Index");
+                }
+            }
             using (var dpm = new EF.CMSContext())
             {
                 var Department = dpm.Department.FirstOrDefault(b => b.Id == id);

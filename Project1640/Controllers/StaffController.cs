@@ -150,10 +150,9 @@ namespace Project1640.Controllers
         public async Task<ActionResult> CreateIdea(Idea a, FormCollection f, HttpPostedFileBase postedFile)
         {
             
-            if (!ModelState.IsValid)//if user input wrong
+            if (!ModelState.IsValid)
             {
                 TempData["abc"] = f["formatIds[]"];
-                //SetViewBag();
                 ViewBag.Class = getList();
                 return View(a);
             }
@@ -221,22 +220,19 @@ namespace Project1640.Controllers
 
         public ActionResult ShowComment(int IdeaId)  
         {
-
-                using (var dbCT = new EF.CMSContext())
+            using (var dbCT = new EF.CMSContext())
+            {
+                var _comment = dbCT.Comment.Where(c => c.IdeaId == IdeaId).ToList();
+                if (_comment.Count != 0)
                 {
-                    var _comment = dbCT.Comment
-                                            .Where(c => c.IdeaId == IdeaId)
-                                            .ToList();
-                    if (_comment.Count != 0)
-                    {
-                        return View(_comment);
-                    }
-                    else
-                    {
-                        return Content($"No Comment yet!");
-                    }
-                   
+                    return View(_comment);
                 }
+                else
+                {
+                    return Content($"No Comment yet!");
+                }
+
+            }
         }
         [Authorize(Roles = SecurityRoles.Staff)]
         [HttpGet]

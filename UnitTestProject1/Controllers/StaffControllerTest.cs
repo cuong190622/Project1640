@@ -222,7 +222,7 @@ namespace UnitTestProject1.Controllers
             //Assert
             Assert.IsNotNull(result.Model);
         }
-        [TestMethod]
+/*        [TestMethod]
         public async void ShowUser()
         {
             //Arrange
@@ -234,7 +234,7 @@ namespace UnitTestProject1.Controllers
 
             //Assert
             Assert.IsNotNull(result.Model);
-        }
+        }*/
 
         [TestMethod]
         public void LikeMethodGet()
